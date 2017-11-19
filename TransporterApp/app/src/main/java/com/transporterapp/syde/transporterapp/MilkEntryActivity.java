@@ -12,6 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.List;
 
 public class MilkEntryActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,15 +27,6 @@ public class MilkEntryActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -40,6 +35,31 @@ public class MilkEntryActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Get listview object from XML
+        ListView farmerListView = (ListView) findViewById(R.id.farmer_list_view);
+
+        // Placeholder values for list of farmers
+        String[] farmer_list = new String[] {
+                "Alias Smith",
+                "Tim Hortons",
+                "Charis Chao",
+                "Lorik Nimani",
+                "Evan Shen"
+        };
+
+        //Create new adapter for listview
+            // First parameter - Context
+            // Second parameter - Layout for the row
+            // Third parameter - ID of the TextView to which the data is written
+            // Fourth - the Array of data
+
+        ArrayAdapter<String> farmerListAdapter = new ArrayAdapter<String>
+                (this, R.layout.farmer_row_layout, R.id.farmer_name, farmer_list);
+
+        //Assign adapter to list view
+        farmerListView.setAdapter(farmerListAdapter);
+
     }
 
     @Override
