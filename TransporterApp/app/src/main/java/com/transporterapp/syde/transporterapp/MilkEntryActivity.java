@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MilkEntryActivity extends AppCompatActivity
@@ -38,22 +39,17 @@ public class MilkEntryActivity extends AppCompatActivity
 
         //Get listview object from XML
         ListView farmerListView = (ListView) findViewById(R.id.farmer_list_view);
+        DataBaseAccess databaseAccess = DataBaseAccess.getInstance(this);
+        databaseAccess.open();
+        List<String> farmer_list = databaseAccess.getFarmers();
 
-        // Placeholder values for list of farmers
-        String[] farmer_list = new String[] {
-                "Alias Smith",
-                "Tim Hortons",
-                "Charis Chao",
-                "Lorik Nimani",
-                "Evan Shen"
-        };
+        //List<String> farmer_list = new ArrayList<>();
 
         //Create new adapter for listview
             // First parameter - Context
             // Second parameter - Layout for the row
             // Third parameter - ID of the TextView to which the data is written
             // Fourth - the Array of data
-
         ArrayAdapter<String> farmerListAdapter = new ArrayAdapter<String>
                 (this, R.layout.farmer_row_layout, R.id.farmer_name, farmer_list);
 
