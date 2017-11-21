@@ -1,0 +1,19 @@
+.separator ","
+
+CREATE TABLE farmers (id integer primary key, first_name text, last_name text, phone_number text, route_id integer);
+.import farmers.csv farmers
+
+CREATE TABLE jug (id integer primary key, size text, type text, transporter_id integer);
+.import jug.csv jug
+
+CREATE TABLE route (id integer primary key, route text);
+.import route.csv route
+
+CREATE TABLE transporter (id integer primary key, first_name text, last_name text, phone_number text, route_id integer);
+.import transporter.csv transporter
+
+CREATE TABLE tr_farmer_transporter (id integer primary key, transporter_id integer, farmer_id integer, jug_id integer, date date, time time, milk_weight double, alcohol boolean, smell boolean, comments text, density double, tr_transporter_cooling_id integer);
+.import trfarmertransporter.csv tr_farmer_transporter
+
+CREATE TABLE tr_transporter_cooling (id integer primary key, transporter_id integer, route_id integer, jug_id integer, date date, time time, enroute_weight double, measured_weight double, alcohol boolean, density double, smell boolean, comments text);
+.import trtransportercooling.csv tr_transporter_cooling

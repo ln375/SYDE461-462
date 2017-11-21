@@ -1,0 +1,5 @@
+INSTRUCTIONS FOR LOADING DEMO DATA
+
+1) Ensure .csv files and loadDemoData.txt are in the same folder as sqlite3.exe
+2) Go to folder where sqlite3.exe is using command prompt
+3) Type "sqlite3 [databasename] < loadDemoData.txt"
