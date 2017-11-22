@@ -61,7 +61,7 @@ public class DataBaseAccess {
      */
     public List<String> getFarmers() {
         List<String> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT * FROM farmers", null);
+        Cursor cursor = database.rawQuery("SELECT first_name FROM farmers", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             list.add(cursor.getString(0));
