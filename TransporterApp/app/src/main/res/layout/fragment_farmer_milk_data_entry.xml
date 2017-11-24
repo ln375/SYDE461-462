@@ -38,7 +38,7 @@
         android:id="@+id/textSmell" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/smell_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checkedButton="@+id/rb_unchecked"
@@ -83,7 +83,7 @@
         android:id="@+id/textDensity" />
 
     <RadioGroup
-        android:id="@+id/radioGroup2"
+        android:id="@+id/density_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checkedButton="@+id/density_rb_unchecked"
@@ -136,7 +136,7 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/editText2"/>
+        android:id="@+id/milk_volume"/>
 
     <Space
         android:layout_width="match_parent"
@@ -166,6 +166,6 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:text="Save"
-        android:id="@+id/button1"/>
+        android:id="@+id/save_data"/>
 
 </LinearLayout>
