@@ -7,6 +7,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by danni_000 on 2017-11-23.
  */
@@ -48,15 +51,8 @@ import android.database.sqlite.SQLiteOpenHelper;
             contentValues.put(COL_9, smellTest);
             contentValues.put(COL_11, densityTest);
 
+                long result = db.insert(TABLE_NAME, null, contentValues);
 
-            //String sql = "insert into tr_farmer_transporter Values (62,2,8,2,\"2017-11-24\",\"12:01:35\",12.5,11.8,3,1,2,\"hi\")";
-            long result = 0;
-            try {
-            //    db.execSQL(sql);
-                result = db.insert(TABLE_NAME, null, contentValues);
-            }catch (SQLException e){
-                String temp = e.toString();
-            }
 
             if(result == -1)
                 return false;

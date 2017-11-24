@@ -132,11 +132,11 @@
         android:id="@+id/textView3" />
 
     <EditText
+        android:id="@+id/milk_volume"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
         android:ems="10"
-        android:id="@+id/milk_volume"/>
+        android:inputType="number|numberDecimal" />
 
     <Space
         android:layout_width="match_parent"
