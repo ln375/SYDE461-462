@@ -1,8 +1,10 @@
 package com.transporterapp.syde.transporterapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -56,6 +59,17 @@ public class MilkEntryActivity extends AppCompatActivity
         //Assign adapter to list view
         farmerListView.setAdapter(farmerListAdapter);
 
+        farmerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> listView, View view, int position, long id) {
+                String farmerName = (String) listView.getAdapter().getItem(position);
+                Intent intent = new Intent(listView.getContext(), FarmerMilkDataEntry.class);
+                //Pass in farmer name to FarmerMilkDataEntry
+                //Maybe want to pass in entire farmer object or something?
+                intent.putExtra("farmerName", farmerName);
+                listView.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

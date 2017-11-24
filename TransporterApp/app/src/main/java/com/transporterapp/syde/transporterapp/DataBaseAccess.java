@@ -70,4 +70,21 @@ public class DataBaseAccess {
         cursor.close();
         return list;
     }
+
+    /**
+     * Read jugs from the database associated with a transporter
+     *
+     * @return a List of jugs associated with a transporter
+     */
+    public List<String> getJugs(int transporter_id) {
+        List<String> list = new ArrayList<>();
+        Cursor cursor = database.rawQuery("SELECT id FROM jug WHERE transporter_id=" + transporter_id, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            list.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return list;
+    }
 }
