@@ -20,6 +20,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.testfairy.TestFairy;
+
 
 public class MilkEntryActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -28,6 +30,9 @@ public class MilkEntryActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_milk_entry);
+
+        TestFairy.begin(this, "a61f203ba668965e0295409c7fec4b15d7a31770");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
