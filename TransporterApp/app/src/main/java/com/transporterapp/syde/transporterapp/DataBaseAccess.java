@@ -78,7 +78,7 @@ public class DataBaseAccess {
      */
     public List<String> getJugs(int transporter_id) {
         List<String> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT * FROM jug", null);//"SELECT id FROM jug WHERE transporter_id=" + transporter_id, null);
+        Cursor cursor = database.rawQuery("SELECT id FROM jug WHERE transporter_id=" + transporter_id, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             list.add(cursor.getString(0));

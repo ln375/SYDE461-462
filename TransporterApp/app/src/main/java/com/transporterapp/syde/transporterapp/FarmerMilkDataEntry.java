@@ -70,15 +70,67 @@ public class FarmerMilkDataEntry extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        boolean isInserted = myDB.insertData(milkVolume.getText().toString(), 1, 1);
-                        if(isInserted == true)
+                        int smellIndex = smellTest.indexOfChild(findViewById(smellTest.getCheckedRadioButtonId()));
+                        int densityIndex = densityTest.indexOfChild(findViewById(densityTest.getCheckedRadioButtonId()));
+
+                        boolean isInserted = myDB.insertData(milkVolume.getText().toString(), smellIndex, densityIndex);
+                        if(isInserted == true) {
                             Toast.makeText(FarmerMilkDataEntry.this,"Data Inserted", Toast.LENGTH_LONG).show();
-                        else
+                            Cursor res = myDB.getAllData();
+                            if(res.getCount() == 0) {
+                                // show message
+                                showMessage("Error","Nothing found");
+                                return;
+                            }
+
+                            StringBuffer buffer = new StringBuffer();
+                            while (res.moveToNext()) {
+                                buffer.append("Id :"+ res.getString(0)+"\n");
+                                buffer.append("Milk Weight :"+ res.getString(6)+"\n");
+                                buffer.append("Density :"+ getQualityRating(res.getString(10))+"\n");
+                                buffer.append("Smell :"+ getQualityRating(res.getString(8))+"\n\n");
+                            }
+
+                            // Show all data
+                            showMessage("Data",buffer.toString());
+
+                        } else {
                             Toast.makeText(FarmerMilkDataEntry.this,"Data not Inserted",Toast.LENGTH_LONG).show();
+                        }
+
                     }
                 }
         );
+
     }
 
+    public void showMessage(String title,String Message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(Message);
+        builder.show();
+    }
 
+    public String getQualityRating(String index) {
+        String temp = "";
+        switch (index) {
+            case "0":
+                temp = "Good";
+            break;
+            case "1":
+                temp = "Okay";
+            break;
+            case "2":
+                temp = "Bad";
+            break;
+            case "3":
+                temp = "N/A";
+            break;
+            default:
+                temp = "N/A";
+
+        }
+        return temp;
+    }
 }
