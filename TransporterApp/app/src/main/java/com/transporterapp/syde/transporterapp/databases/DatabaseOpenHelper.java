@@ -1,4 +1,4 @@
-package com.transporterapp.syde.transporterapp;
+package com.transporterapp.syde.transporterapp.databases;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import android.content.Context;

@@ -2,9 +2,6 @@ package com.transporterapp.syde.transporterapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,7 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import com.transporterapp.syde.transporterapp.databases.DataBaseUtil;
+
 import java.util.List;
 
 public class MilkEntryActivity extends AppCompatActivity
@@ -42,9 +40,7 @@ public class MilkEntryActivity extends AppCompatActivity
 
         //Get listview object from XML
         ListView farmerListView = (ListView) findViewById(R.id.farmer_list_view);
-        DataBaseAccess databaseAccess = DataBaseAccess.getInstance(this);
-        databaseAccess.open();
-        List<String> farmer_list = databaseAccess.getFarmers();
+        List<String> farmer_list = DataBaseUtil.selectStatement("farmers","first_name", "", "", "", this);
 
         //List<String> farmer_list = new ArrayList<>();
 

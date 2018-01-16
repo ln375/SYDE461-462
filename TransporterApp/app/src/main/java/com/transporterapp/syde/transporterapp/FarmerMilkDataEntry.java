@@ -1,10 +1,9 @@
 package com.transporterapp.syde.transporterapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,27 +12,33 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.transporterapp.syde.transporterapp.databases.DataBaseUtil;
+
+import java.util.Arrays;
 import java.util.List;
+
+import static java.lang.String.valueOf;
 
 public class FarmerMilkDataEntry extends AppCompatActivity {
 
-    DatabaseSaveHelper myDB;
+    private static String trFarmerTransporter = "tr_farmer_transporter";
+    private static List<String> milkEntryColumns = Arrays.asList("MILK_WEIGHT", "SMELL", "DENSITY");
+    private final Context context = this;
+
     EditText milkVolume;
     Button SaveData;
     RadioGroup smellTest;
     RadioGroup densityTest;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_farmer_milk_data_entry);
-        myDB = new DatabaseSaveHelper(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,9 +51,7 @@ public class FarmerMilkDataEntry extends AppCompatActivity {
         getSupportActionBar().setTitle(farmerName);
 
         Spinner jugDropdown = (Spinner) findViewById(R.id.jug_spinner);
-        DataBaseAccess databaseAccess = DataBaseAccess.getInstance(this);
-        databaseAccess.open();
-        List<String> jug_list = databaseAccess.getJugs(3);
+        List<String> jug_list = DataBaseUtil.selectStatement("jug","id", "transporter_id", "=", "3", context);
         Log.d("Jug", jug_list.get(0));
 
         ArrayAdapter<String> jugListAdapter = new ArrayAdapter<>(
@@ -72,11 +75,10 @@ public class FarmerMilkDataEntry extends AppCompatActivity {
                     public void onClick(View v) {
                         int smellIndex = smellTest.indexOfChild(findViewById(smellTest.getCheckedRadioButtonId()));
                         int densityIndex = densityTest.indexOfChild(findViewById(densityTest.getCheckedRadioButtonId()));
-
-                        boolean isInserted = myDB.insertData(milkVolume.getText().toString(), smellIndex, densityIndex);
+                        boolean isInserted = insertData(milkVolume.getText().toString(), smellIndex, densityIndex); 
                         if(isInserted == true) {
                             Toast.makeText(FarmerMilkDataEntry.this,"Data Inserted", Toast.LENGTH_LONG).show();
-                            Cursor res = myDB.getAllData();
+                            Cursor res = DataBaseUtil.selectStatement(trFarmerTransporter, "","",  "", context);
                             if(res.getCount() == 0) {
                                 // show message
                                 showMessage("Error","Nothing found");
@@ -132,5 +134,10 @@ public class FarmerMilkDataEntry extends AppCompatActivity {
 
         }
         return temp;
+    }
+    
+    public boolean insertData(String milkData, int smellIndex, int densityIndex) {
+        List<String> values = Arrays.asList(milkData, String.valueOf(smellIndex), String.valueOf(densityIndex));
+        return DataBaseUtil.insertStatement(trFarmerTransporter, milkEntryColumns, values, this);
     }
 }
