@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MilkEntryActivity"
+            android:name=".CollectMilkActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -26,11 +26,11 @@
         <activity
             android:name=".FarmerMilkDataEntry"
             android:label="@string/title_activity_farmer_milk_data_entry"
-            android:parentActivityName=".MilkEntryActivity"
+            android:parentActivityName=".CollectMilkActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.transporterapp.syde.transporterapp.MilkEntryActivity" />
+                android:value="com.transporterapp.syde.transporterapp.CollectMilkActivity" />
         </activity>
     </application>
 

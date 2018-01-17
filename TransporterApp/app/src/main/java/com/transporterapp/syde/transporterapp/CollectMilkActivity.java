@@ -1,5 +1,6 @@
 package com.transporterapp.syde.transporterapp;
 
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,17 +22,25 @@ import java.util.List;
 import com.testfairy.TestFairy;
 
 
-public class MilkEntryActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class CollectMilkActivity extends AppCompatActivity
+        implements FarmerListFrag.OnListFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_milk_entry);
+        setContentView(R.layout.fragment_container);
+
+        if(findViewById(R.id.container) != null){
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            if (savedInstanceState == null){
+                FarmerListFrag farmerListFragment = new FarmerListFrag();
+                fragmentManager.beginTransaction().add(R.id.container,farmerListFragment).commit();
+            }
+        }
 
         TestFairy.begin(this, "a61f203ba668965e0295409c7fec4b15d7a31770");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -41,13 +50,13 @@ public class MilkEntryActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);*/
+
+
 
         //Get listview object from XML
-        ListView farmerListView = (ListView) findViewById(R.id.farmer_list_view);
+        /*ListView farmerListView = (ListView) findViewById(R.id.farmer_list_view);
         List<String> farmer_list = DataBaseUtil.selectStatement("farmers","first_name", "", "", "", this);
-
-        //List<String> farmer_list = new ArrayList<>();
 
         //Create new adapter for listview
             // First parameter - Context
@@ -70,7 +79,7 @@ public class MilkEntryActivity extends AppCompatActivity
                 intent.putExtra("farmerName", farmerName);
                 listView.getContext().startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override
@@ -106,7 +115,6 @@ public class MilkEntryActivity extends AppCompatActivity
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
