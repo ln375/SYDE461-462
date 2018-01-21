@@ -9,11 +9,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.testfairy.TestFairy;
+import com.transporterapp.syde.transporterapp.CollectMilk.FarmerListFrag.OnListFragmentInteractionListener;
+import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.R;
 
 
 public class CollectMilkActivity extends AppCompatActivity
-        implements FarmerListFrag.OnListFragmentInteractionListener {
+        implements OnListFragmentInteractionListener {
+
+    private FragmentManager fragmentManager = getSupportFragmentManager();
+    private FarmerListFrag farmerListFragment = new FarmerListFrag();
+    private MilkEntryFrag milkEntryFragment = new MilkEntryFrag();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +28,7 @@ public class CollectMilkActivity extends AppCompatActivity
         setContentView(R.layout.fragment_container);
 
         if(findViewById(R.id.container) != null){
-            FragmentManager fragmentManager = getSupportFragmentManager();
             if (savedInstanceState == null){
-                FarmerListFrag farmerListFragment = new FarmerListFrag();
                 fragmentManager.beginTransaction().add(R.id.container,farmerListFragment).commit();
             }
         }
@@ -42,35 +46,6 @@ public class CollectMilkActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);*/
-
-
-
-        //Get listview object from XML
-        /*ListView farmerListView = (ListView) findViewById(R.id.farmer_list_view);
-        List<String> farmer_list = DataBaseUtil.selectStatement("farmers","first_name", "", "", "", this);
-
-        //Create new adapter for listview
-            // First parameter - Context
-            // Second parameter - Layout for the row
-            // Third parameter - ID of the TextView to which the data is written
-            // Fourth - the Array of data
-        ArrayAdapter<String> farmerListAdapter = new ArrayAdapter<String>
-                (this, R.layout.farmer_row_layout, R.id.farmer_name, farmer_list);
-
-        //Assign adapter to list view
-        farmerListView.setAdapter(farmerListAdapter);
-
-        farmerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> listView, View view, int position, long id) {
-                String farmerName = (String) listView.getAdapter().getItem(position);
-                Intent intent = new Intent(listView.getContext(), FarmerMilkDataEntry.class);
-                //Pass in farmer name to FarmerMilkDataEntry
-                //Maybe want to pass in entire farmer object or something?
-                intent.putExtra("farmerName", farmerName);
-                listView.getContext().startActivity(intent);
-            }
-        });*/
     }
 
     @Override
@@ -127,5 +102,16 @@ public class CollectMilkActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onListFragmentInteraction(FarmerItem.farmer item) {
+        //fragmentManager.beginTransaction().hide(farmerListFragment);
+        Bundle bundle = new Bundle();
+        String fullFarmerName = item.getFirstName() + " " + item.getLastName();
+        bundle.putString("farmername", fullFarmerName);
+        bundle.putString("farmerid", item.getId());
+        milkEntryFragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(R.id.container, milkEntryFragment).commit();
     }
 }

@@ -109,6 +109,6 @@ public class FarmerListFrag extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        //void onListFragmentInteraction(farmer item);
+        void onListFragmentInteraction(FarmerItem.farmer item);
     }
 }

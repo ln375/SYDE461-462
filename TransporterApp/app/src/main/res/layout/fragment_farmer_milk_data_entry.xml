@@ -7,11 +7,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.transporterapp.syde.transporterapp.CollectMilk.FarmerMilkDataEntryFragment"
+    tools:context="com.transporterapp.syde.transporterapp.CollectMilk.MilkEntryFrag"
     tools:showIn="@layout/activity_farmer_milk_data_entry"
     android:orientation="vertical">
 
-    <TextView android:id="@+id/farmer_name"
+    <TextView android:id="@+id/milk_entry_farmer_name"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_width="match_parent"

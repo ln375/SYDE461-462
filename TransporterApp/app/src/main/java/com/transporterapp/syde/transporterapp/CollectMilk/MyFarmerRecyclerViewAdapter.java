@@ -30,12 +30,12 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_farmer, parent, false);
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Object test = mValues.get(position);
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getId());
         String farmerName = mValues.get(position).getFirstName() + " " + mValues.get(position).getLastName();
@@ -47,7 +47,8 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    //mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.mItem);
+                    String temp = "wee";
                 }
             }
         });
