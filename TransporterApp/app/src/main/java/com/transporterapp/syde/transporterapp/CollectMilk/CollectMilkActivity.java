@@ -1,6 +1,10 @@
 package com.transporterapp.syde.transporterapp.CollectMilk;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +16,7 @@ import com.testfairy.TestFairy;
 import com.transporterapp.syde.transporterapp.CollectMilk.FarmerListFrag.OnListFragmentInteractionListener;
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.R;
+import com.transporterapp.syde.transporterapp.commonUtil;
 
 
 public class CollectMilkActivity extends AppCompatActivity
@@ -29,7 +34,7 @@ public class CollectMilkActivity extends AppCompatActivity
 
         if(findViewById(R.id.container) != null){
             if (savedInstanceState == null){
-                fragmentManager.beginTransaction().add(R.id.container,farmerListFragment).commit();
+                fragmentManager.beginTransaction().add(R.id.container,farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
             }
         }
 
@@ -50,11 +55,16 @@ public class CollectMilkActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }*/
+
+        if(milkEntryFragment.isVisible()){
+            ensureCancelData(milkEntryFragment, this);
+
         }
     }
 
@@ -112,6 +122,42 @@ public class CollectMilkActivity extends AppCompatActivity
         bundle.putString("farmername", fullFarmerName);
         bundle.putString("farmerid", item.getId());
         milkEntryFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.container, milkEntryFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.container, milkEntryFragment, commonUtil.MILK_ENTRY_TAG_FRAGMENT).commit();
     }
+
+
+
+    public void ensureCancelData(Fragment fragment, Context context){
+        if (fragment.getTag().equals(commonUtil.MILK_ENTRY_TAG_FRAGMENT)) {
+            final MilkEntryFrag milkEntryFrag = (MilkEntryFrag) fragment;
+            if (!milkEntryFrag.areDataFieldsEmpty()) {
+                showUnsavedDataMessage(context);
+            }
+        }
+    }
+
+    public void showUnsavedDataMessage(Context context){
+        new AlertDialog.Builder(context)
+                .setTitle("Unsaved data")
+                .setMessage("Are you sure you want to go back?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, unsavedDataDialog)
+                .setNegativeButton(android.R.string.no, unsavedDataDialog).show();
+    }
+
+    private DialogInterface.OnClickListener unsavedDataDialog = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    fragmentManager.beginTransaction().detach(milkEntryFragment);
+                    milkEntryFragment.clearData();
+                    fragmentManager.beginTransaction().replace(R.id.container, farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+            }
+        }
+    };
 }

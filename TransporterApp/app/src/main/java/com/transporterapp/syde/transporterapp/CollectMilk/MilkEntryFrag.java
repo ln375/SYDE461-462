@@ -38,6 +38,7 @@ public class MilkEntryFrag extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_farmer_milk_data_entry, container, false);
 
         Context context = view.getContext();
@@ -139,4 +140,19 @@ public class MilkEntryFrag extends Fragment {
         List<String> values = Arrays.asList(milkData, String.valueOf(smellIndex), String.valueOf(densityIndex));
         return DataBaseUtil.insertStatement(DatabaseConstants.tbltrFarmerTransporter, milkEntryColumns, values, getContext());
     }
+
+    public boolean areDataFieldsEmpty(){
+        if ((smellTest.getCheckedRadioButtonId() != R.id.rb_unchecked) || (densityTest.getCheckedRadioButtonId() != R.id.rb_unchecked) || (!milkVolume.getText().toString().isEmpty())) {
+            return false;
+        }
+        return true;
+    }
+
+    public void clearData() {
+         smellTest.check(R.id.rb_unchecked);
+         densityTest.check(R.id.density_rb_unchecked);
+         milkVolume.setText("");
+    }
+
+
 }

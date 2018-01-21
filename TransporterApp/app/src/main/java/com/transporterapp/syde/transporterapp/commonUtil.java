@@ -15,6 +15,9 @@ import java.util.List;
 
 public class commonUtil {
 
+    public final static String FARMER_LIST_TAG_FRAGMENT = "FARMER_LIST_TAG_FRAGMENT";
+    public final static String MILK_ENTRY_TAG_FRAGMENT = "MILK_ENTRY_TAG_FRAGMENT";
+
     public static List<FarmerItem.farmer> convertCursorToFarmerItemList(Cursor farmerList){
         List<FarmerItem.farmer> farmers = new ArrayList<>();
 
@@ -35,4 +38,5 @@ public class commonUtil {
 
         return farmers;
     }
+
 }
