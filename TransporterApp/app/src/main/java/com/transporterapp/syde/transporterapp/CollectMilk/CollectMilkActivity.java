@@ -63,7 +63,7 @@ public class CollectMilkActivity extends AppCompatActivity
         }*/
 
         if(milkEntryFragment.isVisible()){
-            ensureCancelData(milkEntryFragment, this);
+            showUnsavedDataMessage(milkEntryFragment, this);
 
         }
     }
@@ -126,25 +126,30 @@ public class CollectMilkActivity extends AppCompatActivity
     }
 
 
-
-    public void ensureCancelData(Fragment fragment, Context context){
+    /**
+     * Displays a dialog to ensure user wants to backspace if there is still data on the milk entry page
+     * Example Usage: showUnsavedDataMessage(milkEntryFrag, this);
+     *
+     * @param fragment
+     * @param context
+     */
+    public void showUnsavedDataMessage(Fragment fragment, Context context){
         if (fragment.getTag().equals(commonUtil.MILK_ENTRY_TAG_FRAGMENT)) {
             final MilkEntryFrag milkEntryFrag = (MilkEntryFrag) fragment;
             if (!milkEntryFrag.areDataFieldsEmpty()) {
-                showUnsavedDataMessage(context);
+                new AlertDialog.Builder(context)
+                        .setTitle("Unsaved data")
+                        .setMessage("Are you sure you want to go back?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, unsavedDataDialog)
+                        .setNegativeButton(android.R.string.no, unsavedDataDialog).show();
             }
         }
     }
 
-    public void showUnsavedDataMessage(Context context){
-        new AlertDialog.Builder(context)
-                .setTitle("Unsaved data")
-                .setMessage("Are you sure you want to go back?")
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, unsavedDataDialog)
-                .setNegativeButton(android.R.string.no, unsavedDataDialog).show();
-    }
-
+    /**
+     * DialogInterface listener used for showUnsavedDataMessage
+     */
     private DialogInterface.OnClickListener unsavedDataDialog = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
