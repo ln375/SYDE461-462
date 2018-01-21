@@ -1,10 +1,12 @@
-package com.transporterapp.syde.transporterapp;
+package com.transporterapp.syde.transporterapp.CollectMilk;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.transporterapp.syde.transporterapp.R;
 
 /**
  * A placeholder fragment containing a simple view.

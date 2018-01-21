@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.System.in;
-
 /**
  * Created by chari on 2018-01-15.
  */
@@ -152,6 +150,8 @@ public class DataBaseUtil {
         cursor.close();
         return list;
     }
+
+
 
     /**
      * Inserts a row into a table

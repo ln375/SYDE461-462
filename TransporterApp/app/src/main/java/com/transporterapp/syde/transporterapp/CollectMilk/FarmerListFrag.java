@@ -1,6 +1,7 @@
-package com.transporterapp.syde.transporterapp;
+package com.transporterapp.syde.transporterapp.CollectMilk;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,8 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.transporterapp.syde.transporterapp.dummy.DummyContent;
-import com.transporterapp.syde.transporterapp.dummy.DummyContent.DummyItem;
+import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
+import com.transporterapp.syde.transporterapp.R;
+import com.transporterapp.syde.transporterapp.commonUtil;
+import com.transporterapp.syde.transporterapp.databases.DataBaseUtil;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -67,7 +72,9 @@ public class FarmerListFrag extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyFarmerRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            Cursor farmers = DataBaseUtil.selectStatement("farmers", "", "", "", context);
+            List<FarmerItem.farmer> convertedFarmerList = commonUtil.convertCursorToFarmerItemList(farmers);
+            recyclerView.setAdapter(new MyFarmerRecyclerViewAdapter(convertedFarmerList, mListener));
         }
         return view;
     }
@@ -102,6 +109,6 @@ public class FarmerListFrag extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        //void onListFragmentInteraction(DummyItem item);
+        //void onListFragmentInteraction(farmer item);
     }
 }

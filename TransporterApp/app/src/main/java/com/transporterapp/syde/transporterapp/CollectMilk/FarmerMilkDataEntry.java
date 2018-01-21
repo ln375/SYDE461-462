@@ -1,4 +1,4 @@
-package com.transporterapp.syde.transporterapp;
+package com.transporterapp.syde.transporterapp.CollectMilk;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.databases.DataBaseUtil;
 
 import java.util.Arrays;
