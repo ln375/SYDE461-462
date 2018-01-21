@@ -19,9 +19,6 @@ public class CollectMilkActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Cursor test = DataBaseUtil.selectStatement("farmers", "", "", "", this);
-        //List<FarmerItem> test2 = commonUtil.convertCursorToFarmerItemList(test);
-
         setContentView(R.layout.fragment_container);
 
         if(findViewById(R.id.container) != null){
