@@ -73,7 +73,7 @@ public class FarmerListFrag extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             Cursor farmers = DataBaseUtil.selectStatement("farmers", "", "", "", context);
-            List<FarmerItem.farmer> convertedFarmerList = commonUtil.convertCursorToFarmerItemList(farmers);
+            List<FarmerItem> convertedFarmerList = commonUtil.convertCursorToFarmerItemList(farmers);
             recyclerView.setAdapter(new MyFarmerRecyclerViewAdapter(convertedFarmerList, mListener));
         }
         return view;
@@ -109,6 +109,6 @@ public class FarmerListFrag extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(FarmerItem.farmer item);
+        void onListFragmentInteraction(FarmerItem item);
     }
 }

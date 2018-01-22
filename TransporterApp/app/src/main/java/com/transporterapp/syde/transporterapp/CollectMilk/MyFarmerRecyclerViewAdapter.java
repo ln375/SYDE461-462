@@ -12,16 +12,16 @@ import com.transporterapp.syde.transporterapp.R;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link FarmerItem.farmer} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link FarmerItem} and makes a call to the
  * specified {@link FarmerListFrag.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRecyclerViewAdapter.ViewHolder> {
 
-    private final List<FarmerItem.farmer> mValues;
+    private final List<FarmerItem> mValues;
     private final FarmerListFrag.OnListFragmentInteractionListener mListener;
 
-    public MyFarmerRecyclerViewAdapter(List<FarmerItem.farmer> items, FarmerListFrag.OnListFragmentInteractionListener listener) {
+    public MyFarmerRecyclerViewAdapter(List<FarmerItem> items, FarmerListFrag.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -48,7 +48,6 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
-                    String temp = "wee";
                 }
             }
         });
@@ -63,7 +62,7 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public FarmerItem.farmer mItem;
+        public FarmerItem mItem;
 
         public ViewHolder(View view) {
             super(view);

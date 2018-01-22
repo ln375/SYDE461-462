@@ -40,6 +40,26 @@ public class DatabaseConstants {
 
     public static final String phone_number = "phone_number";
 
+    public static final String transporter_id = "transporter_id";
 
+    public static final String farmer_id = "farmer_id";
+
+    public static final String jug_id = "jug_id";
+
+    public static final String date = "date";
+
+    public static final String time = "time";
+
+    public static final String milk_weight = "milk_weight";
+
+    public static final String alcohol = "alcohol";
+
+    public static final String smell = "smell";
+
+    public static final String comments = "comments";
+
+    public static final String tr_transporter_coolingp_id = "alcohol";
+
+    public static final String density = "density";
 
 }

@@ -115,7 +115,7 @@ public class CollectMilkActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(FarmerItem.farmer item) {
+    public void onListFragmentInteraction(FarmerItem item) {
         //fragmentManager.beginTransaction().hide(farmerListFragment);
         Bundle bundle = new Bundle();
         String fullFarmerName = item.getFirstName() + " " + item.getLastName();
