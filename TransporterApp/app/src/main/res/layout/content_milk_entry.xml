@@ -9,8 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.transporterapp.syde.transporterapp.CollectMilk.CollectMilkActivity"
-    tools:showIn="@layout/app_bar_milk_entry">
+    tools:context="com.transporterapp.syde.transporterapp.CollectMilk.CollectMilkActivity">
 
     <ListView
         android:id="@+id/farmer_list_view"
