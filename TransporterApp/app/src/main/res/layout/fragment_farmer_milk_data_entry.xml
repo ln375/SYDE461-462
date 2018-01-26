@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:text="Info  about famer can go here"
+        android:text="Info  about farmer can go here"
         android:id="@+id/textView2" />
 
     <Space

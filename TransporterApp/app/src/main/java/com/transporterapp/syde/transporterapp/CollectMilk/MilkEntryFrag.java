@@ -17,11 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.transporterapp.syde.transporterapp.R;
-import com.transporterapp.syde.transporterapp.databases.DataBaseUtil;
+import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
+import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.util.Arrays;
 import java.util.List;
+
 
 public class MilkEntryFrag extends Fragment {
 
@@ -48,7 +50,7 @@ public class MilkEntryFrag extends Fragment {
 
         String id = getArguments().getString("farmerid");
 
-        List<String> jug_list = DataBaseUtil.selectStatement("jug","id", "transporter_id", "=", "3", context);
+        List<String> jug_list = dbUtil.selectStatement("jug","id", "transporter_id", "=", "3", context);
 
         Spinner jugDropdown = (Spinner) view.findViewById(R.id.jug_spinner);
 
@@ -78,7 +80,7 @@ public class MilkEntryFrag extends Fragment {
                         boolean isInserted = insertData(milkVolume.getText().toString(), smellIndex, densityIndex);
                         if(isInserted == true) {
                             Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();
-                            Cursor res = DataBaseUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "","",  "", getContext());
+                            Cursor res = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "","",  "", getContext());
                             if(res.getCount() == 0) {
                                 // show message
                                 showMessage("Error","Nothing found");
@@ -89,8 +91,8 @@ public class MilkEntryFrag extends Fragment {
                             while (res.moveToNext()) {
                                 buffer.append("Id :"+ res.getString(0)+"\n");
                                 buffer.append("Milk Weight :"+ res.getString(6)+"\n");
-                                buffer.append("Density :"+ getQualityRating(res.getString(10))+"\n");
-                                buffer.append("Smell :"+ getQualityRating(res.getString(8))+"\n\n");
+                                buffer.append("Density :"+ commonUtil.getQualityRating(res.getString(10))+"\n");
+                                buffer.append("Smell :"+ commonUtil.getQualityRating(res.getString(8))+"\n\n");
                             }
 
                             // Show all data
@@ -114,31 +116,9 @@ public class MilkEntryFrag extends Fragment {
         builder.show();
     }
 
-    public String getQualityRating(String index) {
-        String temp = "";
-        switch (index) {
-            case "0":
-                temp = "Good";
-                break;
-            case "1":
-                temp = "Okay";
-                break;
-            case "2":
-                temp = "Bad";
-                break;
-            case "3":
-                temp = "N/A";
-                break;
-            default:
-                temp = "N/A";
-
-        }
-        return temp;
-    }
-
     public boolean insertData(String milkData, int smellIndex, int densityIndex) {
         List<String> values = Arrays.asList(milkData, String.valueOf(smellIndex), String.valueOf(densityIndex));
-        return DataBaseUtil.insertStatement(DatabaseConstants.tbltrFarmerTransporter, milkEntryColumns, values, getContext());
+        return dbUtil.insertStatement(DatabaseConstants.tbltrFarmerTransporter, milkEntryColumns, values, getContext());
     }
 
     public boolean areDataFieldsEmpty(){

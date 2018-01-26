@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,15 +21,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.database.Cursor;
 
-//import com.testfairy.TestFairy;
 import com.transporterapp.syde.transporterapp.CollectMilk.FarmerListFrag.OnListFragmentInteractionListener;
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
+import com.transporterapp.syde.transporterapp.History.HistoryActivity;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
-import com.transporterapp.syde.transporterapp.databases.DataBaseUtil;
+import com.transporterapp.syde.transporterapp.databases.dbUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 
 import java.util.List;
+
+//import com.testfairy.TestFairy;
 
 
 public class CollectMilkActivity extends AppCompatActivity
@@ -37,8 +40,7 @@ public class CollectMilkActivity extends AppCompatActivity
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private FarmerListFrag farmerListFragment = new FarmerListFrag();
     private MilkEntryFrag milkEntryFragment = new MilkEntryFrag();
-
-    @Override
+    private DrawerLayout drawer;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -55,25 +57,51 @@ public class CollectMilkActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //navigationView.setNavigationItemSelectedListener(this);
 
         //Handling Search intent
         handleIntent(getIntent());
+        navigationView.setNavigationItemSelectedListener(navSelectListener);
     }
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Cursor testing = DataBaseUtil.selectStatement(DatabaseConstants.tblFarmer, DatabaseConstants.first_name, "=", query, this);
+            Cursor testing = dbUtil.selectStatement(DatabaseConstants.tblFarmer, DatabaseConstants.first_name, "=", query, this);
 
         }
+    }
+
+
+    private NavigationView.OnNavigationItemSelectedListener navSelectListener = new NavigationView.OnNavigationItemSelectedListener(){
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            item.setChecked(true);
+            if(item.getTitle().equals("History Screen")) {
+                launchHistoryActivity();
+            } else if(item.getTitle().equals("Collect Milk")) {
+                launchCollectMilkActivity();
+            }
+            return true;
+        }
+    };
+
+    private void launchHistoryActivity() {
+
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
+    }
+
+    private void launchCollectMilkActivity() {
+
+        Intent intent = new Intent(this, CollectMilkActivity.class);
+        startActivity(intent);
     }
 
     @Override

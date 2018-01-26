@@ -1,4 +1,4 @@
-package com.transporterapp.syde.transporterapp.CollectMilk;
+package com.transporterapp.syde.transporterapp.History;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,10 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
+import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
+import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class FarmerListFrag extends Fragment {
+public class HistListFrag extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -36,13 +37,13 @@ public class FarmerListFrag extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public FarmerListFrag() {
+    public HistListFrag() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static FarmerListFrag newInstance(int columnCount) {
-        FarmerListFrag fragment = new FarmerListFrag();
+    public static HistListFrag newInstance(int columnCount) {
+        HistListFrag fragment = new HistListFrag();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -61,20 +62,21 @@ public class FarmerListFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_farmer_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_milkrecord_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
+
             RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            Cursor farmers = dbUtil.selectStatement("farmers", "", "", "", context);
-            List<FarmerItem> convertedFarmerList = commonUtil.convertCursorToFarmerItemList(farmers);
-            recyclerView.setAdapter(new MyFarmerRecyclerViewAdapter(convertedFarmerList, mListener));
+            Cursor records = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "", "", "", context);
+            List<MilkRecord> milkRecords = commonUtil.convertCursorToMilkRecord(records);
+            recyclerView.setAdapter(new MyMilkRecordRecyclerViewAdapter(milkRecords, mListener));
         }
         return view;
     }
@@ -109,6 +111,6 @@ public class FarmerListFrag extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(FarmerItem item);
+        void onListFragmentInteraction(MilkRecord item);
     }
 }

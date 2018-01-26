@@ -3,7 +3,9 @@ package com.transporterapp.syde.transporterapp;
 import android.database.Cursor;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
+import com.transporterapp.syde.transporterapp.DataStructures.Jug;
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
+import com.transporterapp.syde.transporterapp.DataStructures.TransporterItem;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ public class commonUtil {
 
     public final static String FARMER_LIST_TAG_FRAGMENT = "FARMER_LIST_TAG_FRAGMENT";
     public final static String MILK_ENTRY_TAG_FRAGMENT = "MILK_ENTRY_TAG_FRAGMENT";
+    public final static String HIST_LIST_TAG_FRAGMENT = "HIST_LIST_TAG_FRAGMENT";
+    public final static String HIST_REC_TAG_FRAGMENT = "HIST_REC_TAG_FRAGMENT";
 
     /**
      * Converts a cursor representing a farmer list to List<String>
@@ -72,6 +76,66 @@ public class commonUtil {
         }
 
         return milkRecords;
+    }
+
+    public static FarmerItem convertCursortToFarmerItem(Cursor farmer) {
+        while(farmer.moveToNext()){
+            String id = farmer.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.id));
+            String firstName = farmer.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.first_name));
+            String lastName = farmer.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.last_name));
+            String phoneNumber = farmer.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.phone_number));
+            String routeId = farmer.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.route_id));
+
+            return new FarmerItem(id, firstName, lastName, phoneNumber, routeId);
+        }
+        return null;
+    }
+
+    public static TransporterItem convertCursortToTransporterItem(Cursor transporter) {
+        while(transporter.moveToNext()){
+            String id = transporter.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.id));
+            String firstName = transporter.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.first_name));
+            String lastName = transporter.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.last_name));
+            String phoneNumber = transporter.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.phone_number));
+            String routeId = transporter.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.route_id));
+
+            return new TransporterItem(id, firstName, lastName, phoneNumber, routeId);
+        }
+        return null;
+    }
+
+    public static Jug convertCursorToJug(Cursor jug) {
+        while(jug.moveToNext()){
+            String id = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.id));
+            String size = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.size));
+            String type = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.type));
+            String transporterId = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.transporter_id));
+
+            return new Jug(id, size, type, transporterId);
+        }
+        return null;
+    }
+
+    public static String getQualityRating(String index) {
+        String temp = "";
+        switch (index) {
+            case "0":
+                temp = "Good";
+                break;
+            case "1":
+                temp = "Okay";
+                break;
+            case "2":
+                temp = "Bad";
+                break;
+            case "3":
+                temp = "N/A";
+                break;
+            default:
+                temp = "N/A";
+
+        }
+        return temp;
     }
 
 
