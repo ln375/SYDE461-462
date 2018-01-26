@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
-import com.transporterapp.syde.transporterapp.databases.DataBaseUtil;
+import com.transporterapp.syde.transporterapp.databases.dbUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 
 import java.util.List;
@@ -67,13 +67,14 @@ public class HistListFrag extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
+
             RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            Cursor records = DataBaseUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "", "", "", context);
+            Cursor records = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "", "", "", context);
             List<MilkRecord> milkRecords = commonUtil.convertCursorToMilkRecord(records);
             recyclerView.setAdapter(new MyMilkRecordRecyclerViewAdapter(milkRecords, mListener));
         }

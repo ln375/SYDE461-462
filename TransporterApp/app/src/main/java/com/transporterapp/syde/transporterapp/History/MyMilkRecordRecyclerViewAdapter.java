@@ -6,9 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.History.HistListFrag.OnListFragmentInteractionListener;
 import com.transporterapp.syde.transporterapp.R;
+import com.transporterapp.syde.transporterapp.commonUtil;
+import com.transporterapp.syde.transporterapp.databases.dbUtil;
+import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 
 import java.util.List;
 
@@ -21,6 +25,7 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
 
     private final List<MilkRecord> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private View view;
 
     public MyMilkRecordRecyclerViewAdapter(List<MilkRecord> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -29,7 +34,7 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_milkrecord, parent, false);
         return new ViewHolder(view);
     }
@@ -38,7 +43,10 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).getDate());
+        String farmerId = mValues.get(position).getFarmerId();
+        List<FarmerItem> farmer = commonUtil.convertCursorToFarmerItemList(dbUtil.selectStatement(DatabaseConstants.tblFarmer, "id", "=", farmerId, view.getContext()));
+        String name = farmer.get(0).getFirstName() + " " + farmer.get(0).getLastName();
+        holder.mContentView.setText(mValues.get(position).getDate() + " : " + name);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

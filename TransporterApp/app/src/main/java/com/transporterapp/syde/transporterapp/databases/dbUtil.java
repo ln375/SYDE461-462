@@ -13,17 +13,17 @@ import java.util.List;
  * Created by chari on 2018-01-15.
  */
 
-public class DataBaseUtil {
+public class dbUtil {
     private SQLiteOpenHelper openHelper;
     private static SQLiteDatabase database;
-    public static DataBaseUtil instance;
+    public static dbUtil instance;
 
     /**
      * Private constructor to avoid object creation from outside classes.
      *
      * @param context
      */
-    private DataBaseUtil(Context context) {
+    private dbUtil(Context context) {
         this.openHelper = new DatabaseOpenHelper(context);
     }
 
@@ -35,14 +35,14 @@ public class DataBaseUtil {
     }
 
     /**
-     * Return a single instance of DataBaseUtil.
+     * Return a single instance of dbUtil.
      *
      * @param context the Context
-     * @return the instance of DataBaseUtil
+     * @return the instance of dbUtil
      */
-    public static DataBaseUtil getInstance(Context context) {
+    public static dbUtil getInstance(Context context) {
         if (instance == null) {
-            instance = new DataBaseUtil(context);
+            instance = new dbUtil(context);
         }
         return instance;
     }
@@ -59,7 +59,7 @@ public class DataBaseUtil {
 
     /**
      * Returns all columns for a selected table (or a specific set of rows in a table)
-     * Example Usage: Cursor res = DataBaseUtil.selectStatement(trFarmerTransporter, "", "", context);
+     * Example Usage: Cursor res = dbUtil.selectStatement(trFarmerTransporter, "", "", context);
      *
      * @param tableName
      * @param whereCondition
@@ -83,7 +83,7 @@ public class DataBaseUtil {
 
     /**
      * Returns a specific column of a table given particular where conditions
-     * Example Usage: List<String> jug_list = DataBaseUtil.selectStatement("jug","id", "transporter_id", "=", "3", context);
+     * Example Usage: List<String> jug_list = dbUtil.selectStatement("jug","id", "transporter_id", "=", "3", context);
      *
      * @param tableName
      * @param columnName
@@ -117,7 +117,7 @@ public class DataBaseUtil {
 
     /**
      * Returns a specific column given multiple where conditions
-     * Example Usage: List<String> jug_list = DataBaseUtil.selectStatement("jug","id", Arrays.asList("type", "transporter_id"), Arrays.asList("=", ">="), Arrays.asList("Aluminum", "3"));
+     * Example Usage: List<String> jug_list = dbUtil.selectStatement("jug","id", Arrays.asList("type", "transporter_id"), Arrays.asList("=", ">="), Arrays.asList("Aluminum", "3"));
      *
      * @param tableName
      * @param columnName
@@ -155,7 +155,7 @@ public class DataBaseUtil {
 
     /**
      * Inserts a row into a table
-     * Example Usage: DataBaseUtil.insertStatement(trFarmerTransporter, milkEntryColumns, values, this);
+     * Example Usage: dbUtil.insertStatement(trFarmerTransporter, milkEntryColumns, values, this);
      *
      * @param tableName
      * @param columnNames
@@ -184,7 +184,7 @@ public class DataBaseUtil {
 
     /**
      * Deletes a row in a table based on a specific condition
-     * Example Usage: DataBaseUtil.deleteStatement(trFarmerTransporter, "id", ">", "10", this);
+     * Example Usage: dbUtil.deleteStatement(trFarmerTransporter, "id", ">", "10", this);
      *
      * @param tableName
      * @param whereCondition
@@ -200,7 +200,7 @@ public class DataBaseUtil {
 
     /**
      * Deletes a row in a table based on multiple conditions
-     * Example Usage: DataBaseUtil.deleteStatement(trFarmerTransporter, Arrays.asList("id"), Arrays.asList(">"), Arrays.asList("10"), this);
+     * Example Usage: dbUtil.deleteStatement(trFarmerTransporter, Arrays.asList("id"), Arrays.asList(">"), Arrays.asList("10"), this);
      *
      * @param tableName
      * @param whereConditions

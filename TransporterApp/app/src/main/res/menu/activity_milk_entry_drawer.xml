@@ -3,6 +3,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/collectMilkActivity"
+            android:icon="@mipmap/ic_menu_hist"
+            android:title="Collect Milk" />
+        <item
             android:id="@+id/histActivity"
             android:icon="@mipmap/ic_menu_hist"
             android:title="History Screen" />

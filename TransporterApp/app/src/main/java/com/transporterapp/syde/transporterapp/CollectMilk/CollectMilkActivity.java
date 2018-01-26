@@ -65,6 +65,8 @@ public class CollectMilkActivity extends AppCompatActivity
             item.setChecked(true);
             if(item.getTitle().equals("History Screen")) {
                 launchHistoryActivity();
+            } else if(item.getTitle().equals("Collect Milk")) {
+                launchCollectMilkActivity();
             }
             return true;
         }
@@ -73,6 +75,12 @@ public class CollectMilkActivity extends AppCompatActivity
     private void launchHistoryActivity() {
 
         Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
+    }
+
+    private void launchCollectMilkActivity() {
+
+        Intent intent = new Intent(this, CollectMilkActivity.class);
         startActivity(intent);
     }
 

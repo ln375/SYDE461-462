@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
-import com.transporterapp.syde.transporterapp.databases.DataBaseUtil;
+import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.util.List;
 
@@ -72,7 +72,7 @@ public class FarmerListFrag extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            Cursor farmers = DataBaseUtil.selectStatement("farmers", "", "", "", context);
+            Cursor farmers = dbUtil.selectStatement("farmers", "", "", "", context);
             List<FarmerItem> convertedFarmerList = commonUtil.convertCursorToFarmerItemList(farmers);
             recyclerView.setAdapter(new MyFarmerRecyclerViewAdapter(convertedFarmerList, mListener));
         }

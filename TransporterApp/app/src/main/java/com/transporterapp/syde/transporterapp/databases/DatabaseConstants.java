@@ -32,6 +32,8 @@ public class DatabaseConstants {
 
     public static final String[] colTransporter = new String[]{"id", "first_name", "last_name", "phone_number", "route_id"};
 
+    public static final String id = "id";
+
     public static final String route_id = "route_id";
 
     public static final String first_name = "first_name";
@@ -61,5 +63,9 @@ public class DatabaseConstants {
     public static final String tr_transporter_coolingp_id = "alcohol";
 
     public static final String density = "density";
+
+    public static final String size = "size";
+
+    public static final String type = "type";
 
 }
