@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 
 public class DataBaseUtil {
-    private SQLiteOpenHelper openHelper;
+    private static SQLiteOpenHelper openHelper;
     private static SQLiteDatabase database;
     public static DataBaseUtil instance;
 
@@ -71,7 +72,7 @@ public class DataBaseUtil {
     public static Cursor selectStatement(String tableName, String whereCondition, String whereOperator, String whereValue, Context context){
         String sql = "SELECT * FROM " + tableName;
         if (!whereCondition.isEmpty()) {
-            sql = sql + " WHERE " + whereCondition + " " + whereOperator + " " + whereValue;
+            sql = sql + " WHERE " + whereCondition + " " + whereOperator + " \"" + whereValue + "\"";
         }
 
         setInstance(context);
