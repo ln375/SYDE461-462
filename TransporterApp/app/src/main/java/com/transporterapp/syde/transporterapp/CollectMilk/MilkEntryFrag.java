@@ -48,8 +48,6 @@ public class MilkEntryFrag extends Fragment {
         TextView farmerName = (TextView) view.findViewById(R.id.milk_entry_farmer_name);
         farmerName.setText(getArguments().getString("farmername"));
 
-        String id = getArguments().getString("farmerid");
-
         List<String> jug_list = dbUtil.selectStatement("jug","id", "transporter_id", "=", "3", context);
 
         Spinner jugDropdown = (Spinner) view.findViewById(R.id.jug_spinner);
@@ -75,6 +73,8 @@ public class MilkEntryFrag extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        String farmerId = getArguments().getString("farmerid");
+                        String transporterId = getArguments().getString("farmerid");
                         int smellIndex = smellTest.indexOfChild(getView().findViewById(smellTest.getCheckedRadioButtonId()));
                         int densityIndex = densityTest.indexOfChild(getView().findViewById(densityTest.getCheckedRadioButtonId()));
                         boolean isInserted = insertData(milkVolume.getText().toString(), smellIndex, densityIndex);

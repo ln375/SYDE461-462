@@ -1,4 +1,4 @@
-package com.transporterapp.syde.transporterapp.CollectMilk;
+package com.transporterapp.syde.transporterapp;
 
 import android.app.AlertDialog;
 import android.app.SearchManager;
@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,24 +21,30 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.transporterapp.syde.transporterapp.CollectMilk.FarmerListFrag;
 import com.transporterapp.syde.transporterapp.CollectMilk.FarmerListFrag.OnListFragmentInteractionListener;
+import com.transporterapp.syde.transporterapp.CollectMilk.MilkEntryFrag;
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
-import com.transporterapp.syde.transporterapp.History.HistoryActivity;
-import com.transporterapp.syde.transporterapp.R;
-import com.transporterapp.syde.transporterapp.commonUtil;
+import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
+import com.transporterapp.syde.transporterapp.History.HistListFrag;
+import com.transporterapp.syde.transporterapp.History.HistRecordFrag;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 //import com.testfairy.TestFairy;
 
 
-public class CollectMilkActivity extends AppCompatActivity
-        implements OnListFragmentInteractionListener {
+public class Main extends AppCompatActivity
+        implements OnListFragmentInteractionListener, HistListFrag.OnListFragmentInteractionListener {
 
+    private HistRecordFrag histRecordFrag = new HistRecordFrag();
+    private HistListFrag histListFrag = new HistListFrag();
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private FarmerListFrag farmerListFragment = new FarmerListFrag();
     private MilkEntryFrag milkEntryFragment = new MilkEntryFrag();
     private DrawerLayout drawer;
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -81,35 +88,20 @@ public class CollectMilkActivity extends AppCompatActivity
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             item.setChecked(true);
             if(item.getTitle().equals("History Screen")) {
-                launchHistoryActivity();
+                fragmentManager.beginTransaction().replace(R.id.container, histListFrag, commonUtil.HIST_LIST_TAG_FRAGMENT).commit();
+                drawer.closeDrawer(GravityCompat.START);
             } else if(item.getTitle().equals("Collect Milk")) {
-                launchCollectMilkActivity();
+                fragmentManager.beginTransaction().replace(R.id.container, farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
+                drawer.closeDrawer(GravityCompat.START);
             }
             return true;
         }
     };
 
-    private void launchHistoryActivity() {
 
-        Intent intent = new Intent(this, HistoryActivity.class);
-        startActivity(intent);
-    }
-
-    private void launchCollectMilkActivity() {
-
-        Intent intent = new Intent(this, CollectMilkActivity.class);
-        startActivity(intent);
-    }
 
     @Override
     public void onBackPressed() {
-        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }*/
-
         if(milkEntryFragment.isVisible()){
             showUnsavedDataMessage(milkEntryFragment, this);
 
@@ -132,31 +124,34 @@ public class CollectMilkActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onListFragmentInteraction(FarmerItem item) {
-        //fragmentManager.beginTransaction().hide(farmerListFragment);
         Bundle bundle = new Bundle();
         String fullFarmerName = item.getFirstName() + " " + item.getLastName();
         bundle.putString("farmername", fullFarmerName);
         bundle.putString("farmerid", item.getId());
+        bundle.putString("transporterId", "3");
         milkEntryFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.container, milkEntryFragment, commonUtil.MILK_ENTRY_TAG_FRAGMENT).commit();
     }
 
+    @Override
+    public void onListFragmentInteraction(MilkRecord item) {
+        Bundle bundle = new Bundle();
+        bundle.putString("milkRecordId", item.getId());
+        bundle.putString("transporterId", item.getTransporterId());
+        bundle.putString("farmerId", item.getFarmerId());
+        bundle.putString("jugId", item.getJugId());
+        bundle.putString("date", item.getDate());
+        bundle.putString("time", item.getTime());
+        bundle.putString("milkweight", item.getMilkWeight());
+        bundle.putString("alcohol", item.getAlcohol());
+        bundle.putString("smell", item.getSmell());
+        bundle.putString("density", item.getDensity());
+        bundle.putString("comments", item.getComments());
+        bundle.putString("trTransporterCoolingId", item.getTrTransporterCoolingId());
+        histRecordFrag.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(R.id.container, histRecordFrag, commonUtil.HIST_REC_TAG_FRAGMENT).commit();
+    }
 
     /**
      * Displays a dialog to ensure user wants to backspace if there is still data on the milk entry page
