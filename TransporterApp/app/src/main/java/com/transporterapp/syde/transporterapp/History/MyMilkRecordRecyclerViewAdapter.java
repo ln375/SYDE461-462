@@ -44,9 +44,12 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
         String farmerId = mValues.get(position).getFarmerId();
+
         List<FarmerItem> farmer = commonUtil.convertCursorToFarmerItemList(dbUtil.selectStatement(DatabaseConstants.tblFarmer, "id", "=", farmerId, view.getContext()));
-        String name = farmer.get(0).getFirstName() + " " + farmer.get(0).getLastName();
-        holder.mContentView.setText(mValues.get(position).getDate() + " : " + name);
+        if (farmer != null) {
+            String name = farmer.get(0).getFirstName() + " " + farmer.get(0).getLastName();
+            holder.mContentView.setText(mValues.get(position).getDate() + " : " + name);
+        }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
