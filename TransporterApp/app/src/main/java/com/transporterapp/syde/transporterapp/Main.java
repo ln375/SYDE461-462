@@ -5,7 +5,9 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -28,21 +30,27 @@ import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.History.HistListFrag;
 import com.transporterapp.syde.transporterapp.History.HistRecordFrag;
+import com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
+
+import static com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment.PREFS_NAME;
 
 //import com.testfairy.TestFairy;
 
 
 public class Main extends AppCompatActivity
-        implements OnListFragmentInteractionListener, HistListFrag.OnListFragmentInteractionListener {
+        implements OnListFragmentInteractionListener, HistListFrag.OnListFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener {
 
     private HistRecordFrag histRecordFrag = new HistRecordFrag();
     private HistListFrag histListFrag = new HistListFrag();
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private FarmerListFrag farmerListFragment = new FarmerListFrag();
     private MilkEntryFrag milkEntryFragment = new MilkEntryFrag();
+    private LoginFragment loginFrag = new LoginFragment();
+
     private DrawerLayout drawer;
+    public ActionBarDrawerToggle toggle;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +58,13 @@ public class Main extends AppCompatActivity
 
         setContentView(R.layout.fragment_container);
 
-        if(findViewById(R.id.container) != null){
-            if (savedInstanceState == null){
-                fragmentManager.beginTransaction().add(R.id.container,farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
-            }
-        }
-
         //TestFairy.begin(this, "a61f203ba668965e0295409c7fec4b15d7a31770");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
@@ -72,6 +74,21 @@ public class Main extends AppCompatActivity
         //Handling Search intent
         handleIntent(getIntent());
         navigationView.setNavigationItemSelectedListener(navSelectListener);
+
+        if(findViewById(R.id.container) != null){
+            if (savedInstanceState == null){
+                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                boolean hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
+                if (hasLoggedIn) {
+                    fragmentManager.beginTransaction().add(R.id.container,farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
+                } else {
+                    //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                    toggle.setDrawerIndicatorEnabled(false);
+                    fragmentManager.beginTransaction().add(R.id.container,loginFrag, commonUtil.LOGIN_TAG_FRAGMENT).commit();
+                }
+            }
+        }
+
     }
 
     private void handleIntent(Intent intent) {
@@ -84,6 +101,8 @@ public class Main extends AppCompatActivity
 
 
     private NavigationView.OnNavigationItemSelectedListener navSelectListener = new NavigationView.OnNavigationItemSelectedListener(){
+
+
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             item.setChecked(true);
@@ -93,6 +112,18 @@ public class Main extends AppCompatActivity
             } else if(item.getTitle().equals("Collect Milk")) {
                 fragmentManager.beginTransaction().replace(R.id.container, farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
                 drawer.closeDrawer(GravityCompat.START);
+            } else if(item.getTitle().equals("Log out")) {
+                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0); // 0 - for private mode
+                SharedPreferences.Editor editor = settings.edit();
+
+                editor.putBoolean("hasLoggedIn", false);
+
+                editor.commit();
+
+                fragmentManager.beginTransaction().replace(R.id.container, loginFrag, commonUtil.LOGIN_TAG_FRAGMENT).commit();
+                drawer.closeDrawer(GravityCompat.START);
+                //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                toggle.setDrawerIndicatorEnabled(false);
             }
             return true;
         }
@@ -192,4 +223,9 @@ public class Main extends AppCompatActivity
             }
         }
     };
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

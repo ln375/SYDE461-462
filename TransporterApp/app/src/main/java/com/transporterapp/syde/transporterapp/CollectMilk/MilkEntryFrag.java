@@ -74,7 +74,7 @@ public class MilkEntryFrag extends Fragment {
                     @Override
                     public void onClick(View v) {
                         String farmerId = getArguments().getString("farmerid");
-                        String transporterId = getArguments().getString("farmerid");
+                        String transporterId = getArguments().getString("transporterid");
                         int smellIndex = smellTest.indexOfChild(getView().findViewById(smellTest.getCheckedRadioButtonId()));
                         int densityIndex = densityTest.indexOfChild(getView().findViewById(densityTest.getCheckedRadioButtonId()));
                         boolean isInserted = insertData(milkVolume.getText().toString(), smellIndex, densityIndex);

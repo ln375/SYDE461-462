@@ -12,4 +12,10 @@
             android:title="History Screen" />
     </group>
 
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/logout"
+            android:title="Log out"></item>
+    </group>
+
 </menu>
