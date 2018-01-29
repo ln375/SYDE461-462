@@ -50,8 +50,9 @@ public class Main extends AppCompatActivity
     private LoginFragment loginFrag = new LoginFragment();
 
     private DrawerLayout drawer;
-    public ActionBarDrawerToggle toggle;
+    private ActionBarDrawerToggle toggle;
 
+    private String userId = "";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,10 +80,13 @@ public class Main extends AppCompatActivity
             if (savedInstanceState == null){
                 SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                 boolean hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
+                userId = settings.getString("transporterId", "");
                 if (hasLoggedIn) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("userid", userId);
+                    farmerListFragment.setArguments(bundle);
                     fragmentManager.beginTransaction().add(R.id.container,farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
                 } else {
-                    //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                     toggle.setDrawerIndicatorEnabled(false);
                     fragmentManager.beginTransaction().add(R.id.container,loginFrag, commonUtil.LOGIN_TAG_FRAGMENT).commit();
                 }
@@ -157,10 +161,12 @@ public class Main extends AppCompatActivity
     @Override
     public void onListFragmentInteraction(FarmerItem item) {
         Bundle bundle = new Bundle();
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        userId = settings.getString("transporterId", "");
         String fullFarmerName = item.getFirstName() + " " + item.getLastName();
         bundle.putString("farmername", fullFarmerName);
         bundle.putString("farmerid", item.getId());
-        bundle.putString("transporterId", "3");
+        bundle.putString("transporterId", userId);
         milkEntryFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.container, milkEntryFragment, commonUtil.MILK_ENTRY_TAG_FRAGMENT).commit();
     }

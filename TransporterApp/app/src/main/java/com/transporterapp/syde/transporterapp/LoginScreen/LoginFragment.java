@@ -137,11 +137,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     SharedPreferences.Editor editor = settings.edit();
 
                     editor.putBoolean("hasLoggedIn", true);
+                    String transporterId = user.getString(0);
+                    editor.putString("transporterId", transporterId);
 
                     editor.commit();
 
                     Intent intent = new Intent(getContext(), Main.class);
-                            startActivity(intent);
+                    startActivity(intent);
 
                 }
             }

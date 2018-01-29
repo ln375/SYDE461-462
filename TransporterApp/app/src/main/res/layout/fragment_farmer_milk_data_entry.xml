@@ -16,14 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text="Info  about farmer can go here"
-        android:id="@+id/textView2" />
-
     <Space
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,8 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checkedButton="@+id/rb_unchecked"
-        android:orientation="horizontal"
-        android:layout_weight="1">
+        android:orientation="horizontal" >
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -117,6 +108,49 @@
 
     </RadioGroup>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="Alcohol Test"
+        android:id="@+id/textAlcohol" />
+
+    <RadioGroup
+        android:id="@+id/alcohol_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/alcohol_rb_unchecked"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Good"
+            android:id="@+id/alcohol_radioButton"
+            android:layout_marginRight="5dp"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Okay"
+            android:layout_marginRight="5dp"
+            android:id="@+id/alcohol_radioButton2" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bad"
+            android:layout_marginRight="5dp"
+            android:id="@+id/alcohol_radioButton3" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="N/A"
+            android:id="@+id/alcohol_rb_unchecked" />
+
+    </RadioGroup>
+
 
     <Space
         android:layout_width="match_parent"
@@ -159,6 +193,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="Additional Comments:"
+        android:id="@+id/textView5" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text=""
+        android:id="@+id/comments" />
 
     <Button
         android:layout_width="match_parent"

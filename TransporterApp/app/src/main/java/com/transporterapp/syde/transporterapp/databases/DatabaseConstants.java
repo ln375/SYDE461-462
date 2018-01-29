@@ -60,7 +60,7 @@ public class DatabaseConstants {
 
     public static final String comments = "comments";
 
-    public static final String tr_transporter_coolingp_id = "alcohol";
+    public static final String tr_transporter_cooling_id = "tr_transporter_cooling_id";
 
     public static final String density = "density";
 
