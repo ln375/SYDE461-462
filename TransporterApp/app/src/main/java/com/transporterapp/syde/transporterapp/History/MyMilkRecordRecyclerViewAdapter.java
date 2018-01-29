@@ -51,9 +51,8 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
             holder.mContentView.setText(mValues.get(position).getDate() + " : " + name);
         }
 
-        if (holder.mContentView.getText().toString().isEmpty()) {
-            String temp = "What is going on?";
-        }
+
+
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

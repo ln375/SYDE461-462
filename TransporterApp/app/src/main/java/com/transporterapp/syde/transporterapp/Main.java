@@ -111,6 +111,7 @@ public class Main extends AppCompatActivity
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             item.setChecked(true);
             if(item.getTitle().equals("History Screen")) {
+
                 fragmentManager.beginTransaction().replace(R.id.container, histListFrag, commonUtil.HIST_LIST_TAG_FRAGMENT).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if(item.getTitle().equals("Collect Milk")) {
@@ -139,7 +140,8 @@ public class Main extends AppCompatActivity
     public void onBackPressed() {
         if(milkEntryFragment.isVisible()){
             showUnsavedDataMessage(milkEntryFragment, this);
-
+        } else if (histRecordFrag.isVisible()) {
+            fragmentManager.beginTransaction().replace(R.id.container, histListFrag, commonUtil.HIST_LIST_TAG_FRAGMENT).commit();
         }
     }
 
