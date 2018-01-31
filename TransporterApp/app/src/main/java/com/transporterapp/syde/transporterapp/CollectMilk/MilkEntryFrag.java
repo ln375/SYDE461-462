@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,9 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
@@ -95,16 +98,19 @@ public class MilkEntryFrag extends Fragment {
                         dateFormat = new SimpleDateFormat("HH:mm:ss");
                         String todayTime = dateFormat.format(date);
 
-                        List<String> columns = new ArrayList<>();
-                        columns.addAll(Arrays.asList(DatabaseConstants.coltrFarmerTransporter));
-                        columns.remove(DatabaseConstants.coltrFarmerTransporter.length - 1);
-                        columns.remove(0);
+                        // Make Milk volume required field
+                        if(TextUtils.isEmpty(milkweight)){
+                            Toast.makeText(getContext(),"Milk Volume required", Toast.LENGTH_LONG).show();
+                        } else {
+                            List<String> columns = new ArrayList<>();
+                            columns.addAll(Arrays.asList(DatabaseConstants.coltrFarmerTransporter));
+                            columns.remove(DatabaseConstants.coltrFarmerTransporter.length - 1);
+                            columns.remove(0);
 
-                        List<String> values = Arrays.asList(transporterId, farmerId, jugId, todayDate, todayTime, milkweight, alcoholIndex, smellIndex, comments, densityIndex);
+                            List<String> values = Arrays.asList(transporterId, farmerId, jugId, todayDate, todayTime, milkweight, alcoholIndex, smellIndex, comments, densityIndex);
 
-
-                        dbUtil.insertStatement(DatabaseConstants.tbltrFarmerTransporter, columns, values, v.getContext());
-
+                            dbUtil.insertStatement(DatabaseConstants.tbltrFarmerTransporter, columns, values, v.getContext());
+                        }
 
                         /*
                             Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();
