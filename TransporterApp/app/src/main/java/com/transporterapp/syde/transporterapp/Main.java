@@ -73,7 +73,8 @@ public class Main extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         //Handling Search intent
-        handleIntent(getIntent());
+        handleSearchIntent(getIntent());
+
         navigationView.setNavigationItemSelectedListener(navSelectListener);
 
         if(findViewById(R.id.container) != null){
@@ -85,7 +86,10 @@ public class Main extends AppCompatActivity
                     Bundle bundle = new Bundle();
                     bundle.putString("userid", userId);
                     farmerListFragment.setArguments(bundle);
-                    fragmentManager.beginTransaction().add(R.id.container,farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
+                    fragmentManager.beginTransaction()
+                            .add(R.id.container,farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT)
+                            .commit();
+
                 } else {
                     toggle.setDrawerIndicatorEnabled(false);
                     fragmentManager.beginTransaction().add(R.id.container,loginFrag, commonUtil.LOGIN_TAG_FRAGMENT).commit();
@@ -95,11 +99,10 @@ public class Main extends AppCompatActivity
 
     }
 
-    private void handleIntent(Intent intent) {
+    private void handleSearchIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Cursor testing = dbUtil.selectStatement(DatabaseConstants.tblFarmer, DatabaseConstants.first_name, "=", query, this);
-
+            Cursor query_results = dbUtil.selectStatement(DatabaseConstants.tblFarmer, DatabaseConstants.first_name, "=", query, this);
         }
     }
 
@@ -170,7 +173,9 @@ public class Main extends AppCompatActivity
         bundle.putString("farmerid", item.getId());
         bundle.putString("transporterId", userId);
         milkEntryFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.container, milkEntryFragment, commonUtil.MILK_ENTRY_TAG_FRAGMENT).commit();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, milkEntryFragment, commonUtil.MILK_ENTRY_TAG_FRAGMENT)
+                .commit();
     }
 
     @Override
