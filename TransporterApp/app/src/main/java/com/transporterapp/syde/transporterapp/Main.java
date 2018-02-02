@@ -19,13 +19,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.transporterapp.syde.transporterapp.CollectMilk.FarmerListFrag;
 import com.transporterapp.syde.transporterapp.CollectMilk.FarmerListFrag.OnListFragmentInteractionListener;
 import com.transporterapp.syde.transporterapp.CollectMilk.MilkEntryFrag;
+import com.transporterapp.syde.transporterapp.CollectMilk.MyFarmerRecyclerViewAdapter;
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.History.HistListFrag;
@@ -73,7 +76,7 @@ public class Main extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         //Handling Search intent
-        handleSearchIntent(getIntent());
+        //handleSearchIntent(getIntent());
 
         navigationView.setNavigationItemSelectedListener(navSelectListener);
 
@@ -99,12 +102,12 @@ public class Main extends AppCompatActivity
 
     }
 
-    private void handleSearchIntent(Intent intent) {
+    /*private void handleSearchIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Cursor query_results = dbUtil.selectStatement(DatabaseConstants.tblFarmer, DatabaseConstants.first_name, "=", query, this);
         }
-    }
+    }*/
 
 
     private NavigationView.OnNavigationItemSelectedListener navSelectListener = new NavigationView.OnNavigationItemSelectedListener(){
@@ -152,13 +155,6 @@ public class Main extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.milk_entry, menu);
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         return true;
     }

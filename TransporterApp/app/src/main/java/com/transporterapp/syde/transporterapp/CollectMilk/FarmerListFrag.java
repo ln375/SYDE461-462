@@ -1,5 +1,6 @@
 package com.transporterapp.syde.transporterapp.CollectMilk;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -7,7 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,6 +21,8 @@ import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,13 +31,15 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class FarmerListFrag extends Fragment {
+public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextListener{
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private MyFarmerRecyclerViewAdapter farmerRecyclerViewAdapter;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,6 +61,8 @@ public class FarmerListFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -72,13 +83,23 @@ public class FarmerListFrag extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            Cursor farmers = dbUtil.selectStatement("farmers", "", "", "", context);
-            List<FarmerItem> convertedFarmerList = commonUtil.convertCursorToFarmerItemList(farmers);
-            recyclerView.setAdapter(new MyFarmerRecyclerViewAdapter(convertedFarmerList, mListener));
-        }
+
+            initFarmerList(recyclerView, context);
+           }
         return view;
     }
 
+    /*
+    * Initialize farmer list
+     */
+    private void initFarmerList(RecyclerView recyclerView, Context context){
+        Cursor farmers = dbUtil.selectStatement("farmers", "", "", "", context);
+        List<FarmerItem> convertedFarmerList = commonUtil.convertCursorToFarmerItemList(farmers);
+        ArrayList<FarmerItem> convertedFarmerArrayList = new ArrayList<FarmerItem>(convertedFarmerList);
+        farmerRecyclerViewAdapter = new MyFarmerRecyclerViewAdapter(convertedFarmerArrayList, mListener);
+
+        recyclerView.setAdapter(farmerRecyclerViewAdapter);
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -96,6 +117,34 @@ public class FarmerListFrag extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search_menu, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(this);
+    }
+
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Log.d("test", "Query submitted");
+        farmerRecyclerViewAdapter.getFilter().filter(query);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        Log.d("text change", query);
+        farmerRecyclerViewAdapter.getFilter().filter(query);
+        return true;
+    }
+
+
 
     /**
      * This interface must be implemented by activities that contain this
