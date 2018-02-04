@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
+import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
@@ -53,6 +54,9 @@ public class HistListFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Set title bar
+        ((Main) getActivity()).setActionBarTitle("History");
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);

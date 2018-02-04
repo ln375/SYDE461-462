@@ -229,4 +229,8 @@ public class Main extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
 }

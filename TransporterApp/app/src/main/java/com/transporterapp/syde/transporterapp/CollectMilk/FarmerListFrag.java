@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,12 +18,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
+import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -63,6 +68,15 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        Calendar calander = Calendar.getInstance();
+        int cDay = calander.get(Calendar.DAY_OF_MONTH);
+        int cMonth = calander.get(Calendar.MONTH) + 1;
+        int cYear = calander.get(Calendar.YEAR);
+
+        String date = commonUtil.getMonthofYear(cMonth) + " " + Integer.toString(cDay) + ", " + Integer.toString(cYear);
+
+        // Set title bar
+        ((Main) getActivity()).setActionBarTitle(date);
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
