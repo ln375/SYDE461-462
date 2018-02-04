@@ -146,14 +146,12 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Log.d("test", "Query submitted");
         farmerRecyclerViewAdapter.getFilter().filter(query);
         return true;
     }
 
     @Override
     public boolean onQueryTextChange(String query) {
-        Log.d("text change", query);
         farmerRecyclerViewAdapter.getFilter().filter(query);
         return true;
     }
