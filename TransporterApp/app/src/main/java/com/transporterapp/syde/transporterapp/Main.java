@@ -75,9 +75,6 @@ public class Main extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        //Handling Search intent
-        //handleSearchIntent(getIntent());
-
         navigationView.setNavigationItemSelectedListener(navSelectListener);
 
         if(findViewById(R.id.container) != null){
@@ -101,13 +98,6 @@ public class Main extends AppCompatActivity
         }
 
     }
-
-    /*private void handleSearchIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Cursor query_results = dbUtil.selectStatement(DatabaseConstants.tblFarmer, DatabaseConstants.first_name, "=", query, this);
-        }
-    }*/
 
 
     private NavigationView.OnNavigationItemSelectedListener navSelectListener = new NavigationView.OnNavigationItemSelectedListener(){
