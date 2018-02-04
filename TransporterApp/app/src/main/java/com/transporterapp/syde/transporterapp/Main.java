@@ -107,10 +107,12 @@ public class Main extends AppCompatActivity
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             item.setChecked(true);
             if(item.getTitle().equals("History Screen")) {
-
                 fragmentManager.beginTransaction().replace(R.id.container, histListFrag, commonUtil.HIST_LIST_TAG_FRAGMENT).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if(item.getTitle().equals("Collect Milk")) {
+                fragmentManager.beginTransaction().replace(R.id.container, farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
+                drawer.closeDrawer(GravityCompat.START);
+            } else if (item.getTitle().equals("Farmers Screen")) {
                 fragmentManager.beginTransaction().replace(R.id.container, farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if(item.getTitle().equals("Log out")) {

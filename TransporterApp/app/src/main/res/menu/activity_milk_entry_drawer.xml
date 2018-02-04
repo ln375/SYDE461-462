@@ -5,17 +5,20 @@
         <item
             android:id="@+id/collectMilkActivity"
             android:icon="@mipmap/ic_menu_hist"
-            android:title="Collect Milk" />
+            android:title="@string/nav_menu_collect_milk" />
         <item
             android:id="@+id/histActivity"
             android:icon="@mipmap/ic_menu_hist"
-            android:title="History Screen" />
+            android:title="@string/nav_menu_history_screen" />
+        <item
+            android:id="@+id/farmersActivity"
+            android:title="@string/nav_menu_farmers_screen"/>
     </group>
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/logout"
-            android:title="Log out"></item>
+            android:title="@string/nav_menu_log_out"/>
     </group>
 
 </menu>
