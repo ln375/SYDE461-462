@@ -20,16 +20,78 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Select an option for exporting data"
+        android:visibility="invisible"
+        android:id="@+id/lblExport"/>
+
+    <RadioGroup
+        android:id="@+id/export_method"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="USB"
+            android:id="@+id/usbTransfer"
+            android:layout_marginRight="5dp"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bluetooth"
+            android:id="@+id/bluetoothTransfer"
+            android:layout_marginRight="5dp"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manual IP Address"
+            android:id="@+id/wifiTransfer"
+            android:layout_marginRight="5dp"/>
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Instructions"
+        android:visibility="invisible"
+        android:id="@+id/lblExportInstructionsTitle"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:visibility="invisible"
+            android:id="@+id/lblInstructions"/>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Input your computer's ip address"
+        android:visibility="invisible"
         android:id="@+id/lblipAddress"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/lblipAddress"
+        android:enabled="false"
         android:text=""
         android:id="@+id/ipAddress"
         android:ems="10"
+        android:visibility="invisible"
         android:inputType="number|numberDecimal" />/>
 
     <Button
@@ -39,8 +101,8 @@
         android:textSize="16sp"
         android:layout_below="@id/ipAddress"
         android:text="Start Export"
-        android:clickable="false"
-        android:enabled="true"
+        android:enabled="false"
+        android:visibility="invisible"
         android:id="@+id/start_export"/>
 
 </LinearLayout>

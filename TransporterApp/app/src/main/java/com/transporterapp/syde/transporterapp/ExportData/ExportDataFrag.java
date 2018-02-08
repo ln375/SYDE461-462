@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.transporterapp.syde.transporterapp.R;
@@ -41,6 +43,10 @@ public class ExportDataFrag extends Fragment {
     private String exportSucceeded = null;
     private EditText ipAddress;
     private Button sendCSVFile;
+    private RadioGroup exportMethod;
+    private TextView lblExportMethod;
+    private TextView lblExportInstructionsTitle;
+    private TextView lblExportInstructions;
     private String filePath = "";
 
 
@@ -70,9 +76,14 @@ public class ExportDataFrag extends Fragment {
         createCSVFile = (Button) view.findViewById(R.id.prep_export_data);
         sendCSVFile = (Button) view.findViewById(R.id.start_export);
         ipAddress = (EditText) view.findViewById(R.id.ipAddress);
+        exportMethod = (RadioGroup) view.findViewById(R.id.export_method);
+        lblExportMethod = (TextView) view.findViewById(R.id.lblExport);
+        lblExportInstructions = (TextView) view.findViewById(R.id.lblInstructions);
+        lblExportInstructionsTitle = (TextView) view.findViewById(R.id.lblExportInstructionsTitle);
 
         prepCSVFiles();
         sendCSVFiles();
+        chooseExportMethod();
 
         return view;
 
@@ -115,7 +126,9 @@ public class ExportDataFrag extends Fragment {
                         }
                         if (exportSucceeded != null) {
                             Toast.makeText(v.getContext(), "Successfully exported data", Toast.LENGTH_LONG).show();
-                            sendCSVFile.setClickable(true);
+                            lblExportMethod.setVisibility(View.VISIBLE);
+                            exportMethod.setVisibility(View.VISIBLE);
+                            exportMethod.setEnabled(true);
 
                             ArrayList<String> toBeScanned = new ArrayList<String>();
                             toBeScanned.add(exportSucceeded);
@@ -177,6 +190,38 @@ public class ExportDataFrag extends Fragment {
                     }
                 }
         );
+    }
+
+    public void chooseExportMethod() {
+        exportMethod.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                lblExportInstructions.setVisibility(View.VISIBLE);
+                lblExportInstructionsTitle.setVisibility(View.VISIBLE);
+                if (checkedId == R.id.usbTransfer) {
+                    lblExportInstructions.setText(getString(R.string.usbTransfer));
+                    ipAddress.setVisibility(View.INVISIBLE);
+                    ipAddress.setEnabled(false);
+                    sendCSVFile.setVisibility(View.INVISIBLE);
+                    sendCSVFile.setEnabled(false);
+
+                } else if (checkedId == R.id.bluetoothTransfer) {
+                    lblExportInstructions.setText(getString(R.string.bluetoothTransfer));
+                    ipAddress.setVisibility(View.INVISIBLE);
+                    ipAddress.setEnabled(false);
+                    sendCSVFile.setVisibility(View.INVISIBLE);
+                    sendCSVFile.setEnabled(false);
+
+                } else if (checkedId == R.id.wifiTransfer) {
+                    lblExportInstructions.setText(getString(R.string.wifiTransfer));
+                    ipAddress.setVisibility(View.VISIBLE);
+                    ipAddress.setEnabled(true);
+                    sendCSVFile.setVisibility(View.VISIBLE);
+                    sendCSVFile.setEnabled(true);
+                }
+            }
+        });
     }
 
     /**
