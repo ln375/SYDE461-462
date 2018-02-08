@@ -1,6 +1,8 @@
 package com.transporterapp.syde.transporterapp.ExportData;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -9,12 +11,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
@@ -156,27 +160,36 @@ public class ExportDataFrag extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        final String ipString = ipAddress.getText().toString();
+                        if (ipString.isEmpty()) {
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("Incorrect data")
+                                    .setMessage("Please enter a valid ip address.")
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .setPositiveButton(android.R.string.ok, incorrectData).show();
+                        } else {
                             AsyncTask.execute(new Runnable() {
                                 @Override
                                 public void run() {
                                     Socket sock;
-                                    File myFile = new File (exportSucceeded);
+                                    File myFile = new File(exportSucceeded);
                                     try {
-                                    sock = new Socket("192.168.2.18", 1149);
-                                    System.out.println("Connecting...");
+                                        sock = new Socket(ipString, 1149);
+                                        System.out.println("Connecting...");
 
-                                    // sendfile
+                                        // sendfile
 
-                                    byte [] mybytearray  = new byte [(int)myFile.length()];
-                                    FileInputStream fis = new FileInputStream(myFile);
-                                    BufferedInputStream bis = new BufferedInputStream(fis);
-                                    bis.read(mybytearray,0,mybytearray.length);
-                                    OutputStream os = sock.getOutputStream();
-                                    System.out.println("Sending...");
-                                    os.write(mybytearray,0,mybytearray.length);
-                                    os.flush();
+                                        byte[] mybytearray = new byte[(int) myFile.length()];
+                                        FileInputStream fis = new FileInputStream(myFile);
+                                        BufferedInputStream bis = new BufferedInputStream(fis);
+                                        bis.read(mybytearray, 0, mybytearray.length);
+                                        OutputStream os = sock.getOutputStream();
+                                        System.out.println("Sending...");
+                                        os.write(mybytearray, 0, mybytearray.length);
+                                        os.flush();
 
-                                    sock.close();
+                                        sock.close();
+
                                     } catch (UnknownHostException e) {
                                         // TODO Auto-generated catch block
                                         e.printStackTrace();
@@ -184,9 +197,18 @@ public class ExportDataFrag extends Fragment {
                                         // TODO Auto-generated catch block
                                         e.printStackTrace();
                                     }
+
                                 }
                             });
 
+                            InputMethodManager inputManager = (InputMethodManager)
+                                    Main.instance.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                            inputManager.hideSoftInputFromWindow((null == Main.instance.getCurrentFocus()) ? null : Main.instance.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                            Toast.makeText( Main.instance.getApplicationContext(), "Successfully sent exported data", Toast.LENGTH_LONG).show();
+
+                        }
                     }
                 }
         );
@@ -238,4 +260,14 @@ public class ExportDataFrag extends Fragment {
         // TODO: Update argument type and name
         void onExportFragmentInteraction(Uri uri);
     }
+
+        public DialogInterface.OnClickListener incorrectData = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        break;
+                }
+            }
+        };
 }
