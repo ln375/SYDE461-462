@@ -61,6 +61,7 @@ public class MilkCollectionService {
 
 
                     sock.close();
+                    break;
                 }
 
                 } catch (IOException exception) {
