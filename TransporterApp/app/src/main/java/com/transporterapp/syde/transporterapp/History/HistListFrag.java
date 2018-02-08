@@ -79,7 +79,7 @@ public class HistListFrag extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             Cursor records = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "", "", "", context);
-            List<MilkRecord> milkRecords = commonUtil.convertCursorToMilkRecord(records);
+            List<MilkRecord> milkRecords = commonUtil.convertCursorToMilkRecordList(records);
             recyclerView.setAdapter(new MyMilkRecordRecyclerViewAdapter(milkRecords, mListener));
         }
         return view;

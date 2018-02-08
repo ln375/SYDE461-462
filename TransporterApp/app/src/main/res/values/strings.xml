@@ -30,6 +30,7 @@
     <string name="nav_menu_history_screen">History Screen</string>
     <string name="nav_menu_farmers_screen">Farmers Screen</string>
     <string name="nav_menu_log_out">Log Out</string>
+    <string name="nav_menu_export_screen">Export Data</string>
 
 
 </resources>

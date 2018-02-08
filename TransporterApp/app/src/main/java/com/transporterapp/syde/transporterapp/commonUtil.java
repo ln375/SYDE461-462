@@ -23,9 +23,10 @@ public class commonUtil {
     public final static String MILK_ENTRY_TAG_FRAGMENT = "MILK_ENTRY_TAG_FRAGMENT";
     public final static String HIST_LIST_TAG_FRAGMENT = "HIST_LIST_TAG_FRAGMENT";
     public final static String HIST_REC_TAG_FRAGMENT = "HIST_REC_TAG_FRAGMENT";
+    public final static String EXPORT_TAG_FRAGMENT = "EXPORT_TAG_FRAGMENT";
 
     /**
-     * Converts a cursor representing a farmer list to List<String>
+     * Converts a cursor representing a farmer list to List<FarmerItem>
      *
      * @param farmerList
      * @return
@@ -38,7 +39,7 @@ public class commonUtil {
         }
 
         while(farmerList.moveToNext()) {
-            String id = farmerList.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf("id"));
+            String id = farmerList.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.id));
             String first_name = farmerList.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.first_name));
             String last_name = farmerList.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.last_name));
             String phone_number = farmerList.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.phone_number));
@@ -51,7 +52,13 @@ public class commonUtil {
         return farmers;
     }
 
-    public static List<MilkRecord> convertCursorToMilkRecord(Cursor milkEntryList){
+    /**
+     * Converts a cursor representing a milk record list to List<MilkRecord>
+     *
+     * @param milkEntryList
+     * @return
+     */
+    public static List<MilkRecord> convertCursorToMilkRecordList(Cursor milkEntryList){
         List<MilkRecord> milkRecords = new ArrayList<>();
 
         if (milkEntryList.getCount() == 0) {
@@ -79,6 +86,12 @@ public class commonUtil {
         return milkRecords;
     }
 
+    /**
+     * Converts a cursor representing a farmer item to FarmerItem
+     *
+     * @param farmer
+     * @return
+     */
     public static FarmerItem convertCursortToFarmerItem(Cursor farmer) {
         while(farmer.moveToNext()){
             String id = farmer.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.id));
@@ -92,6 +105,12 @@ public class commonUtil {
         return null;
     }
 
+    /**
+     * Converts a cursor representing a transporter to TransporterItem
+     *
+     * @param transporter
+     * @return
+     */
     public static TransporterItem convertCursortToTransporterItem(Cursor transporter) {
         while(transporter.moveToNext()){
             String id = transporter.getString(Arrays.asList(DatabaseConstants.colFarmer).indexOf(DatabaseConstants.id));
@@ -105,6 +124,12 @@ public class commonUtil {
         return null;
     }
 
+    /**
+     * Converts a cursor representing a jug to Jug
+     *
+     * @param jug
+     * @return
+     */
     public static Jug convertCursorToJug(Cursor jug) {
         while(jug.moveToNext()){
             String id = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.id));

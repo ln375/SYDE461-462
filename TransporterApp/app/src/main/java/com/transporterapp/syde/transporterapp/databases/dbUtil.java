@@ -16,7 +16,7 @@ import java.util.List;
 
 public class dbUtil {
     private SQLiteOpenHelper openHelper;
-    private static SQLiteDatabase database;
+    public static SQLiteDatabase database;
     public static dbUtil instance;
 
     /**
