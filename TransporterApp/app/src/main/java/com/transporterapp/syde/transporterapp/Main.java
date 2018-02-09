@@ -146,7 +146,11 @@ public class Main extends AppCompatActivity
     @Override
     public void onBackPressed() {
         if(milkEntryFragment.isVisible()){
-            showUnsavedDataMessage(milkEntryFragment, this);
+            if (milkEntryFragment.areDataFieldsEmpty()) {
+                fragmentManager.beginTransaction().replace(R.id.container, farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
+            } else {
+                showUnsavedDataMessage(milkEntryFragment, this);
+            }
         } else if (histRecordFrag.isVisible()) {
             fragmentManager.beginTransaction().replace(R.id.container, histListFrag, commonUtil.HIST_LIST_TAG_FRAGMENT).commit();
         }
@@ -219,15 +223,12 @@ public class Main extends AppCompatActivity
      */
     public void showUnsavedDataMessage(Fragment fragment, Context context){
         if (fragment.getTag().equals(commonUtil.MILK_ENTRY_TAG_FRAGMENT)) {
-            final MilkEntryFrag milkEntryFrag = (MilkEntryFrag) fragment;
-            if (!milkEntryFrag.areDataFieldsEmpty()) {
                 new AlertDialog.Builder(context)
                         .setTitle("Unsaved data")
                         .setMessage("Are you sure you want to go back?")
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(android.R.string.yes, unsavedDataDialog)
                         .setNegativeButton(android.R.string.no, unsavedDataDialog).show();
-            }
         }
     }
 

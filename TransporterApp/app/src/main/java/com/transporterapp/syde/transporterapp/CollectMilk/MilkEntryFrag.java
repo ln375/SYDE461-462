@@ -3,7 +3,6 @@ package com.transporterapp.syde.transporterapp.CollectMilk;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
@@ -112,26 +110,7 @@ public class MilkEntryFrag extends Fragment {
                             dbUtil.insertStatement(DatabaseConstants.tbltrFarmerTransporter, columns, values, v.getContext());
                         }
 
-                        /*
-                            Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();
-                            Cursor res = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "","",  "", getContext());
-                            if(res.getCount() == 0) {
-                                // show message
-                                showMessage("Error","Nothing found");
-                                return;
-                            }
-
-                            StringBuffer buffer = new StringBuffer();
-                            while (res.moveToNext()) {
-                                buffer.append("Id :"+ res.getString(0)+"\n");
-                                buffer.append("Milk Weight :"+ res.getString(6)+"\n");
-                                buffer.append("Density :"+ commonUtil.getQualityRating(res.getString(10))+"\n");
-                                buffer.append("Smell :"+ commonUtil.getQualityRating(res.getString(8))+"\n\n");
-                            }
-
-                            // Show all data
-                            showMessage("Data",buffer.toString());
-                        */
+                        Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();
 
                     }
                 }
@@ -139,24 +118,12 @@ public class MilkEntryFrag extends Fragment {
 
     }
 
-    public void showMessage(String title,String Message){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(Message);
-        builder.show();
-    }
-
-    public boolean insertData(String milkData, int smellIndex, int densityIndex) {
-        List<String> values = Arrays.asList(milkData, String.valueOf(smellIndex), String.valueOf(densityIndex));
-        return dbUtil.insertStatement(DatabaseConstants.tbltrFarmerTransporter, milkEntryColumns, values, getContext());
-    }
-
     public boolean areDataFieldsEmpty(){
-        if ((smellTest.getCheckedRadioButtonId() != R.id.rb_unchecked) || (densityTest.getCheckedRadioButtonId() != R.id.rb_unchecked) || (!milkVolume.getText().toString().isEmpty())) {
-            return false;
+        if ((smellTest.getCheckedRadioButtonId() == R.id.rb_unchecked) && (densityTest.getCheckedRadioButtonId() == R.id.density_rb_unchecked) && (alcoholTest.getCheckedRadioButtonId() == R.id.alcohol_rb_unchecked)
+                && (txtComments.getText().toString().isEmpty()) && (milkVolume.getText().toString().isEmpty())) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     public void clearData() {
