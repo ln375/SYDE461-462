@@ -158,27 +158,24 @@ public class Main extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        /*if(milkEntryFragment.isVisible() || milkEntryFrag1.isVisible()){
-            showUnsavedDataMessage(milkEntryFragment, this);
-        } else if (histRecordFrag.isVisible()) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, histListFrag)
-                    .addToBackStack(BACK_STACK_ROOT_TAG)
-                    .commit();
-        } else if (farmerProfileFrag.isVisible() || farmerProfileFrag1.isVisible()) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, new FarmerListFrag())
-                    .addToBackStack(BACK_STACK_ROOT_TAG)
-                    .commit();
-        }*/
-        if(histListFrag.isVisible()){
-            //Want to prevent back press
-        }
-        if (fragmentManager.getBackStackEntryCount() == 1) {
+        if(milkEntryFragment.isVisible()){
+            if (milkEntryFragment.areDataFieldsEmpty()) {
+                super.onBackPressed();
+            } else {
+                showUnsavedDataMessage(milkEntryFragment, this);
+            }
+        } else if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
         } else {
             super.onBackPressed();
         }
+
+        if(histListFrag.isVisible()){
+            //Want to prevent back press
+        }
+
+
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
@@ -261,15 +258,12 @@ public class Main extends AppCompatActivity
      */
     public void showUnsavedDataMessage(Fragment fragment, Context context){
         if (fragment.getTag().equals(commonUtil.MILK_ENTRY_TAG_FRAGMENT)) {
-            final MilkEntryFrag milkEntryFrag = (MilkEntryFrag) fragment;
-            if (!milkEntryFrag.areDataFieldsEmpty()) {
                 new AlertDialog.Builder(context)
                         .setTitle("Unsaved data")
                         .setMessage("Are you sure you want to go back?")
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(android.R.string.yes, unsavedDataDialog)
                         .setNegativeButton(android.R.string.no, unsavedDataDialog).show();
-            }
         }
     }
 
