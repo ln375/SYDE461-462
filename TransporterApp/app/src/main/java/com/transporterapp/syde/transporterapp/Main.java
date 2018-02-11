@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,6 +26,7 @@ import com.transporterapp.syde.transporterapp.CollectMilk.MilkEntryFrag;
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.ExportData.ExportDataFrag;
+import com.transporterapp.syde.transporterapp.FarmerList.FarmerProfileFrag;
 import com.transporterapp.syde.transporterapp.History.HistListFrag;
 import com.transporterapp.syde.transporterapp.History.HistRecordFrag;
 import com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment;
@@ -39,15 +42,20 @@ public class Main extends AppCompatActivity
     private HistRecordFrag histRecordFrag = new HistRecordFrag();
     private HistListFrag histListFrag = new HistListFrag();
     private FragmentManager fragmentManager = getSupportFragmentManager();
-    private FarmerListFrag farmerListFragment = new FarmerListFrag();
+    private FarmerListFrag farmerListFragmentForMilkEntry = new FarmerListFrag();
+    private FarmerListFrag farmerListFragmentForFarmerProfile = new FarmerListFrag();
     private MilkEntryFrag milkEntryFragment = new MilkEntryFrag();
     private LoginFragment loginFrag = new LoginFragment();
     private ExportDataFrag exportDataFrag = new ExportDataFrag();
+    private FarmerProfileFrag farmerProfileFrag = new FarmerProfileFrag();
 
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
 
     private String userId = "";
+
+    private int menuFragmentId;
+    private static final String BACK_STACK_ROOT_TAG = "root_fragment";
 
     @Override
     public void onResume()
@@ -91,9 +99,11 @@ public class Main extends AppCompatActivity
                 if (hasLoggedIn) {
                     Bundle bundle = new Bundle();
                     bundle.putString("userid", userId);
-                    farmerListFragment.setArguments(bundle);
+                    farmerListFragmentForFarmerProfile.setArguments(bundle);
+                    farmerListFragmentForMilkEntry.setArguments(bundle);
                     fragmentManager.beginTransaction()
-                            .add(R.id.container,farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT)
+                            .add(R.id.container,farmerListFragmentForMilkEntry, BACK_STACK_ROOT_TAG)
+                            .addToBackStack(BACK_STACK_ROOT_TAG)
                             .commit();
 
                 } else {
@@ -112,14 +122,17 @@ public class Main extends AppCompatActivity
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             item.setChecked(true);
+
             if(item.getTitle().equals("History Screen")) {
-                fragmentManager.beginTransaction().replace(R.id.container, histListFrag, commonUtil.HIST_LIST_TAG_FRAGMENT).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, histListFrag).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if(item.getTitle().equals("Collect Milk")) {
-                fragmentManager.beginTransaction().replace(R.id.container, farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
+                menuFragmentId = item.getItemId();
+                fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForMilkEntry).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if (item.getTitle().equals("Farmers Screen")) {
-                fragmentManager.beginTransaction().replace(R.id.container, farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
+                menuFragmentId = item.getItemId();
+                fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForFarmerProfile).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if (item.getTitle().equals("Export Data")) {
                 fragmentManager.beginTransaction().replace(R.id.container, exportDataFrag, commonUtil.EXPORT_TAG_FRAGMENT).commit();
@@ -145,10 +158,26 @@ public class Main extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if(milkEntryFragment.isVisible()){
+        /*if(milkEntryFragment.isVisible() || milkEntryFrag1.isVisible()){
             showUnsavedDataMessage(milkEntryFragment, this);
         } else if (histRecordFrag.isVisible()) {
-            fragmentManager.beginTransaction().replace(R.id.container, histListFrag, commonUtil.HIST_LIST_TAG_FRAGMENT).commit();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, histListFrag)
+                    .addToBackStack(BACK_STACK_ROOT_TAG)
+                    .commit();
+        } else if (farmerProfileFrag.isVisible() || farmerProfileFrag1.isVisible()) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, new FarmerListFrag())
+                    .addToBackStack(BACK_STACK_ROOT_TAG)
+                    .commit();
+        }*/
+        if(histListFrag.isVisible()){
+            //Want to prevent back press
+        }
+        if (fragmentManager.getBackStackEntryCount() == 1) {
+            finish();
+        } else {
+            super.onBackPressed();
         }
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -168,7 +197,7 @@ public class Main extends AppCompatActivity
     //================================================================================
 
     /**
-     * Listener for milkEntryFragment
+     * Listener for milkEntryFragment and farmerProfileFragment
      * @param item
      */
     @Override
@@ -180,10 +209,22 @@ public class Main extends AppCompatActivity
         bundle.putString("farmername", fullFarmerName);
         bundle.putString("farmerid", item.getId());
         bundle.putString("transporterId", userId);
-        milkEntryFragment.setArguments(bundle);
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, milkEntryFragment, commonUtil.MILK_ENTRY_TAG_FRAGMENT)
-                .commit();
+
+        if (menuFragmentId == R.id.farmersActivity){
+            //Navigate to farmer profile frag
+            farmerProfileFrag.setArguments(bundle);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, farmerProfileFrag)
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            //Navigate to milk entry frag
+            milkEntryFragment.setArguments(bundle);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, milkEntryFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     /**
@@ -207,8 +248,9 @@ public class Main extends AppCompatActivity
         bundle.putString("comments", item.getComments());
         bundle.putString("trTransporterCoolingId", item.getTrTransporterCoolingId());
         histRecordFrag.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.container, histRecordFrag, commonUtil.HIST_REC_TAG_FRAGMENT).commit();
+        fragmentManager.beginTransaction().replace(R.id.container, histRecordFrag, BACK_STACK_ROOT_TAG).addToBackStack(BACK_STACK_ROOT_TAG).commit();
     }
+
 
     /**
      * Displays a dialog to ensure user wants to backspace if there is still data on the milk entry page
@@ -241,7 +283,10 @@ public class Main extends AppCompatActivity
                 case DialogInterface.BUTTON_POSITIVE:
                     fragmentManager.beginTransaction().detach(milkEntryFragment);
                     milkEntryFragment.clearData();
-                    fragmentManager.beginTransaction().replace(R.id.container, farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, farmerListFragmentForMilkEntry,commonUtil.MILK_ENTRY_TAG_FRAGMENT)
+                            .addToBackStack(commonUtil.MILK_ENTRY_TAG_FRAGMENT)
+                            .commit();
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:
