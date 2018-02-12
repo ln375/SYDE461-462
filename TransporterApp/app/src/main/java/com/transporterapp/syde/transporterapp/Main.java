@@ -167,7 +167,7 @@ public class Main extends AppCompatActivity
         } else if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
         } else if (histListFrag.isVisible() || farmerListFragmentForMilkEntry.isVisible() || farmerListFragmentForFarmerProfile.isVisible() || exportDataFrag.isVisible()){
-            //Don't allow backpress on these screens 
+            //Don't allow backpress on these screens
         }else {
             super.onBackPressed();
 
