@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 
 
@@ -27,10 +28,14 @@ public class FarmerProfileFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
         if (getArguments() != null) {
             mFarmerId = getArguments().getString(FARMER_ID);
             mFarmerName = getArguments().getString(FARMER_NAME);
 
+            // Set title bar
+            ((Main) getActivity()).setActionBarTitle(mFarmerName);
         }
     }
 

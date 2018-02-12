@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
@@ -38,37 +39,47 @@ public class MilkEntryFrag extends Fragment {
     private RadioGroup alcoholTest;
     private Spinner jugDropdown;
     private EditText txtComments;
+    private String mFarmerName;
+    private static final String FARMER_NAME = "farmername";
+
 
     public MilkEntryFrag() {
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+        if (getArguments() != null) {
+            mFarmerName = getArguments().getString(FARMER_NAME);
+
+            // Set title bar
+            ((Main) getActivity()).setActionBarTitle(mFarmerName);
+        }
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_farmer_milk_data_entry, container, false);
-
         Context context = view.getContext();
 
+        //Data fields
         TextView farmerName = (TextView) view.findViewById(R.id.milk_entry_farmer_name);
-        farmerName.setText(getArguments().getString("farmername"));
-
-        List<String> jug_list = dbUtil.selectStatement("jug","id", "transporter_id", "=", getArguments().getString("transporterId"), context);
-
         jugDropdown = (Spinner) view.findViewById(R.id.jug_spinner);
-
-        ArrayAdapter<String> jugListAdapter = new ArrayAdapter<>(
-                context, R.layout.jug_row_layout, R.id.jug_id, jug_list);
-
-        jugDropdown.setAdapter(jugListAdapter);
-
-        //Edit data fields
         smellTest = (RadioGroup) view.findViewById(R.id.smell_test);
         densityTest = (RadioGroup) view.findViewById(R.id.density_test);
         alcoholTest = (RadioGroup) view.findViewById(R.id.alcohol_test);
         milkVolume = (EditText) view.findViewById(R.id.milk_volume);
         SaveData = (Button)view.findViewById(R.id.save_data);
         txtComments = (EditText) view.findViewById(R.id.comments);
+
+        List<String> jug_list = dbUtil.selectStatement("jug","id", "transporter_id", "=", getArguments().getString("transporterId"), context);
+        ArrayAdapter<String> jugListAdapter = new ArrayAdapter<>(context, R.layout.jug_row_layout, R.id.jug_id, jug_list);
+
+        farmerName.setText(mFarmerName);
+        jugDropdown.setAdapter(jugListAdapter);
 
         AddData();
 

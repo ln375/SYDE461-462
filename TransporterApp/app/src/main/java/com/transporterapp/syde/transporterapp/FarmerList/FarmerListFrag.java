@@ -40,8 +40,6 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private MyFarmerRecyclerViewAdapter farmerRecyclerViewAdapter;
-    private static final int VERTICAL_ITEM_SPACE = 48;
-
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -65,6 +63,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        //Get the current date
         Calendar calander = Calendar.getInstance();
         int cDay = calander.get(Calendar.DAY_OF_MONTH);
         int cMonth = calander.get(Calendar.MONTH) + 1;
