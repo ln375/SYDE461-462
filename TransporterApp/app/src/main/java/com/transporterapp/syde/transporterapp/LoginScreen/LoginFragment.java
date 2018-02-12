@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.transporterapp.syde.transporterapp.CollectMilk.FarmerListFrag;
+import com.transporterapp.syde.transporterapp.FarmerList.FarmerListFrag;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;

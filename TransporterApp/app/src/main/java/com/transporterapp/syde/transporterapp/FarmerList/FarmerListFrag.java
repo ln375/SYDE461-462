@@ -1,4 +1,4 @@
-package com.transporterapp.syde.transporterapp.CollectMilk;
+package com.transporterapp.syde.transporterapp.FarmerList;
 
 import android.app.SearchManager;
 import android.content.Context;

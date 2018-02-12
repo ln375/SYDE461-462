@@ -1,4 +1,4 @@
-package com.transporterapp.syde.transporterapp.CollectMilk;
+package com.transporterapp.syde.transporterapp.FarmerList;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +12,6 @@ import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link FarmerItem} and makes a call to the

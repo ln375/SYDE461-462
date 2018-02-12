@@ -1,4 +1,4 @@
-package com.transporterapp.syde.transporterapp.FarmerList;
+package com.transporterapp.syde.transporterapp.FarmerProfile;
 
 import android.content.Context;
 import android.net.Uri;
