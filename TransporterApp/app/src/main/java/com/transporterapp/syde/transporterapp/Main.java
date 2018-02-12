@@ -135,7 +135,7 @@ public class Main extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForFarmerProfile).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if (item.getTitle().equals("Export Data")) {
-                fragmentManager.beginTransaction().replace(R.id.container, exportDataFrag, commonUtil.EXPORT_TAG_FRAGMENT).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, exportDataFrag).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if(item.getTitle().equals("Log Out")) {
                 SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0); // 0 - for private mode
@@ -166,14 +166,12 @@ public class Main extends AppCompatActivity
             }
         } else if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
-        } else {
+        } else if (histListFrag.isVisible() || farmerListFragmentForMilkEntry.isVisible() || farmerListFragmentForFarmerProfile.isVisible() || exportDataFrag.isVisible()){
+            //Don't allow backpress on these screens 
+        }else {
             super.onBackPressed();
-        }
 
-        if(histListFrag.isVisible()){
-            //Want to prevent back press
         }
-
 
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
