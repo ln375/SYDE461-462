@@ -55,9 +55,6 @@ public class HistListFrag extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set title bar
-        ((Main) getActivity()).setActionBarTitle("History");
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -67,6 +64,9 @@ public class HistListFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_milkrecord_list, container, false);
+
+        // Set title bar
+        ((Main) getActivity()).setActionBarTitle("History");
 
         // Set the adapter
         if (view instanceof RecyclerView) {

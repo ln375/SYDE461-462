@@ -1,15 +1,19 @@
 package com.transporterapp.syde.transporterapp.CollectMilk;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,11 +41,16 @@ public class MilkEntryFrag extends Fragment {
     private RadioGroup smellTest;
     private RadioGroup densityTest;
     private RadioGroup alcoholTest;
-    private Spinner jugDropdown;
     private EditText txtComments;
     private String mFarmerName;
+    private LinearLayout mCarouselContainer;
+    private ImageView jugImage;
+
     private static final String FARMER_NAME = "farmername";
 
+    //Number of Jugs - may need to change this number later or add function to add jugs
+    private final static int INITIAL_JUG_COUNT=5;
+    private String jugIdClicked;
 
     public MilkEntryFrag() {
     }
@@ -66,27 +75,50 @@ public class MilkEntryFrag extends Fragment {
         Context context = view.getContext();
 
         //Data fields
-        TextView farmerName = (TextView) view.findViewById(R.id.milk_entry_farmer_name);
-        jugDropdown = (Spinner) view.findViewById(R.id.jug_spinner);
         smellTest = (RadioGroup) view.findViewById(R.id.smell_test);
         densityTest = (RadioGroup) view.findViewById(R.id.density_test);
         alcoholTest = (RadioGroup) view.findViewById(R.id.alcohol_test);
         milkVolume = (EditText) view.findViewById(R.id.milk_volume);
         SaveData = (Button)view.findViewById(R.id.save_data);
         txtComments = (EditText) view.findViewById(R.id.comments);
+        mCarouselContainer = (LinearLayout) view.findViewById(R.id.carousel);
 
-        List<String> jug_list = dbUtil.selectStatement("jug","id", "transporter_id", "=", getArguments().getString("transporterId"), context);
-        ArrayAdapter<String> jugListAdapter = new ArrayAdapter<>(context, R.layout.jug_row_layout, R.id.jug_id, jug_list);
+        final List<String> jug_list = dbUtil.selectStatement("jug","id", "transporter_id", "=", getArguments().getString("transporterId"), context);
 
-        farmerName.setText(mFarmerName);
-        jugDropdown.setAdapter(jugListAdapter);
+        //Carousel
+        // Compute the width of a carousel item based on the screen width and number of initial items.
+        final DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        final int imageWidth = (int) (displayMetrics.widthPixels / INITIAL_JUG_COUNT);
+
+        for (int i = 0 ; i < jug_list.size() ; ++i) {
+            // Create new ImageView
+            jugImage = new ImageView(this.getContext());
+            jugImage.setBackgroundResource(R.drawable.jug_milk_entry);
+
+            //Setup layout of image
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(imageWidth,imageWidth);
+            params.setMargins(5,0,5,0);
+            jugImage.setLayoutParams(params);
+            jugImage.setTag(i);
+
+            jugImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = (Integer) v.getTag();
+                    jugIdClicked = jug_list.get(position);
+                }
+            });
+
+            mCarouselContainer.addView(jugImage);
+        }
 
         AddData();
 
         return view;
     }
 
-    public  void AddData() {
+    public void AddData() {
         SaveData.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -96,7 +128,7 @@ public class MilkEntryFrag extends Fragment {
                         String smellIndex = String.valueOf(smellTest.indexOfChild(getView().findViewById(smellTest.getCheckedRadioButtonId())));
                         String densityIndex = String.valueOf(densityTest.indexOfChild(getView().findViewById(densityTest.getCheckedRadioButtonId())));
                         String alcoholIndex = String.valueOf(alcoholTest.indexOfChild(getView().findViewById(alcoholTest.getCheckedRadioButtonId())));
-                        String jugId = jugDropdown.getSelectedItem().toString();
+                        String jugId = jugIdClicked;
                         String comments = txtComments.getText().toString();
                         String milkweight = milkVolume.getText().toString();
 
