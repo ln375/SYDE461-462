@@ -4,17 +4,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
@@ -36,46 +37,84 @@ public class MilkEntryFrag extends Fragment {
     private RadioGroup smellTest;
     private RadioGroup densityTest;
     private RadioGroup alcoholTest;
-    private Spinner jugDropdown;
     private EditText txtComments;
+    private String mFarmerName;
+    private LinearLayout mCarouselContainer;
+    private ImageView jugImage;
+
+    private static final String FARMER_NAME = "farmername";
+
+    //Number of Jugs - may need to change this number later or add function to add jugs
+    private final static int INITIAL_JUG_COUNT=5;
+    private String jugIdClicked;
 
     public MilkEntryFrag() {
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+        if (getArguments() != null) {
+            mFarmerName = getArguments().getString(FARMER_NAME);
+
+            // Set title bar
+            ((Main) getActivity()).setActionBarTitle(mFarmerName);
+        }
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_farmer_milk_data_entry, container, false);
-
         Context context = view.getContext();
 
-        TextView farmerName = (TextView) view.findViewById(R.id.milk_entry_farmer_name);
-        farmerName.setText(getArguments().getString("farmername"));
-
-        List<String> jug_list = dbUtil.selectStatement("jug","id", "transporter_id", "=", getArguments().getString("transporterId"), context);
-
-        jugDropdown = (Spinner) view.findViewById(R.id.jug_spinner);
-
-        ArrayAdapter<String> jugListAdapter = new ArrayAdapter<>(
-                context, R.layout.jug_row_layout, R.id.jug_id, jug_list);
-
-        jugDropdown.setAdapter(jugListAdapter);
-
-        //Edit data fields
+        //Data fields
         smellTest = (RadioGroup) view.findViewById(R.id.smell_test);
         densityTest = (RadioGroup) view.findViewById(R.id.density_test);
         alcoholTest = (RadioGroup) view.findViewById(R.id.alcohol_test);
         milkVolume = (EditText) view.findViewById(R.id.milk_volume);
         SaveData = (Button)view.findViewById(R.id.save_data);
         txtComments = (EditText) view.findViewById(R.id.comments);
+        //mCarouselContainer = (LinearLayout) view.findViewById(R.id.carousel);
+
+        final List<String> jug_list = dbUtil.selectStatement("jug","id", "transporter_id", "=", getArguments().getString("transporterId"), context);
+
+        //Carousel
+        // Compute the width of a carousel item based on the screen width and number of initial items.
+        final DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        final int imageWidth = (int) (displayMetrics.widthPixels / INITIAL_JUG_COUNT);
+
+        for (int i = 0 ; i < jug_list.size() ; ++i) {
+            // Create new ImageView
+            jugImage = new ImageView(this.getContext());
+            jugImage.setBackgroundResource(R.drawable.jug_milk_entry);
+
+            //Setup layout of image
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(imageWidth,imageWidth);
+            params.setMargins(5,0,5,0);
+            jugImage.setLayoutParams(params);
+            jugImage.setTag(i);
+
+            jugImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = (Integer) v.getTag();
+                    jugIdClicked = jug_list.get(position);
+                }
+            });
+
+            mCarouselContainer.addView(jugImage);
+        }
 
         AddData();
 
         return view;
     }
 
-    public  void AddData() {
+    public void AddData() {
         SaveData.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -85,7 +124,7 @@ public class MilkEntryFrag extends Fragment {
                         String smellIndex = String.valueOf(smellTest.indexOfChild(getView().findViewById(smellTest.getCheckedRadioButtonId())));
                         String densityIndex = String.valueOf(densityTest.indexOfChild(getView().findViewById(densityTest.getCheckedRadioButtonId())));
                         String alcoholIndex = String.valueOf(alcoholTest.indexOfChild(getView().findViewById(alcoholTest.getCheckedRadioButtonId())));
-                        String jugId = jugDropdown.getSelectedItem().toString();
+                        String jugId = jugIdClicked;
                         String comments = txtComments.getText().toString();
                         String milkweight = milkVolume.getText().toString();
 

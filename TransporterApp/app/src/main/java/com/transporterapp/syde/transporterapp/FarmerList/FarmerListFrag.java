@@ -1,4 +1,4 @@
-package com.transporterapp.syde.transporterapp.CollectMilk;
+package com.transporterapp.syde.transporterapp.FarmerList;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
+import com.transporterapp.syde.transporterapp.DividerItemDecoration;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
@@ -37,8 +38,6 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private MyFarmerRecyclerViewAdapter farmerRecyclerViewAdapter;
-
-
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -62,6 +61,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        //Get the current date
         Calendar calander = Calendar.getInstance();
         int cDay = calander.get(Calendar.DAY_OF_MONTH);
         int cMonth = calander.get(Calendar.MONTH) + 1;
@@ -105,7 +105,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         List<FarmerItem> convertedFarmerList = commonUtil.convertCursorToFarmerItemList(farmers);
         ArrayList<FarmerItem> convertedFarmerArrayList = new ArrayList<FarmerItem>(convertedFarmerList);
         farmerRecyclerViewAdapter = new MyFarmerRecyclerViewAdapter(convertedFarmerArrayList, mListener);
-
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         recyclerView.setAdapter(farmerRecyclerViewAdapter);
     }
 

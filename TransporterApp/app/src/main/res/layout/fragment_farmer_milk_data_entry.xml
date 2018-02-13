@@ -10,203 +10,264 @@
     tools:context="com.transporterapp.syde.transporterapp.CollectMilk.MilkEntryFrag"
     android:orientation="vertical">
 
-    <TextView android:id="@+id/milk_entry_farmer_name"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Space
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="8dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text="Smell Test"
-        android:id="@+id/textSmell" />
-
-    <RadioGroup
-        android:id="@+id/smell_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checkedButton="@+id/rb_unchecked"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Good"
-            android:id="@+id/radioButton"
-            android:layout_marginRight="5dp"/>
+            android:orientation="horizontal">
 
-            <RadioButton
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Okay"
-                android:layout_marginRight="5dp"
-                android:id="@+id/radioButton2" />
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:text="Smell Test"
+                android:id="@+id/textSmell" />
 
-            <RadioButton
+            <RadioGroup
+                android:id="@+id/smell_test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bad"
-                android:layout_marginRight="5dp"
-                android:id="@+id/radioButton3" />
+                android:checkedButton="@+id/rb_unchecked"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
-        <RadioButton
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioButton"
+                    android:layout_marginRight="5dp"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/radioButton3" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/radioButton4" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rb_unchecked" />
+
+            </RadioGroup>
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="N/A"
-            android:id="@+id/rb_unchecked" />
+            android:orientation="horizontal">
 
-    </RadioGroup>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_alignParentStart="true"
+                android:text="Density Test"
+                android:id="@+id/textDensity"
+                android:layout_centerVertical="true" />
 
+            <RadioGroup
+                android:id="@+id/density_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/density_rb_unchecked"
+                android:layout_alignParentEnd="true"
+                android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text="Density Test"
-        android:id="@+id/textDensity" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/density_radioButton"
+                    android:layout_marginRight="5dp"/>
 
-    <RadioGroup
-        android:id="@+id/density_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checkedButton="@+id/density_rb_unchecked"
-        android:orientation="horizontal">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/density_radioButton2"/>
 
-        <RadioButton
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/density_radioButton3"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/density_radioButton4"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/density_rb_unchecked"/>
+
+            </RadioGroup>
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Good"
-            android:id="@+id/density_radioButton"
-            android:layout_marginRight="5dp"/>
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Okay"
-            android:layout_marginRight="5dp"
-            android:id="@+id/density_radioButton2" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Alcohol Test"
+                android:id="@+id/textAlcohol" />
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bad"
-            android:layout_marginRight="5dp"
-            android:id="@+id/density_radioButton3" />
+            <RadioGroup
+                android:id="@+id/alcohol_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/alcohol_rb_unchecked"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="N/A"
-            android:id="@+id/density_rb_unchecked" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/alcohol_radioButton"
+                    android:layout_marginRight="5dp"/>
 
-    </RadioGroup>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/alcohol_radioButton2"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text="Alcohol Test"
-        android:id="@+id/textAlcohol" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/alcohol_radioButton3"/>
 
-    <RadioGroup
-        android:id="@+id/alcohol_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checkedButton="@+id/alcohol_rb_unchecked"
-        android:orientation="horizontal">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/alcohol_radioButton4"/>
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Good"
-            android:id="@+id/alcohol_radioButton"
-            android:layout_marginRight="5dp"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/alcohol_rb_unchecked"/>
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Okay"
-            android:layout_marginRight="5dp"
-            android:id="@+id/alcohol_radioButton2" />
+            </RadioGroup>
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bad"
-            android:layout_marginRight="5dp"
-            android:id="@+id/alcohol_radioButton3" />
+        </RelativeLayout>
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="N/A"
-            android:id="@+id/alcohol_rb_unchecked" />
-
-    </RadioGroup>
-
+    </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_height="8dp"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text="Enter Milk Volume"
-        android:id="@+id/textView3" />
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="8dp">
 
-    <EditText
-        android:id="@+id/milk_volume"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number|numberDecimal" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="Milk Volume:"
+                android:id="@+id/textView3"/>
+
+            <EditText
+                android:id="@+id/milk_volume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number|numberDecimal"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Jug"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:id="@+id/textView4" />
+
+        <!-- Container view to scroll horizontally which gives the carousel effect -->
+        <HorizontalScrollView android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <!-- Carousel items container - lays out items horizontally -->
+            <LinearLayout android:id="@+id/carousel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"/>
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_height="8dp"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text="Select Jug"
-        android:id="@+id/textView4" />
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="8dp">
 
-    <Spinner
-        android:id="@+id/jug_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="Additional Comments:"
+            android:id="@+id/textView5" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text=""
+            android:id="@+id/comments" />
+    </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text="Additional Comments:"
-        android:id="@+id/textView5" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text=""
-        android:id="@+id/comments" />
+        android:layout_height="8dp"/>
 
     <Button
         android:layout_width="match_parent"
