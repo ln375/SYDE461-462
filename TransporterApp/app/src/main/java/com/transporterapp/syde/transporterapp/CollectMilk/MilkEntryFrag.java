@@ -77,7 +77,7 @@ public class MilkEntryFrag extends Fragment {
         milkVolume = (EditText) view.findViewById(R.id.milk_volume);
         SaveData = (Button)view.findViewById(R.id.save_data);
         txtComments = (EditText) view.findViewById(R.id.comments);
-        //mCarouselContainer = (LinearLayout) view.findViewById(R.id.carousel);
+        mCarouselContainer = (LinearLayout) view.findViewById(R.id.carousel);
 
         final List<String> jug_list = dbUtil.selectStatement("jug","id", "transporter_id", "=", getArguments().getString("transporterId"), context);
 
