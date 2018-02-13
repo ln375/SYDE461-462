@@ -96,6 +96,7 @@ public class Main extends AppCompatActivity
                             .add(R.id.container,farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT)
                             .commit();
 
+
                 } else {
                     toggle.setDrawerIndicatorEnabled(false);
                     fragmentManager.beginTransaction().add(R.id.container,loginFrag, commonUtil.LOGIN_TAG_FRAGMENT).commit();
@@ -119,7 +120,10 @@ public class Main extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.container, farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if (item.getTitle().equals("Farmers Screen")) {
-                fragmentManager.beginTransaction().replace(R.id.container, farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
+                if (!farmerListFragment.isVisible()) {
+                    fragmentManager.beginTransaction().replace(R.id.container, farmerListFragment, commonUtil.FARMER_LIST_TAG_FRAGMENT).commit();
+                }
+
                 drawer.closeDrawer(GravityCompat.START);
             } else if (item.getTitle().equals("Export Data")) {
                 fragmentManager.beginTransaction().replace(R.id.container, exportDataFrag, commonUtil.EXPORT_TAG_FRAGMENT).commit();
@@ -184,6 +188,8 @@ public class Main extends AppCompatActivity
         bundle.putString("farmername", fullFarmerName);
         bundle.putString("farmerid", item.getId());
         bundle.putString("transporterId", userId);
+
+
         milkEntryFragment.setArguments(bundle);
         fragmentManager.beginTransaction()
                 .replace(R.id.container, milkEntryFragment, commonUtil.MILK_ENTRY_TAG_FRAGMENT)

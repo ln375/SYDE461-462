@@ -32,14 +32,14 @@
           <text value="Wi-fi Transfer"/>
         </properties>
       </component>
-      <component id="cfc40" class="javax.swing.JFormattedTextField" binding="txtMenuScreen">
+      <component id="37f3d" class="javax.swing.JTextPane" binding="txtMenuScreen">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
           </grid>
         </constraints>
         <properties>
-          <horizontalAlignment value="0"/>
+          <editable value="false"/>
           <text value="Select a method for importing data"/>
         </properties>
       </component>
