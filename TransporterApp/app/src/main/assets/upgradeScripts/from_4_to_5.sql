@@ -1,0 +1,9 @@
+INSERT INTO jug (id, size, type, transporter_id) VALUES (22, 35, 'Plastic', 9);
+INSERT INTO jug (id, size, type, transporter_id) VALUES (23, 42, 'Aluminum', 9);
+INSERT INTO jug (id, size, type, transporter_id) VALUES (24, 40, 'Plastic', 9);
+INSERT INTO jug (id, size, type, transporter_id) VALUES (25, 32, 'Aluminum', 9);
+INSERT INTO jug (id, size, type, transporter_id) VALUES (26, 5, 'Plastic', 3);
+INSERT INTO jug (id, size, type, transporter_id) VALUES (27, 18, 'Aluminum', 3);
+INSERT INTO jug (id, size, type, transporter_id) VALUES (28, 10, 'Aluminum', 3);
+INSERT INTO jug (id, size, type, transporter_id) VALUES (29, 22, 'Aluminum', 3);
+INSERT INTO jug (id, size, type, transporter_id) VALUES (30, 25, 'Plastic', 3);

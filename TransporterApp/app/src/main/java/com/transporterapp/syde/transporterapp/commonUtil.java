@@ -27,6 +27,7 @@ public class commonUtil {
     public final static String HIST_LIST_TAG_FRAGMENT = "HIST_LIST_TAG_FRAGMENT";
     public final static String HIST_REC_TAG_FRAGMENT = "HIST_REC_TAG_FRAGMENT";
     public final static String EXPORT_TAG_FRAGMENT = "EXPORT_TAG_FRAGMENT";
+    public final static String DEVICE_LIST_FRAG = "DEVICE_LIST_FRAGMEMT";
 
     /**
      * Converts a cursor representing a farmer list to List<FarmerItem>

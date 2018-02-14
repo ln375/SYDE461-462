@@ -18,6 +18,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceItem;
+import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceListFragment;
 import com.transporterapp.syde.transporterapp.FarmerList.FarmerListFrag;
 import com.transporterapp.syde.transporterapp.FarmerList.FarmerListFrag.OnListFragmentInteractionListener;
 import com.transporterapp.syde.transporterapp.CollectMilk.MilkEntryFrag;
@@ -35,7 +37,8 @@ import static com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment.P
 
 
 public class Main extends AppCompatActivity
-        implements OnListFragmentInteractionListener, HistListFrag.OnListFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener, ExportDataFrag.OnFragmentInteractionListener {
+        implements OnListFragmentInteractionListener, HistListFrag.OnListFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener, ExportDataFrag.OnFragmentInteractionListener,
+        DeviceListFragment.OnListFragmentInteractionListener{
     public static Main instance = null;
     private HistRecordFrag histRecordFrag = new HistRecordFrag();
     private HistListFrag histListFrag = new HistListFrag();
@@ -297,6 +300,11 @@ public class Main extends AppCompatActivity
 
     @Override
     public void onExportFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(DeviceItem item) {
 
     }
 }

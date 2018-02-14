@@ -20,7 +20,7 @@ import java.io.InputStreamReader;
 
 public class DatabaseOpenHelper extends SQLiteAssetHelper {
     private static final String DATABASE_NAME = "demoData.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String TAG = DatabaseOpenHelper.class.getName();
     private final Context context;
 

@@ -1,5 +1,7 @@
 package com.transporterapp.syde.transporterapp.ExportData.DeviceList;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,7 @@ import com.transporterapp.syde.transporterapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A fragment representing a list of Items.
@@ -60,6 +63,14 @@ public class DeviceListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_deviceitem_list, container, false);
     List<DeviceItem> devices = new ArrayList<DeviceItem>();
+        BluetoothAdapter mbluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        Set<BluetoothDevice> availableDevices = mbluetoothAdapter.getBondedDevices();
+
+        for(BluetoothDevice bt : availableDevices) {
+            DeviceItem temp = new DeviceItem(bt.getName(), bt.getAddress(), "false");
+            devices.add(temp);
+        }
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();

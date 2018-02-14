@@ -20,6 +20,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceItem;
+import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceListFragment;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
@@ -41,7 +43,7 @@ import java.util.ArrayList;
  * Use the {@link ExportDataFrag#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExportDataFrag extends Fragment {
+public class ExportDataFrag extends Fragment implements DeviceListFragment.OnListFragmentInteractionListener {
 
     private OnFragmentInteractionListener mListener;
     private Button createCSVFile;
@@ -222,7 +224,7 @@ public class ExportDataFrag extends Fragment {
                                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
                                     alertBuilder.setCancelable(true);
                                     alertBuilder.setMessage("Do you want to enable bluetooth?");
-                                    alertBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                    alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
@@ -231,6 +233,9 @@ public class ExportDataFrag extends Fragment {
                                             BluetoothTransfer.SendMessageToServer btransfer = new BluetoothTransfer.SendMessageToServer();
                                             //getActivity().registerReceiver(btransfer.bReceiver, filter);
                                             //btransfer.startDiscovery();
+                                            /*android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                            DeviceListFragment deviceListFrag = new DeviceListFragment();
+                                            fragmentManager.beginTransaction().replace(R.id.container,deviceListFrag, commonUtil.LOGIN_TAG_FRAGMENT).addToBackStack(null).commit();*/
                                             btransfer.execute();
                                         }
                                     });
@@ -243,6 +248,9 @@ public class ExportDataFrag extends Fragment {
                                     AlertDialog alert = alertBuilder.create();
                                     alert.show();
                                 } else {
+                                    /*android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                    DeviceListFragment deviceListFrag = new DeviceListFragment();
+                                    fragmentManager.beginTransaction().replace(R.id.container,deviceListFrag, commonUtil.DEVICE_LIST_FRAG).commit();*/
                                     new BluetoothTransfer.SendMessageToServer().execute();
 
 
@@ -290,6 +298,11 @@ public class ExportDataFrag extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onListFragmentInteraction(DeviceItem item) {
+
     }
 
     /**
