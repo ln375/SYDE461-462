@@ -18,6 +18,15 @@ public class MilkCollectionService {
         btnUSBTransfer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        btnBlueTooth.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BluetoothServer myBluetoothServer = new BluetoothServer();
+
             }
         });
 
