@@ -24,14 +24,11 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
                     android:textSize="14sp"
                     android:text="Smell Test"
                     android:id="@+id/textSmell" />
@@ -41,6 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkedButton="@+id/rb_unchecked"
+                    android:layout_below="@id/textSmell"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:orientation="horizontal">
@@ -49,29 +47,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/radioButton"
+                        android:text="Good"
                         android:layout_marginRight="5dp"/>
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:text="Okay"
                         android:layout_gravity="center" />
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:text="Bad"
                         android:id="@+id/radioButton3" />
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:id="@+id/radioButton4" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:text="N/A"
                         android:id="@+id/rb_unchecked" />
 
                 </RadioGroup>
@@ -87,15 +83,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:layout_alignParentStart="true"
                     android:text="Density Test"
-                    android:id="@+id/textDensity"
-                    android:layout_centerVertical="true" />
+                    android:id="@+id/textDensity" />
 
                 <RadioGroup
                     android:id="@+id/density_test"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/textDensity"
                     android:checkedButton="@+id/density_rb_unchecked"
                     android:layout_alignParentEnd="true"
                     android:orientation="horizontal">
@@ -104,29 +99,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/density_radioButton"
-                        android:layout_marginRight="5dp"/>
+                        android:layout_marginRight="5dp"
+                        android:text="Good" />
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:text="Okay"
                         android:id="@+id/density_radioButton2"/>
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:text="Bad"
                         android:id="@+id/density_radioButton3"/>
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:id="@+id/density_radioButton4"/>
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:text="N/A"
                         android:id="@+id/density_rb_unchecked"/>
 
                 </RadioGroup>
@@ -142,8 +135,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
                     android:text="Alcohol Test"
                     android:id="@+id/textAlcohol" />
 
@@ -154,35 +145,34 @@
                     android:checkedButton="@+id/alcohol_rb_unchecked"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:layout_below="@id/textAlcohol"
                     android:orientation="horizontal">
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/alcohol_radioButton"
+                        android:text="Good"
                         android:layout_marginRight="5dp"/>
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:text="Okay"
                         android:id="@+id/alcohol_radioButton2"/>
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:text="Bad"
                         android:id="@+id/alcohol_radioButton3"/>
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:id="@+id/alcohol_radioButton4"/>
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:text="N/A"
                         android:id="@+id/alcohol_rb_unchecked"/>
 
                 </RadioGroup>
