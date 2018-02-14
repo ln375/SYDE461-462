@@ -2,10 +2,8 @@ package com.transporterapp.syde.transporterapp.ExportData;
 
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.IntentFilter;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -229,10 +227,11 @@ public class ExportDataFrag extends Fragment {
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
                                             mBluetoothAdapter.enable();
-                                            IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+                                            //IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
                                             BluetoothTransfer.SendMessageToServer btransfer = new BluetoothTransfer.SendMessageToServer();
-                                            getActivity().registerReceiver(btransfer.bReceiver, filter);
-                                            btransfer.startDiscovery();
+                                            //getActivity().registerReceiver(btransfer.bReceiver, filter);
+                                            //btransfer.startDiscovery();
+                                            btransfer.execute();
                                         }
                                     });
                                     alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
