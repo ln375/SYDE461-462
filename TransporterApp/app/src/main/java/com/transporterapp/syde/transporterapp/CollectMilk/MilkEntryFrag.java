@@ -61,7 +61,7 @@ public class MilkEntryFrag extends Fragment {
     private final static int INITIAL_JUG_COUNT=5;
     private String jugIdClicked;
 
-    private int jugSize = 10; //Placeholder
+    private int jugSize = 1000; //Placeholder
 
     public MilkEntryFrag() {
     }
@@ -203,9 +203,9 @@ public class MilkEntryFrag extends Fragment {
                         // Make Milk volume required field
                         if(TextUtils.isEmpty(milkweight)){
                             Toast.makeText(getContext(),"Milk Volume required", Toast.LENGTH_LONG).show();
-                        } else if (Integer.valueOf(milkweight) > 10){
+                        } else if (Integer.valueOf(milkweight) > jugSize){
                             //Placeholder for now just for testing
-                            Toast.makeText(getContext(),"Milk Volume must be smaller than 10 L", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),"Milk Volume must be smaller than 1000 L", Toast.LENGTH_LONG).show();
                         } else {
                             List<String> columns = new ArrayList<>();
                             columns.addAll(Arrays.asList(DatabaseConstants.coltrFarmerTransporter));
