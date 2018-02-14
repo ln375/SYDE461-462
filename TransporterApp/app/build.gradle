@@ -21,13 +21,13 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile files('external jars/jMTPe.jar')
-    compile files('external jars/opencsv-4.1.jar')
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:design:24.2.0'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile 'testfairy:testfairy-android-sdk:1.+@aar'
+    compile files('external jars/jMTPe.jar')
+    compile files('external jars/opencsv-4.1.jar')
 }

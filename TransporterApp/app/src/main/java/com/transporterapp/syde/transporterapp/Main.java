@@ -104,6 +104,7 @@ public class Main extends AppCompatActivity
                             .addToBackStack(BACK_STACK_ROOT_TAG)
                             .commit();
 
+
                 } else {
                     toggle.setDrawerIndicatorEnabled(false);
                     fragmentManager.beginTransaction().add(R.id.container,loginFrag, commonUtil.LOGIN_TAG_FRAGMENT).commit();

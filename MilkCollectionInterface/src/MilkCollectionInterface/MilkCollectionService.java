@@ -12,7 +12,7 @@ public class MilkCollectionService {
     private JButton btnUSBTransfer;
     private JButton btnBlueTooth;
     private JButton btnWifi;
-    private JFormattedTextField txtMenuScreen;
+    private JTextPane txtMenuScreen;
 
     public MilkCollectionService() {
         btnUSBTransfer.addActionListener(new ActionListener() {

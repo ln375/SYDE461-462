@@ -34,9 +34,7 @@ import java.util.List;
  */
 public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextListener{
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private MyFarmerRecyclerViewAdapter farmerRecyclerViewAdapter;
