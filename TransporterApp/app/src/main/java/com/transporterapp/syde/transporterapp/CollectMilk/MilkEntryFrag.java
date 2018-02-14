@@ -1,7 +1,12 @@
 package com.transporterapp.syde.transporterapp.CollectMilk;
 
 import android.content.Context;
-import android.content.res.TypedArray;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -9,13 +14,13 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +28,8 @@ import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -44,13 +51,17 @@ public class MilkEntryFrag extends Fragment {
     private EditText txtComments;
     private String mFarmerName;
     private LinearLayout mCarouselContainer;
-    private ImageView jugImage;
+    //private RelativeLayout mjugHolderView;
+    private RelativeLayout jugHolderView;
+    private GradientDrawable jugImageDrawable;
 
     private static final String FARMER_NAME = "farmername";
 
     //Number of Jugs - may need to change this number later or add function to add jugs
     private final static int INITIAL_JUG_COUNT=5;
     private String jugIdClicked;
+
+    private int jugSize = 10; //Placeholder
 
     public MilkEntryFrag() {
     }
@@ -91,26 +102,76 @@ public class MilkEntryFrag extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         final int imageWidth = (int) (displayMetrics.widthPixels / INITIAL_JUG_COUNT);
 
-        for (int i = 0 ; i < jug_list.size() ; ++i) {
-            // Create new ImageView
-            jugImage = new ImageView(this.getContext());
-            jugImage.setBackgroundResource(R.drawable.jug_milk_entry);
+        for (int i = 0 ; i < jug_list.size() ; i++) {
+            final ProgressBar jugProgressBar;
+            final TextView jugText;
+            final TextView jugAmount;
 
-            //Setup layout of image
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(imageWidth,imageWidth);
-            params.setMargins(5,0,5,0);
-            jugImage.setLayoutParams(params);
-            jugImage.setTag(i);
+            // Create new progress bar
+            jugProgressBar = new ProgressBar(this.getContext(), null, android.R.attr.progressBarStyleHorizontal);
+            jugText = new TextView(this.getContext());
+            jugAmount = new TextView(this.getContext());
+            jugHolderView = new RelativeLayout(this.getContext());
+            Drawable jugDrawable = getResources().getDrawable(R.drawable.progressbar_states);
 
-            jugImage.setOnClickListener(new View.OnClickListener() {
+            //Setup jug holder view
+            RelativeLayout.LayoutParams holderParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            jugHolderView.setLayoutParams(holderParams);
+            jugHolderView.setPadding(10, 0, 10, 0);
+
+            // Create new layout parameters for progress bar
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(200, 300);
+            // Apply the layout parameters for progress bar
+            jugProgressBar.setLayoutParams(lp);
+            jugProgressBar.setProgress(0);
+            jugProgressBar.setTag(i);
+            jugProgressBar.setId(i);
+            jugProgressBar.setProgressDrawable(jugDrawable);
+            jugProgressBar.setMax(jugSize);
+
+            //Layout of jug text
+            RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            textParams.addRule(RelativeLayout.ABOVE, jugProgressBar.getId());
+            jugText.setLayoutParams(textParams);
+            jugText.setId(i);
+            jugText.setText("Jug" + jug_list.get(i));
+
+            //Layout of jug amount text
+            RelativeLayout.LayoutParams jugAmountParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            jugAmountParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+            jugAmount.setLayoutParams(jugAmountParams);
+            jugAmount.setText("O L");
+
+            jugProgressBar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = (Integer) v.getTag();
+                    int milkVol;
+
                     jugIdClicked = jug_list.get(position);
+
+                    if(TextUtils.isEmpty(milkVolume.getText().toString())){
+                        milkVol = 0;
+                    } else {
+                        milkVol = Integer.valueOf(milkVolume.getText().toString());
+                    }
+
+                    if((milkVol < jugSize - jugProgressBar.getProgress()) && milkVol < jugSize){
+                        jugProgressBar.setProgress(milkVol);
+                        jugAmount.setText(Integer.toString(milkVol) + "L");
+                    } else {
+                        Toast.makeText(getContext(),"Please select a different jug", Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(getContext(),"Jug " + jugIdClicked, Toast.LENGTH_SHORT).show();
+
                 }
             });
 
-            mCarouselContainer.addView(jugImage);
+            jugHolderView.addView(jugProgressBar);
+            jugHolderView.addView(jugText);
+            jugHolderView.addView(jugAmount);
+
+            mCarouselContainer.addView(jugHolderView);
         }
 
         AddData();
@@ -142,6 +203,9 @@ public class MilkEntryFrag extends Fragment {
                         // Make Milk volume required field
                         if(TextUtils.isEmpty(milkweight)){
                             Toast.makeText(getContext(),"Milk Volume required", Toast.LENGTH_LONG).show();
+                        } else if (Integer.valueOf(milkweight) > 10){
+                            //Placeholder for now just for testing
+                            Toast.makeText(getContext(),"Milk Volume must be smaller than 10 L", Toast.LENGTH_LONG).show();
                         } else {
                             List<String> columns = new ArrayList<>();
                             columns.addAll(Arrays.asList(DatabaseConstants.coltrFarmerTransporter));
