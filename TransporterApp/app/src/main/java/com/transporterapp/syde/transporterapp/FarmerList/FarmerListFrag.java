@@ -23,7 +23,6 @@ import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -61,13 +60,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        //Get the current date
-        Calendar calander = Calendar.getInstance();
-        int cDay = calander.get(Calendar.DAY_OF_MONTH);
-        int cMonth = calander.get(Calendar.MONTH) + 1;
-        int cYear = calander.get(Calendar.YEAR);
-
-        String date = commonUtil.getMonthofYear(cMonth) + " " + Integer.toString(cDay) + ", " + Integer.toString(cYear);
+        String date = commonUtil.getCurrentDate();
 
         // Set title bar
         ((Main) getActivity()).setActionBarTitle(date);

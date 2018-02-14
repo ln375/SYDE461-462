@@ -49,6 +49,7 @@ public class Main extends AppCompatActivity
     private LoginFragment loginFrag = new LoginFragment();
     private ExportDataFrag exportDataFrag = new ExportDataFrag();
     private FarmerProfileFrag farmerProfileFrag = new FarmerProfileFrag();
+    private Toolbar toolbar;
 
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -79,7 +80,7 @@ public class Main extends AppCompatActivity
 
         //TestFairy.begin(this, "a61f203ba668965e0295409c7fec4b15d7a31770");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -129,14 +130,17 @@ public class Main extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.container, histListFrag).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if(item.getTitle().equals("Collect Milk")) {
+                setActionBarTitle(commonUtil.getCurrentDate());
                 menuFragmentId = item.getItemId();
                 fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForMilkEntry).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if (item.getTitle().equals("Farmers Screen")) {
+                setActionBarTitle(commonUtil.getCurrentDate());
                 menuFragmentId = item.getItemId();
                 fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForFarmerProfile).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if (item.getTitle().equals("Export Data")) {
+                setActionBarTitle("Export Data");
                 fragmentManager.beginTransaction().replace(R.id.container, exportDataFrag).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if(item.getTitle().equals("Log Out")) {
@@ -151,6 +155,7 @@ public class Main extends AppCompatActivity
                 drawer.closeDrawer(GravityCompat.START);
                 //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 toggle.setDrawerIndicatorEnabled(false);
+                setActionBarTitle("Transporter App");
             }
             return true;
         }
@@ -162,6 +167,7 @@ public class Main extends AppCompatActivity
     public void onBackPressed() {
         if(milkEntryFragment.isVisible()){
             if (milkEntryFragment.areDataFieldsEmpty()) {
+                setActionBarTitle(commonUtil.getCurrentDate());
                 super.onBackPressed();
             } else {
                 showUnsavedDataMessage(milkEntryFragment, this);
@@ -217,10 +223,16 @@ public class Main extends AppCompatActivity
         } else {
             //Navigate to milk entry frag
             milkEntryFragment.setArguments(bundle);
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, milkEntryFragment)
-                    .addToBackStack(null)
-                    .commit();
+            try{
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, milkEntryFragment)
+                        .addToBackStack(null)
+                        .commit();
+            } catch (Exception e) {
+                String temp = e.getLocalizedMessage();
+                String temp2 = "Hello";
+            }
+
         }
     }
 

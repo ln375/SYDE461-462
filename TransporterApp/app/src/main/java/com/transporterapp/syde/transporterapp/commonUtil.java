@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -228,6 +229,15 @@ public class commonUtil {
         return null;
     }
 
+    public static String getCurrentDate() {
+        //Get the current date
+        Calendar calander = Calendar.getInstance();
+        int cDay = calander.get(Calendar.DAY_OF_MONTH);
+        int cMonth = calander.get(Calendar.MONTH) + 1;
+        int cYear = calander.get(Calendar.YEAR);
+
+        return getMonthofYear(cMonth) + " " + Integer.toString(cDay) + ", " + Integer.toString(cYear);
+    }
 
 
 
