@@ -8,6 +8,9 @@ import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.DataStructures.TransporterItem;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -207,6 +210,22 @@ public class commonUtil {
         return temp;
     }
 
+    public static byte[] convertFileToBytes(String filePath) {
+        try{
+            File file = new File(filePath);
+            //init array with file length
+            byte[] bytesArray = new byte[(int) file.length()];
+
+            FileInputStream fis = new FileInputStream(file);
+            fis.read(bytesArray); //read file into bytes[]
+            fis.close();
+
+            return bytesArray;
+        } catch (IOException e) {
+
+        }
+        return null;
+    }
 
 
 

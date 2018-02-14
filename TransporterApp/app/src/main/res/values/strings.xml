@@ -34,7 +34,8 @@
 
     <!-- Strings for export page -->
     <string name="usbTransfer">1. Connect phone to laptop using USB cable\n2. On the laptop, run MilkCollectionInterface\n3. Select USB Transfer from the menu</string>
-    <string name="bluetoothTransfer">Blahblahblah</string>
+    <string name="bluetoothTransfer">1. On the laptop, ensure Bluetooth is enabled and run MilkCollectionInterface.\n2. On the phone, select the device to connect to
+    \n3. Press "Start Export"</string>
     <string name="wifiTransfer">1. On the laptop, run MilkCollectionInterface\n2. Select Wi-Fi transfer from the menu\n3. Enter the IP Address of the laptop</string>
 
 

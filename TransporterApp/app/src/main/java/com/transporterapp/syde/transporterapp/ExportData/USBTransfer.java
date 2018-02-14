@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -36,10 +35,15 @@ public class USBTransfer {
     };
 
 
-    public static String exportTable(SQLiteDatabase db, String tableName, File directory, Context context) throws IOException {
-        String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
+    public static String exportTable(String tableName, Context context) throws IOException {
+        String folder = "trFarmerTransporter";
+        File f = new File(Environment.getExternalStorageDirectory(), folder);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
         verifyStoragePermissions(Main.instance);
-        final File exportFile = new File("/storage/emulated/0/", tableName + ".csv");
+
+        final File exportFile = new File(f.getPath(), tableName + ".csv");
 
         try {
             FileWriter testing = new FileWriter(exportFile);

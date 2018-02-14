@@ -39,7 +39,7 @@ public class Main extends AppCompatActivity
     public static Main instance = null;
     private HistRecordFrag histRecordFrag = new HistRecordFrag();
     private HistListFrag histListFrag = new HistListFrag();
-    private FragmentManager fragmentManager = getSupportFragmentManager();
+    public FragmentManager fragmentManager = getSupportFragmentManager();
     private FarmerListFrag farmerListFragmentForMilkEntry = new FarmerListFrag();
     private FarmerListFrag farmerListFragmentForFarmerProfile = new FarmerListFrag();
     private MilkEntryFrag milkEntryFragment = new MilkEntryFrag();
