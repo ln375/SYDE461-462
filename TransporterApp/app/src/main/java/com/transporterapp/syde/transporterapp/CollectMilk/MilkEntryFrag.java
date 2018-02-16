@@ -1,12 +1,9 @@
 package com.transporterapp.syde.transporterapp.CollectMilk;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -16,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
@@ -24,12 +20,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.transporterapp.syde.transporterapp.DataStructures.Jug;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
+import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
-
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -60,8 +56,12 @@ public class MilkEntryFrag extends Fragment {
     //Number of Jugs - may need to change this number later or add function to add jugs
     private final static int INITIAL_JUG_COUNT=5;
     private String jugIdClicked;
+    private boolean jugAlreadyClicked = false;
+    private String prevJugSelected = "";
+    private String currentJugSelection = "";
+    private boolean dataSaved = false;
 
-    private int jugSize = 1000; //Placeholder
+    private int jugSize = 20; //Placeholder
 
     public MilkEntryFrag() {
     }
@@ -90,11 +90,12 @@ public class MilkEntryFrag extends Fragment {
         densityTest = (RadioGroup) view.findViewById(R.id.density_test);
         alcoholTest = (RadioGroup) view.findViewById(R.id.alcohol_test);
         milkVolume = (EditText) view.findViewById(R.id.milk_volume);
-        SaveData = (Button)view.findViewById(R.id.save_data);
+        SaveData = (Button)view.findViewById(R.id.milk_record_save_data);
         txtComments = (EditText) view.findViewById(R.id.comments);
         mCarouselContainer = (LinearLayout) view.findViewById(R.id.carousel);
 
-        final List<String> jug_list = dbUtil.selectStatement("jug","id", "transporter_id", "=", getArguments().getString("transporterId"), context);
+        Cursor dbResponse = dbUtil.selectStatement("jug","transporter_id", "=", getArguments().getString("transporterId"), context);
+        final List<Jug> jug_list = commonUtil.convertCursorToJugList(dbResponse);
 
         //Carousel
         // Compute the width of a carousel item based on the screen width and number of initial items.
@@ -123,46 +124,79 @@ public class MilkEntryFrag extends Fragment {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(200, 300);
             // Apply the layout parameters for progress bar
             jugProgressBar.setLayoutParams(lp);
-            jugProgressBar.setProgress(0);
+            jugProgressBar.setProgress(Math.round(Float.parseFloat(jug_list.get(i).getCurrentVolume())));
             jugProgressBar.setTag(i);
-            jugProgressBar.setId(i);
             jugProgressBar.setProgressDrawable(jugDrawable);
-            jugProgressBar.setMax(jugSize);
+
+            jugProgressBar.setMax(Integer.valueOf(jug_list.get(i).getSize()));
 
             //Layout of jug text
             RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             textParams.addRule(RelativeLayout.ABOVE, jugProgressBar.getId());
             jugText.setLayoutParams(textParams);
-            jugText.setId(i);
-            jugText.setText("Jug" + jug_list.get(i));
+            jugText.setText("Jug " + jug_list.get(i).getId());
 
             //Layout of jug amount text
             RelativeLayout.LayoutParams jugAmountParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             jugAmountParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             jugAmount.setLayoutParams(jugAmountParams);
-            jugAmount.setText("O L");
+            jugAmount.setText(jug_list.get(i).getCurrentVolume() + "L");
 
             jugProgressBar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = (Integer) v.getTag();
-                    int milkVol;
-
-                    jugIdClicked = jug_list.get(position);
-
-                    if(TextUtils.isEmpty(milkVolume.getText().toString())){
-                        milkVol = 0;
+                    if (milkVolume.getText().toString().isEmpty()) {
+                        milkVolume.setError("Milk volume is required");
+                        Toast.makeText(getContext(),"Please enter a valid milk volume", Toast.LENGTH_LONG).show();
+                    } else if (commonUtil.isNumeric(milkVolume.getText().toString()) == false) {
+                        milkVolume.setError("Milk volume is required");
+                        Toast.makeText(getContext(),"Please enter a valid milk volume", Toast.LENGTH_LONG).show();
                     } else {
-                        milkVol = Integer.valueOf(milkVolume.getText().toString());
-                    }
+                        int position = (Integer) v.getTag();
+                        float milkVol;
 
-                    if((milkVol < jugSize - jugProgressBar.getProgress()) && milkVol < jugSize){
-                        jugProgressBar.setProgress(milkVol);
-                        jugAmount.setText(Integer.toString(milkVol) + "L");
-                    } else {
-                        Toast.makeText(getContext(),"Please select a different jug", Toast.LENGTH_SHORT).show();
+                        jugIdClicked = jug_list.get(position).getId();
+                        currentJugSelection = jugIdClicked;
+                        if(TextUtils.isEmpty(milkVolume.getText().toString())){
+                            milkVol = 0;
+                        } else {
+
+                            milkVol = Float.parseFloat(milkVolume.getText().toString());
+                        }
+
+                        if (jugAlreadyClicked) {
+                            Float tempMilkVol = milkVol;
+                            RelativeLayout otherJug = (RelativeLayout) mCarouselContainer.getChildAt(Integer.valueOf(prevJugSelected));
+                            TextView prevJugAmount = (TextView) otherJug.getChildAt(2);
+                            ProgressBar prevProgressBar = (ProgressBar) otherJug.getChildAt(0);
+
+                            String originalJugAmount = prevJugAmount.getText().toString();
+                            Float jugAmountText = Float.valueOf(originalJugAmount.substring(0, originalJugAmount.length() - 1));
+
+                            jugAmountText -= tempMilkVol;
+                            int progress = (int) Math.round(jugAmountText - tempMilkVol);
+                            prevProgressBar.setProgress(progress);
+
+                            prevJugAmount.setText(String.valueOf(jugAmountText) + "L");
+                        }
+
+                        if((milkVol < jugSize - jugProgressBar.getProgress()) && milkVol < jugSize){
+                            String originalJugAmount = jugAmount.getText().toString().substring(0, jugAmount.getText().toString().length() - 1);
+                            Double temp = Double.valueOf(originalJugAmount);
+                            milkVol += temp;
+                            int progress = Math.round(milkVol);
+                            jugProgressBar.setProgress(progress);
+                            jugAmount.setText(String.valueOf(milkVol) + "L");
+                        } else {
+                            Toast.makeText(getContext(),"Please select a different jug", Toast.LENGTH_SHORT).show();
+                        }
+                        Toast.makeText(getContext(),"Jug " + jugIdClicked, Toast.LENGTH_SHORT).show();
+
+                        if (jugAlreadyClicked == false) {
+                            jugAlreadyClicked = true;
+                        }
+                        prevJugSelected = String.valueOf(position);
                     }
-                    Toast.makeText(getContext(),"Jug " + jugIdClicked, Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -202,22 +236,24 @@ public class MilkEntryFrag extends Fragment {
 
                         // Make Milk volume required field
                         if(TextUtils.isEmpty(milkweight)){
-                            Toast.makeText(getContext(),"Milk Volume required", Toast.LENGTH_LONG).show();
-                        } else if (Integer.valueOf(milkweight) > jugSize){
-                            //Placeholder for now just for testing
-                            Toast.makeText(getContext(),"Milk Volume must be smaller than 1000 L", Toast.LENGTH_LONG).show();
+                            milkVolume.setError("Milk volume is required");
+                            Toast.makeText(getContext(),"Please enter a valid milk volume", Toast.LENGTH_LONG).show();
                         } else {
-                            List<String> columns = new ArrayList<>();
-                            columns.addAll(Arrays.asList(DatabaseConstants.coltrFarmerTransporter));
-                            columns.remove(DatabaseConstants.coltrFarmerTransporter.length - 1);
-                            columns.remove(0);
+                            if (jugAlreadyClicked == false) {
+                                Toast.makeText(getContext(),"Please select a jug", Toast.LENGTH_LONG).show();
+                            } else {
+                                List<String> columns = new ArrayList<>();
+                                columns.addAll(Arrays.asList(DatabaseConstants.coltrFarmerTransporter));
+                                columns.remove(DatabaseConstants.coltrFarmerTransporter.length - 1);
+                                columns.remove(0);
 
-                            List<String> values = Arrays.asList(transporterId, farmerId, jugId, todayDate, todayTime, milkweight, alcoholIndex, smellIndex, comments, densityIndex);
+                                List<String> values = Arrays.asList(transporterId, farmerId, jugId, todayDate, todayTime, milkweight, alcoholIndex, smellIndex, comments, densityIndex);
+                                saveData(columns, values, v.getContext());
 
-                            dbUtil.insertStatement(DatabaseConstants.tbltrFarmerTransporter, columns, values, v.getContext());
+                                Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();
+                                getActivity().onBackPressed();
+                            }
                         }
-
-                        Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();
 
                     }
                 }
@@ -226,18 +262,34 @@ public class MilkEntryFrag extends Fragment {
     }
 
     public boolean areDataFieldsEmpty(){
-        if ((smellTest.getCheckedRadioButtonId() == R.id.rb_unchecked) && (densityTest.getCheckedRadioButtonId() == R.id.density_rb_unchecked) && (alcoholTest.getCheckedRadioButtonId() == R.id.alcohol_rb_unchecked)
+        if (dataSaved == true) {
+            return true;
+        }
+        if ((smellTest.getCheckedRadioButtonId() == R.id.smell_unchecked) && (densityTest.getCheckedRadioButtonId() == R.id.density_unchecked) && (alcoholTest.getCheckedRadioButtonId() == R.id.alcohol_unchecked)
                 && (txtComments.getText().toString().isEmpty()) && (milkVolume.getText().toString().isEmpty())) {
             return true;
         }
         return false;
     }
 
+    public void saveData(List<String> columns, List<String> values, Context context) {
+        dbUtil.insertStatement(DatabaseConstants.tbltrFarmerTransporter, columns, values, context);
+        Cursor cursor = dbUtil.selectStatement(DatabaseConstants.tblJug, DatabaseConstants.id, "=", currentJugSelection, context);
+        Jug jug = commonUtil.convertCursorToJug(cursor);
+        double finalVolume = Double.valueOf(jug.getCurrentVolume()) + Double.valueOf(values.get(5));
+        dbUtil.updateStatement(DatabaseConstants.tblJug, DatabaseConstants.currentVolume, String.valueOf(finalVolume), DatabaseConstants.id, "=", currentJugSelection, context);
+        dataSaved = true;
+    }
+
     public void clearData() {
-         smellTest.check(R.id.rb_unchecked);
-         densityTest.check(R.id.density_rb_unchecked);
-         alcoholTest.check(R.id.alcohol_rb_unchecked);
+         smellTest.check(R.id.smell_unchecked);
+         densityTest.check(R.id.density_unchecked);
+         alcoholTest.check(R.id.alcohol_unchecked);
          milkVolume.setText("");
+         txtComments.setText("");
+         jugAlreadyClicked = false;
+         prevJugSelected = "";
+         dataSaved = false;
     }
 
 

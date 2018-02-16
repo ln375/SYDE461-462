@@ -26,7 +26,7 @@
     </string>
 
     <!-- Strings for the navigation menu -->
-    <string name="nav_menu_collect_milk">Collect Milk</string>
+    <string name="nav_menu_collect_milk">Add New Milk Record</string>
     <string name="nav_menu_history_screen">History Screen</string>
     <string name="nav_menu_farmers_screen">Farmers Screen</string>
     <string name="nav_menu_log_out">Log Out</string>

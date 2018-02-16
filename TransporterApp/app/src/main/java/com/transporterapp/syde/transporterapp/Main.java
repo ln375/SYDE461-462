@@ -168,6 +168,7 @@ public class Main extends AppCompatActivity
         if(milkEntryFragment.isVisible()){
             if (milkEntryFragment.areDataFieldsEmpty()) {
                 setActionBarTitle(commonUtil.getCurrentDate());
+                milkEntryFragment.clearData();
                 super.onBackPressed();
             } else {
                 showUnsavedDataMessage(milkEntryFragment, this);
@@ -269,14 +270,13 @@ public class Main extends AppCompatActivity
      * @param context
      */
     public void showUnsavedDataMessage(Fragment fragment, Context context){
-        if (fragment.getTag().equals(commonUtil.MILK_ENTRY_TAG_FRAGMENT)) {
-                new AlertDialog.Builder(context)
-                        .setTitle("Unsaved data")
-                        .setMessage("Are you sure you want to go back?")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton(android.R.string.yes, unsavedDataDialog)
-                        .setNegativeButton(android.R.string.no, unsavedDataDialog).show();
-        }
+        new AlertDialog.Builder(context)
+                .setTitle("Unsaved data")
+                .setMessage("Are you sure you want to go back?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, unsavedDataDialog)
+                .setNegativeButton(android.R.string.no, unsavedDataDialog).show();
+
     }
 
     /**
@@ -287,12 +287,8 @@ public class Main extends AppCompatActivity
         public void onClick(DialogInterface dialog, int which) {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
-                    fragmentManager.beginTransaction().detach(milkEntryFragment);
                     milkEntryFragment.clearData();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.container, farmerListFragmentForMilkEntry,commonUtil.MILK_ENTRY_TAG_FRAGMENT)
-                            .addToBackStack(commonUtil.MILK_ENTRY_TAG_FRAGMENT)
-                            .commit();
+                    Main.super.onBackPressed();
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:

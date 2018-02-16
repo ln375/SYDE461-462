@@ -186,13 +186,18 @@ public class dbUtil {
     public static void updateStatement(String tableName, String col, String value,  String whereCondition, String whereOperator, String whereValue, Context context){
         setInstance(context);
 
-        String sql = "UPDATE " + tableName + " SET " + col + " = " + value;
+        String sql = "";
         if (!whereCondition.isEmpty()) {
-            sql = sql + " WHERE " + whereCondition + " " + whereOperator + " " + whereValue;
+            sql = whereCondition + whereOperator + " ?";
         }
 
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(col, value);
 
-        database.rawQuery(sql, null);
+        try {
+            database.update(tableName, contentValues, sql, new String[]{whereValue});
+        } catch (Exception e) {
+        }
     }
 
     /**
