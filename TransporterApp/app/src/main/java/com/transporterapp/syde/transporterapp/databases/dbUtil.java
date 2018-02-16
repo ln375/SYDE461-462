@@ -183,6 +183,18 @@ public class dbUtil {
 
     }
 
+    public static void updateStatement(String tableName, String col, String value,  String whereCondition, String whereOperator, String whereValue, Context context){
+        setInstance(context);
+
+        String sql = "UPDATE " + tableName + " SET " + col + " = " + value;
+        if (!whereCondition.isEmpty()) {
+            sql = sql + " WHERE " + whereCondition + " " + whereOperator + " " + whereValue;
+        }
+
+
+        database.rawQuery(sql, null);
+    }
+
     /**
      * Deletes a row in a table based on a specific condition
      * Example Usage: dbUtil.deleteStatement(trFarmerTransporter, "id", ">", "10", this);

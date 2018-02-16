@@ -12,7 +12,7 @@ public class DatabaseConstants {
 
     public static final String tblJug = "jug";
 
-    public static final String[] colJug = new String[]{"id", "size", "type", "transporter_id"};
+    public static final String[] colJug = new String[]{"id", "size", "type", "transporter_id", "currentVolume"};
 
     public static final String tblRoute = "route";
 
@@ -68,4 +68,5 @@ public class DatabaseConstants {
 
     public static final String type = "type";
 
+    public static final String currentVolume = "currentVolume";
 }

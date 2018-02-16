@@ -141,11 +141,34 @@ public class commonUtil {
             String size = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.size));
             String type = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.type));
             String transporterId = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.transporter_id));
+            String currentVolume = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.currentVolume));
 
-            return new Jug(id, size, type, transporterId);
+            return new Jug(id, size, type, transporterId, currentVolume);
         }
         return null;
     }
+
+    public static List<Jug> convertCursorToJugList(Cursor jug){
+        List<Jug> jugList = new ArrayList<>();
+
+        if (jug.getCount() == 0) {
+            return null;
+        }
+
+        while(jug.moveToNext()) {
+            String id = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.id));
+            String size = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.size));
+            String type = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.type));
+            String transporterId = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.transporter_id));
+            String currentVolume = jug.getString(Arrays.asList(DatabaseConstants.colJug).indexOf(DatabaseConstants.currentVolume));
+
+            Jug temp = new Jug(id, size, type, transporterId, currentVolume);
+            jugList.add(temp);
+        }
+
+        return jugList;
+    }
+
 
     public static String getQualityRating(String index) {
         String temp = "";
