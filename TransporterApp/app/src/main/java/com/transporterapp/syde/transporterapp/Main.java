@@ -129,7 +129,7 @@ public class Main extends AppCompatActivity
             if(item.getTitle().equals("History Screen")) {
                 fragmentManager.beginTransaction().replace(R.id.container, histListFrag).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
-            } else if(item.getTitle().equals("Collect Milk")) {
+            } else if(item.getTitle().equals("Add New Milk Record")) {
                 setActionBarTitle(commonUtil.getCurrentDate());
                 menuFragmentId = item.getItemId();
                 fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForMilkEntry).addToBackStack(null).commit();
