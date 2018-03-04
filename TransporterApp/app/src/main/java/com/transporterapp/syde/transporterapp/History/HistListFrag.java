@@ -28,10 +28,9 @@ import java.util.List;
  */
 public class HistListFrag extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
+    private String transporterId = "";
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -57,6 +56,7 @@ public class HistListFrag extends Fragment {
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            transporterId = getArguments().getString("userid");
         }
     }
 
@@ -78,7 +78,7 @@ public class HistListFrag extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            Cursor records = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "", "", "", context);
+            Cursor records = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, DatabaseConstants.transporter_id, "=", transporterId, context);
             List<MilkRecord> milkRecords = commonUtil.convertCursorToMilkRecordList(records);
             recyclerView.setAdapter(new MyMilkRecordRecyclerViewAdapter(milkRecords, mListener));
         }
