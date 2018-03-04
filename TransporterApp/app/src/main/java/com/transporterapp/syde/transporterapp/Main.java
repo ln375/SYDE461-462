@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceItem;
 import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceListFragment;
@@ -75,7 +76,8 @@ public class Main extends AppCompatActivity
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        instance = this;
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.fragment_container);
 
         //TestFairy.begin(this, "a61f203ba668965e0295409c7fec4b15d7a31770");

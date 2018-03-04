@@ -210,6 +210,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:imeOptions="actionDone"
                     android:inputType="number|numberDecimal"/>
             </LinearLayout>
 
@@ -265,6 +266,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text=""
+                android:inputType="textShortMessage"
                 android:id="@+id/comments" />
         </LinearLayout>
 
