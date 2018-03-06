@@ -74,6 +74,12 @@ public class Main extends AppCompatActivity
         instance = null;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;

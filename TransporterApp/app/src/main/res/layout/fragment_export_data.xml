@@ -95,6 +95,13 @@
         android:visibility="invisible"
         android:inputType="phone" />/>
 
+    <Spinner
+        android:id="@+id/devices_spinner"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/lblipAddress"
+        android:visibility="invisible"
+        android:layout_height="wrap_content" />
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></ListView>
@@ -109,5 +116,7 @@
         android:enabled="false"
         android:visibility="invisible"
         android:id="@+id/start_export"/>
+
+
 
 </LinearLayout>

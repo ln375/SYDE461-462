@@ -33,9 +33,9 @@
     <string name="nav_menu_export_screen">Export Data</string>
 
     <!-- Strings for export page -->
-    <string name="usbTransfer">1. Connect phone to laptop using USB cable and locate the file in the trTransporterFarmer folder</string>
-    <string name="bluetoothTransfer">1. On the laptop, ensure Bluetooth is enabled and run MilkCollectionInterface.\n2. On the phone press "Start Export"</string>
-    <string name="wifiTransfer">1. On the laptop, run MilkCollectionInterface\n2. Select Wi-Fi transfer from the menu\n3. Enter the IP Address of the laptop</string>
+    <string name="usbTransfer">1. Connect phone to laptop using USB cable\n2. Run the Milk Collection Interface and select USB transfer\n3. Select a folder to save in and press start</string>
+    <string name="bluetoothTransfer">1. Ensure the phone and laptop are paired via Bluetooth\n2. Verify Bluetooth transfer is running on Milk Collection Interface\n3. Press "Start Export"</string>
+    <string name="wifiTransfer">1. Enter the IP Address of the laptop\n2. Press "Start Export"</string>
 
 
 </resources>

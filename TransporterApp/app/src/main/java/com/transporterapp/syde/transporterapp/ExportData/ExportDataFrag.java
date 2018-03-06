@@ -1,22 +1,36 @@
 package com.transporterapp.syde.transporterapp.ExportData;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanRecord;
+import android.bluetooth.le.ScanResult;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +41,7 @@ import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 
 import java.io.BufferedInputStream;
+import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -34,6 +49,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,8 +72,10 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
     private TextView lblExportInstructionsTitle;
     private TextView lblExportInstructions;
     private RadioButton btnWifi;
+    private Spinner devicesSpinner;
     private RadioButton btnBluetooth;
     private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    private static List<BluetoothDevice> devices = new ArrayList<>();
 
 
 
@@ -92,6 +111,7 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
         lblExportMethod = (TextView) view.findViewById(R.id.lblExport);
         lblExportInstructions = (TextView) view.findViewById(R.id.lblInstructions);
         lblExportInstructionsTitle = (TextView) view.findViewById(R.id.lblExportInstructionsTitle);
+        devicesSpinner = (Spinner) view.findViewById(R.id.devices_spinner);
 
         prepCSVFiles();
         sendCSVFiles();
@@ -166,6 +186,7 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
     public void sendCSVFiles() {
         sendCSVFile.setOnClickListener(
                 new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                     @Override
                     public void onClick(View v) {
                         if (btnWifi.isChecked()) {
@@ -219,48 +240,14 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
 
                             }
                         } else if (btnBluetooth.isChecked()) {
-                            if (mBluetoothAdapter != null) {
-                                if(!mBluetoothAdapter.isEnabled()){
-                                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-                                    alertBuilder.setCancelable(true);
-                                    alertBuilder.setMessage("Do you want to enable bluetooth?");
-                                    alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                            mBluetoothAdapter.enable();
-                                            //IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-                                            BluetoothTransfer.SendMessageToServer btransfer = new BluetoothTransfer.SendMessageToServer();
-                                            //getActivity().registerReceiver(btransfer.bReceiver, filter);
-                                            //btransfer.startDiscovery();
-                                            /*android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                            DeviceListFragment deviceListFrag = new DeviceListFragment();
-                                            fragmentManager.beginTransaction().replace(R.id.container,deviceListFrag, commonUtil.LOGIN_TAG_FRAGMENT).addToBackStack(null).commit();*/
-                                            btransfer.execute();
-                                        }
-                                    });
-                                    alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                                    AlertDialog alert = alertBuilder.create();
-                                    alert.show();
-                                } else {
-                                    /*android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                    DeviceListFragment deviceListFrag = new DeviceListFragment();
-                                    fragmentManager.beginTransaction().replace(R.id.container,deviceListFrag, commonUtil.DEVICE_LIST_FRAG).commit();*/
-                                    new BluetoothTransfer.SendMessageToServer().execute();
+                            BluetoothTransfer.SendMessageToServer btransfer = new BluetoothTransfer.SendMessageToServer();
+
+                            String deviceHardwareAddress = devicesSpinner.getSelectedItem().toString();
+                            String temp = deviceHardwareAddress;
+                            deviceHardwareAddress = deviceHardwareAddress.substring(temp.indexOf('/') + 1);
 
 
-                                }
-
-
-
-                            } else {
-                                Toast.makeText( Main.instance.getApplicationContext(), "Bluetooth is not supported on this device", Toast.LENGTH_LONG).show();
-                            }
+                            btransfer.execute(deviceHardwareAddress);
                         }
 
                     }
@@ -278,16 +265,61 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
                 if (checkedId == R.id.usbTransfer) {
                     lblExportInstructions.setText(getString(R.string.usbTransfer));
                     ipAddress.setVisibility(View.INVISIBLE);
+                    devicesSpinner.setVisibility(View.INVISIBLE);
                     ipAddress.setEnabled(false);
                     sendCSVFile.setVisibility(View.INVISIBLE);
                     sendCSVFile.setEnabled(false);
 
                 } else if (checkedId == R.id.bluetoothTransfer) {
                     lblExportInstructions.setText(getString(R.string.bluetoothTransfer));
+                    devicesSpinner.setVisibility(View.VISIBLE);
                     ipAddress.setVisibility(View.INVISIBLE);
                     ipAddress.setEnabled(false);
                     sendCSVFile.setVisibility(View.VISIBLE);
                     sendCSVFile.setEnabled(true);
+
+                    if (mBluetoothAdapter != null) {
+                        if (!mBluetoothAdapter.isEnabled()) {
+                            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+                            alertBuilder.setCancelable(true);
+                            alertBuilder.setMessage("Do you want to enable bluetooth?");
+                            alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    mBluetoothAdapter.enable();
+
+                                    Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+                                    List<String> s = new ArrayList<String>();
+                                    for (BluetoothDevice bt : pairedDevices)
+                                        s.add(bt.getName());
+                                }
+                            });
+                            alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog alert = alertBuilder.create();
+                            alert.show();
+                        }
+
+                        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+                        List<String> devices = new ArrayList<>();
+                        if (pairedDevices.size() > 0) {
+                            // There are paired devices. Get the name and address of each paired device.
+                            for (BluetoothDevice device : pairedDevices) {
+                                devices.add(device.getName() + "/" + device.getAddress());
+                            }
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, devices);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            devicesSpinner.setAdapter(adapter);
+                        }
+                    } else {
+                            Toast.makeText( Main.instance.getApplicationContext(), "Bluetooth is not supported on this device", Toast.LENGTH_LONG).show();
+                    }
 
                 } else if (checkedId == R.id.wifiTransfer) {
                     lblExportInstructions.setText(getString(R.string.wifiTransfer));
@@ -295,6 +327,7 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
                     ipAddress.setEnabled(true);
                     sendCSVFile.setVisibility(View.VISIBLE);
                     sendCSVFile.setEnabled(true);
+                    devicesSpinner.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -329,4 +362,6 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
                 }
             }
         };
+
+
 }

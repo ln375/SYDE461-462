@@ -15,6 +15,11 @@ import com.transporterapp.syde.transporterapp.commonUtil;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static android.content.ContentValues.TAG;
@@ -40,8 +45,8 @@ public class BluetoothTransfer {
             byte[] tosend= commonUtil.convertFileToBytes(Environment.getExternalStorageDirectory() + "/trFarmerTransporter/tr_farmer_transporter.csv");
 
             // Client knows the server MAC address
-
-            BluetoothDevice mmDevice = mBluetoothAdapter.getRemoteDevice("10:02:B5:27:BB:80");
+            String temp = msg[0];
+            BluetoothDevice mmDevice = mBluetoothAdapter.getRemoteDevice(temp);
             Log.d(TAG, "got hold of remote device");
             try {
                 // UUID string same used by server
@@ -103,5 +108,4 @@ public class BluetoothTransfer {
             mBluetoothAdapter.cancelDiscovery();
         }
     }
-
-}
+    }
