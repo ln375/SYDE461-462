@@ -2,15 +2,21 @@ package MilkCollectionInterface;
 
 import java.io.File;
 import java.math.BigInteger;
+import java.util.Date;
+
+
 import be.derycke.pieter.com.COMException;
 import jmtp.*;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
+import javax.swing.filechooser.FileSystemView;
 
 /**
  * Created by chari on 2018-01-29.
  */
 
 public class USBTransfer {
-    public static void jMTPeMethode()
+    public static void jMTPeMethode(String filePath)
     {
         PortableDeviceFolderObject targetFolder = null;
         PortableDeviceManager manager = new PortableDeviceManager();
@@ -34,17 +40,18 @@ public class USBTransfer {
                     if(o2.getOriginalFileName().equalsIgnoreCase("trFarmerTransporter"))
                     {
                         targetFolder = (PortableDeviceFolderObject) o2;
-                        String temp = device.getFriendlyName() + "/" + storage.getName() + "/" +  o2.getName();
-                        String temp2 = o2.getName();
+
                     }
 
                     System.out.println(o2.getOriginalFileName());
                 }
 
-                //copyFileFromComputerToDeviceFolder(targetFolder);
                 PortableDeviceObject[] folderFiles = targetFolder.getChildObjects();
                 for (PortableDeviceObject pDO : folderFiles) {
-                    copyFileFromDeviceToComputerFolder(pDO, device);
+                    Date test = pDO.getDateAuthored();
+
+                    copyFileFromDeviceToComputerFolder(pDO, device, filePath);
+
                 }
 
             }
@@ -53,17 +60,16 @@ public class USBTransfer {
         manager.getDevices()[0].close();
     }
 
-    private static void copyFileFromDeviceToComputerFolder(PortableDeviceObject pDO, PortableDevice device)
+    private static void copyFileFromDeviceToComputerFolder(PortableDeviceObject pDO, PortableDevice device, String filePath)
     {
         try {
-
-            new PortableDeviceToHostImpl32().copyFromPortableDeviceToHost(pDO.getID(), "C:\\Desktop\test", device);
+            new PortableDeviceToHostImpl32().copyFromPortableDeviceToHost(pDO.getID(), filePath, device);
         } catch (COMException ex) {
             ex.printStackTrace();
         }
 
     }
-
+/*
     private static void copyFileFromComputerToDeviceFolder(PortableDeviceFolderObject targetFolder)
     {
         BigInteger bigInteger1 = new BigInteger("123456789");
@@ -73,5 +79,6 @@ public class USBTransfer {
         } catch (Exception e) {
             System.out.println("Exception e = " + e);
         }
-    }
+    }*/
+
 }

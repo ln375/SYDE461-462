@@ -3,7 +3,9 @@ package MilkCollectionInterface;
 import javax.bluetooth.RemoteDevice;
 import javax.microedition.io.StreamConnection;
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BluetoothThread extends Thread {
@@ -39,7 +41,8 @@ public class BluetoothThread extends Thread {
     public void run() {
         try {
             in = conn.openInputStream();
-            File outputFile = new File("C:\\Users\\chari\\Desktop\\test\\test.csv");
+            String fileName = MilkCollectionService.filePath + "\\" + LocalDateTime.now().getYear() + LocalDateTime.now().getMonthValue() + LocalDateTime.now().getDayOfMonth() + "_trFarmerTransporter.csv";
+            File outputFile = new File(fileName);
             if (!outputFile.exists()) {
                 outputFile.createNewFile();
             }
@@ -60,6 +63,7 @@ public class BluetoothThread extends Thread {
             if(conn != null) {
                 in.close();
                 conn.close();
+                BluetoothServer.closeDown();
             }
         } catch (IOException e) {
             System.err.println(e);

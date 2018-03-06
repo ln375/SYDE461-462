@@ -1,9 +1,6 @@
 package MilkCollectionInterface;
 
-import javax.bluetooth.BluetoothStateException;
-import javax.bluetooth.DiscoveryAgent;
-import javax.bluetooth.LocalDevice;
-import javax.bluetooth.UUID;
+import javax.bluetooth.*;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
@@ -14,7 +11,7 @@ public class BluetoothServer {
     private static final String UUID_STRING = "04c6093b00001000800000805f9b34fb"; // 32 hex digits
     private static final String SERVICE_NAME = "bluetoothserver";
 
-    private StreamConnectionNotifier server;
+    private static StreamConnectionNotifier server;
 
     // when program is terminated, shutdown all the client threads
     public BluetoothServer() {
@@ -23,10 +20,20 @@ public class BluetoothServer {
                 closeDown();
             }
         });
-
         initDevice();
         createRFCOMMConnection();
         processClients();
+    }
+
+    public static RemoteDevice[] findPreKnownDevices(){
+        RemoteDevice[] rdList = null;
+        try{
+        rdList = LocalDevice.getLocalDevice().getDiscoveryAgent().retrieveDevices(DiscoveryAgent.PREKNOWN);
+        } catch(BluetoothStateException e) {
+            System.out.println(e);
+            System.exit(1);
+        }
+        return rdList;
     }
 
     private void initDevice() {
@@ -62,8 +69,8 @@ public class BluetoothServer {
 
 
     // globals
-    private ArrayList<BluetoothThread> handlers = new ArrayList<>();
-    private volatile boolean isRunning = false;
+    private static ArrayList<BluetoothThread> handlers = new ArrayList<>();
+    private static volatile boolean isRunning = false;
 
     private void processClients() {
         isRunning = true;
@@ -82,7 +89,7 @@ public class BluetoothServer {
     } // end of processClients
 
 
-    private void closeDown() {
+    public static void closeDown() {
         System.out.println("closing down server");
         if(isRunning) {
             isRunning = false;
