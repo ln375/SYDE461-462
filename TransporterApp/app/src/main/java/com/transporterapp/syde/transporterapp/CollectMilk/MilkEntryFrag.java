@@ -8,11 +8,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
@@ -47,9 +52,12 @@ public class MilkEntryFrag extends Fragment {
     private EditText txtComments;
     private String mFarmerName;
     private LinearLayout mCarouselContainer;
-    //private RelativeLayout mjugHolderView;
+    private HorizontalScrollView mScrollView;
     private RelativeLayout jugHolderView;
-    private GradientDrawable jugImageDrawable;
+    private ImageView leftArrow;
+    private ImageView rightArrow;
+    private int maxScrollX;
+
 
     private static final String FARMER_NAME = "farmername";
 
@@ -85,7 +93,6 @@ public class MilkEntryFrag extends Fragment {
         View view = inflater.inflate(R.layout.fragment_farmer_milk_data_entry, container, false);
         Context context = view.getContext();
 
-        //Data fields
         smellTest = (RadioGroup) view.findViewById(R.id.smell_test);
         densityTest = (RadioGroup) view.findViewById(R.id.density_test);
         alcoholTest = (RadioGroup) view.findViewById(R.id.alcohol_test);
@@ -93,9 +100,46 @@ public class MilkEntryFrag extends Fragment {
         SaveData = (Button)view.findViewById(R.id.milk_record_save_data);
         txtComments = (EditText) view.findViewById(R.id.comments);
         mCarouselContainer = (LinearLayout) view.findViewById(R.id.carousel);
+        mScrollView = (HorizontalScrollView) view.findViewById(R.id.scrollView);
+        leftArrow = (ImageView) view.findViewById(R.id.previous);
+        rightArrow = (ImageView) view.findViewById(R.id.next);
+
 
         Cursor dbResponse = dbUtil.selectStatement("jug","transporter_id", "=", getArguments().getString("transporterId"), context);
         final List<Jug> jug_list = commonUtil.convertCursorToJugList(dbResponse);
+
+        leftArrow.setVisibility(View.INVISIBLE);
+
+        ViewTreeObserver vto = mScrollView.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mScrollView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                maxScrollX = mScrollView.getChildAt(0)
+                        .getMeasuredWidth()-mScrollView.getMeasuredWidth();
+            }
+        });
+
+        mScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Log.e("ScrollValue", Integer.toString(mScrollView.getScrollX()));
+                Log.e("Max value", Integer.toString(maxScrollX));
+
+                if (mScrollView.getScrollX() == 0){
+                    leftArrow.setVisibility(View.INVISIBLE);
+                } else {
+                    leftArrow.setVisibility(View.VISIBLE);
+                }
+                if (mScrollView.getScrollX() == maxScrollX){
+                    rightArrow.setVisibility(View.INVISIBLE);
+                } else {
+                    rightArrow.setVisibility(View.VISIBLE);
+                }
+
+                return false;
+            }
+        });
 
         //Carousel
         // Compute the width of a carousel item based on the screen width and number of initial items.
@@ -132,7 +176,7 @@ public class MilkEntryFrag extends Fragment {
 
             //Layout of jug text
             RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            textParams.addRule(RelativeLayout.ABOVE, jugProgressBar.getId());
+            textParams.addRule(RelativeLayout.BELOW, jugProgressBar.getId());
             jugText.setLayoutParams(textParams);
             jugText.setText("Jug " + jug_list.get(i).getId());
 

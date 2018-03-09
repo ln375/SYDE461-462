@@ -268,20 +268,39 @@
                     android:textColor="#000000"
                     android:textSize="17dp" />
 
-                <!-- Container view to scroll vertically which gives the carousel effect -->
-                <HorizontalScrollView android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none">
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
 
-                    <!-- Carousel items container - lays out items horizontally -->
-                    <LinearLayout android:id="@+id/carousel"
+                    <ImageView android:id="@+id/previous" android:src="@drawable/arrow_left"
+                        android:layout_height="wrap_content" android:layout_width="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true" />
+
+                    <ImageView android:id="@+id/next" android:src="@drawable/arrow_right"
+                        android:layout_height="wrap_content" android:layout_width="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                    <!-- Container view to scroll vertically which gives the carousel effect -->
+                    <HorizontalScrollView
+                        android:id="@+id/scrollView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_toRightOf="@id/previous"
+                        android:layout_toLeftOf="@id/next"
+                        android:scrollbars="none">
 
-                    </LinearLayout>
+                        <!-- Carousel items container - lays out items horizontally -->
+                        <LinearLayout android:id="@+id/carousel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                </HorizontalScrollView>
+                        </LinearLayout>
+
+                    </HorizontalScrollView>
+                </RelativeLayout>
 
             </LinearLayout>
 

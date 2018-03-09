@@ -9,8 +9,7 @@
             <solid android:color="#e2e2e2" />
             <corners
                 android:bottomRightRadius="30dp"
-                android:bottomLeftRadius="30dp"
-                />
+                android:topRightRadius="30dp"/>
         </shape>
     </rotate>
 </item>
@@ -24,7 +23,7 @@
                 <solid android:color="@color/colorPrimary"/>
                 <corners
                     android:bottomRightRadius="30dp"
-                    android:bottomLeftRadius="30dp"
+                    android:topRightRadius="30dp"
                     />
             </shape>
         </rotate>
