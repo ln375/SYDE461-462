@@ -291,7 +291,7 @@
                         android:layout_toLeftOf="@id/next"
                         android:scrollbars="none">
 
-                        <!-- Carousel items container - lays out items horizontally -->
+                        //Carousel items container - lays out items horizontally
                         <LinearLayout android:id="@+id/carousel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -300,6 +300,21 @@
                         </LinearLayout>
 
                     </HorizontalScrollView>
+
+                    <!--<android.support.v7.widget.RecyclerView
+                        android:id="@+id/jugRecyclerView"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />-->
+
+                    <LinearLayout
+                        android:id="@+id/viewPagerCountDots"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/scrollView"
+                        android:gravity="center"
+                        android:orientation="horizontal" />
                 </RelativeLayout>
 
             </LinearLayout>

@@ -3,7 +3,6 @@ package com.transporterapp.syde.transporterapp.CollectMilk;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -42,8 +41,6 @@ import java.util.List;
 
 public class MilkEntryFrag extends Fragment {
 
-    private static List<String> milkEntryColumns = Arrays.asList("MILK_WEIGHT", "SMELL", "DENSITY");
-
     private EditText milkVolume;
     private Button SaveData;
     private RadioGroup smellTest;
@@ -53,6 +50,7 @@ public class MilkEntryFrag extends Fragment {
     private String mFarmerName;
     private LinearLayout mCarouselContainer;
     private HorizontalScrollView mScrollView;
+    private LinearLayout jugPagination;
     private RelativeLayout jugHolderView;
     private ImageView leftArrow;
     private ImageView rightArrow;
@@ -103,6 +101,7 @@ public class MilkEntryFrag extends Fragment {
         mScrollView = (HorizontalScrollView) view.findViewById(R.id.scrollView);
         leftArrow = (ImageView) view.findViewById(R.id.previous);
         rightArrow = (ImageView) view.findViewById(R.id.next);
+        jugPagination =(LinearLayout) view.findViewById(R.id.viewPagerCountDots);
 
 
         Cursor dbResponse = dbUtil.selectStatement("jug","transporter_id", "=", getArguments().getString("transporterId"), context);
@@ -126,16 +125,35 @@ public class MilkEntryFrag extends Fragment {
                 Log.e("ScrollValue", Integer.toString(mScrollView.getScrollX()));
                 Log.e("Max value", Integer.toString(maxScrollX));
 
-                if (mScrollView.getScrollX() == 0){
+                double scrollPosition = mScrollView.getScrollX();
+
+                if (scrollPosition == 0){
                     leftArrow.setVisibility(View.INVISIBLE);
                 } else {
                     leftArrow.setVisibility(View.VISIBLE);
                 }
-                if (mScrollView.getScrollX() == maxScrollX){
+                if (scrollPosition == maxScrollX){
                     rightArrow.setVisibility(View.INVISIBLE);
                 } else {
                     rightArrow.setVisibility(View.VISIBLE);
                 }
+
+                int numOfDots = (int) Math.ceil(jug_list.size() / 3.0);
+                double scrollSeparator = maxScrollX / numOfDots;
+
+                int position = 0;
+                double temp = scrollSeparator;
+                while (scrollPosition > temp) {
+                    temp += scrollSeparator;
+                    position++;
+                }
+
+                if (scrollPosition == maxScrollX) {
+                    position = numOfDots - 1;
+                }
+
+
+                drawPageSelectionIndicators(position, numOfDots, getView());
 
                 return false;
             }
@@ -153,10 +171,10 @@ public class MilkEntryFrag extends Fragment {
             final TextView jugAmount;
 
             // Create new progress bar
-            jugProgressBar = new ProgressBar(this.getContext(), null, android.R.attr.progressBarStyleHorizontal);
-            jugText = new TextView(this.getContext());
-            jugAmount = new TextView(this.getContext());
-            jugHolderView = new RelativeLayout(this.getContext());
+            jugProgressBar = new ProgressBar(getContext(), null, android.R.attr.progressBarStyleHorizontal);
+            jugText = new TextView(getContext());
+            jugAmount = new TextView(getContext());
+            jugHolderView = new RelativeLayout(getContext());
             Drawable jugDrawable = getResources().getDrawable(R.drawable.progressbar_states);
 
             //Setup jug holder view
@@ -251,6 +269,7 @@ public class MilkEntryFrag extends Fragment {
             mCarouselContainer.addView(jugHolderView);
         }
 
+        drawPageSelectionIndicators(0, (int) Math.ceil(jug_list.size() / 3.0), view);
         AddData();
 
         return view;
@@ -333,6 +352,28 @@ public class MilkEntryFrag extends Fragment {
          jugAlreadyClicked = false;
          prevJugSelected = "";
          dataSaved = false;
+    }
+
+    private void drawPageSelectionIndicators(int mPosition, int dotsCount, View v){
+        if(jugPagination !=null) {
+            jugPagination.removeAllViews();
+        }
+         ImageView[] dots = new ImageView[dotsCount];
+        for (int i = 0; i < dotsCount; i++) {
+            dots[i] = new ImageView(getContext());
+            if(i==mPosition)
+                dots[i].setImageDrawable(getResources().getDrawable(R.drawable.selected_item));
+            else
+                dots[i].setImageDrawable(getResources().getDrawable(R.drawable.unselected_item));
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+
+            params.setMargins(4, 0, 4, 0);
+            jugPagination.addView(dots[i], params);
+        }
     }
 
 

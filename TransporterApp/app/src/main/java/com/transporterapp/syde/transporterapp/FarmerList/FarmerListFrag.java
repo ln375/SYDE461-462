@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
-import com.transporterapp.syde.transporterapp.DividerItemDecoration;
+import com.transporterapp.syde.transporterapp.UIDecorations.DividerItemDecoration;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
