@@ -301,13 +301,6 @@
 
                     </HorizontalScrollView>
 
-                    <!--<android.support.v7.widget.RecyclerView
-                        android:id="@+id/jugRecyclerView"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        />-->
-
                     <LinearLayout
                         android:id="@+id/viewPagerCountDots"
                         android:layout_width="match_parent"
