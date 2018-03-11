@@ -1,4 +1,4 @@
-package com.transporterapp.syde.transporterapp;
+package com.transporterapp.syde.transporterapp.UIDecorations;
 
 import android.content.Context;
 import android.graphics.Canvas;

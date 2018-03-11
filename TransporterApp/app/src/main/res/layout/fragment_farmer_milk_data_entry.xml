@@ -270,7 +270,8 @@
 
                 <RelativeLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp">
 
                     <ImageView android:id="@+id/previous" android:src="@drawable/arrow_left"
                         android:layout_height="wrap_content" android:layout_width="wrap_content"
@@ -291,7 +292,7 @@
                         android:layout_toLeftOf="@id/next"
                         android:scrollbars="none">
 
-                        <!-- Carousel items container - lays out items horizontally -->
+                        //Carousel items container - lays out items horizontally
                         <LinearLayout android:id="@+id/carousel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -300,6 +301,14 @@
                         </LinearLayout>
 
                     </HorizontalScrollView>
+
+                    <LinearLayout
+                        android:id="@+id/viewPagerCountDots"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/scrollView"
+                        android:gravity="center"
+                        android:orientation="horizontal" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -314,23 +323,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/white"
-            android:padding="8dp">
+            android:background="@color/white">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="Additional Comments:"
-                android:id="@+id/textView5" />
+                android:text="Additional Comments"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:background="#c2d1ea"
+                android:paddingLeft="8dp"
+                android:textColor="#000000"
+                android:textSize="17dp"
+                android:id="@+id/textView5"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text=""
-                android:inputType="textShortMessage"
-                android:id="@+id/comments" />
+                android:inputType="text"
+                android:id="@+id/comments"
+                android:imeOptions="actionDone"
+                android:paddingLeft="8dp"/>
         </LinearLayout>
 
         <Space
