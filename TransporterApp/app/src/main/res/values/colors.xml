@@ -10,6 +10,7 @@
     <color name="lightgreen">#a2e800</color>
     <color name="green">#19d800</color>
     <color name="gray">#8e8e8e</color>
+    <color name="darkgray">#708090</color>
 
 
 </resources>

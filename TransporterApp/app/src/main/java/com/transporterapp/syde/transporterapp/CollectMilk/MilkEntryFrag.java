@@ -2,7 +2,6 @@ package com.transporterapp.syde.transporterapp.CollectMilk;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -130,7 +129,7 @@ public class MilkEntryFrag extends Fragment {
 
                 setArrowVisibility(scrollPosition);
 
-                setJugPagination(scrollPosition);
+                setJugPagination(scrollPosition, true);
 
                 return false;
             }
@@ -246,7 +245,7 @@ public class MilkEntryFrag extends Fragment {
             mCarouselContainer.addView(jugHolderView);
         }
 
-        drawPageSelectionIndicators(0, (int) Math.ceil(jug_list.size() / 3.0), view);
+        drawPageSelectionIndicators(0, (int) Math.ceil(jug_list.size() / 3.0), true);
 
         //adding listener for quality fields
         densityTest.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -262,6 +261,8 @@ public class MilkEntryFrag extends Fragment {
                         Drawable jugDrawable = getResources().getDrawable(R.drawable.disabled_progressbar_states);
                         jugProgressBar.setProgressDrawable(jugDrawable);
                     }
+                    double scrollPosition = mScrollView.getScrollX();
+                    setJugPagination(scrollPosition, false);
                     mScrollView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -279,6 +280,9 @@ public class MilkEntryFrag extends Fragment {
                         Drawable jugDrawable = getResources().getDrawable(R.drawable.enabled_progressbar_states);
                         jugProgressBar.setProgressDrawable(jugDrawable);
                     }
+                    double scrollPosition = mScrollView.getScrollX();
+                    setJugPagination(scrollPosition, true);
+
                     mScrollView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -289,7 +293,7 @@ public class MilkEntryFrag extends Fragment {
 
                             setArrowVisibility(scrollPosition);
 
-                            setJugPagination(scrollPosition);
+                            setJugPagination(scrollPosition, true);
 
                             return false;
                         }
@@ -311,6 +315,8 @@ public class MilkEntryFrag extends Fragment {
                         Drawable jugDrawable = getResources().getDrawable(R.drawable.disabled_progressbar_states);
                         jugProgressBar.setProgressDrawable(jugDrawable);
                     }
+                    double scrollPosition = mScrollView.getScrollX();
+                    setJugPagination(scrollPosition, false);
                     mScrollView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -328,6 +334,9 @@ public class MilkEntryFrag extends Fragment {
                         Drawable jugDrawable = getResources().getDrawable(R.drawable.enabled_progressbar_states);
                         jugProgressBar.setProgressDrawable(jugDrawable);
                     }
+                    double scrollPosition = mScrollView.getScrollX();
+                    setJugPagination(scrollPosition, true);
+
                     mScrollView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -338,7 +347,7 @@ public class MilkEntryFrag extends Fragment {
 
                             setArrowVisibility(scrollPosition);
 
-                            setJugPagination(scrollPosition);
+                            setJugPagination(scrollPosition, true);
 
                             return false;
                         }
@@ -360,6 +369,8 @@ public class MilkEntryFrag extends Fragment {
                         Drawable jugDrawable = getResources().getDrawable(R.drawable.disabled_progressbar_states);
                         jugProgressBar.setProgressDrawable(jugDrawable);
                     }
+                    double scrollPosition = mScrollView.getScrollX();
+                    setJugPagination(scrollPosition, false);
                     mScrollView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -377,6 +388,9 @@ public class MilkEntryFrag extends Fragment {
                         Drawable jugDrawable = getResources().getDrawable(R.drawable.enabled_progressbar_states);
                         jugProgressBar.setProgressDrawable(jugDrawable);
                     }
+                    double scrollPosition = mScrollView.getScrollX();
+                    setJugPagination(scrollPosition, true);
+
                     mScrollView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -387,7 +401,7 @@ public class MilkEntryFrag extends Fragment {
 
                             setArrowVisibility(scrollPosition);
 
-                            setJugPagination(scrollPosition);
+                            setJugPagination(scrollPosition, true);
 
                             return false;
                         }
@@ -479,7 +493,7 @@ public class MilkEntryFrag extends Fragment {
          dataSaved = false;
     }
 
-    private void drawPageSelectionIndicators(int mPosition, int dotsCount, View v){
+    private void drawPageSelectionIndicators(int mPosition, int dotsCount, boolean enabled){
         if(jugPagination !=null) {
             jugPagination.removeAllViews();
         }
@@ -487,7 +501,12 @@ public class MilkEntryFrag extends Fragment {
         for (int i = 0; i < dotsCount; i++) {
             dots[i] = new ImageView(getContext());
             if(i==mPosition)
-                dots[i].setImageDrawable(getResources().getDrawable(R.drawable.selected_item));
+                if (enabled) {
+                    dots[i].setImageDrawable(getResources().getDrawable(R.drawable.enabled_selected_item));
+                } else {
+                    dots[i].setImageDrawable(getResources().getDrawable(R.drawable.disabled_selected_item));
+                }
+
             else
                 dots[i].setImageDrawable(getResources().getDrawable(R.drawable.unselected_item));
 
@@ -514,7 +533,7 @@ public class MilkEntryFrag extends Fragment {
         }
     }
 
-    public void setJugPagination(double scrollPosition){
+    public void setJugPagination(double scrollPosition, boolean enabled){
         int numOfDots = (int) Math.ceil(jug_list.size() / 3.0);
         double scrollSeparator = maxScrollX / numOfDots;
 
@@ -530,6 +549,6 @@ public class MilkEntryFrag extends Fragment {
         }
 
 
-        drawPageSelectionIndicators(position, numOfDots, getView());
+        drawPageSelectionIndicators(position, numOfDots, enabled);
     }
 }
