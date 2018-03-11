@@ -57,7 +57,7 @@ public class MilkEntryFrag extends Fragment {
     private ImageView leftArrow;
     private ImageView rightArrow;
     private int maxScrollX;
-
+    private List<Jug> jug_list = new ArrayList<Jug>();
 
     private static final String FARMER_NAME = "farmername";
 
@@ -106,7 +106,7 @@ public class MilkEntryFrag extends Fragment {
 
 
         Cursor dbResponse = dbUtil.selectStatement("jug","transporter_id", "=", getArguments().getString("transporterId"), context);
-        final List<Jug> jug_list = commonUtil.convertCursorToJugList(dbResponse);
+        jug_list = commonUtil.convertCursorToJugList(dbResponse);
 
         leftArrow.setVisibility(View.INVISIBLE);
 
@@ -209,19 +209,18 @@ public class MilkEntryFrag extends Fragment {
                         }
 
                         if (jugAlreadyClicked) {
-                            Float tempMilkVol = milkVol;
+                            String otherJugId = jug_list.get(Integer.valueOf(prevJugSelected)).getId();
+                            List<String> temp = dbUtil.selectStatement("jug", "currentVolume", "id", "=", otherJugId, v.getContext());
+                            String originalMilkVol = temp.get(0);
+
                             RelativeLayout otherJug = (RelativeLayout) mCarouselContainer.getChildAt(Integer.valueOf(prevJugSelected));
                             TextView prevJugAmount = (TextView) otherJug.getChildAt(2);
                             ProgressBar prevProgressBar = (ProgressBar) otherJug.getChildAt(0);
 
-                            String originalJugAmount = prevJugAmount.getText().toString();
-                            Float jugAmountText = Float.valueOf(originalJugAmount.substring(0, originalJugAmount.length() - 1));
-
-                            jugAmountText -= tempMilkVol;
-                            int progress = (int) Math.round(jugAmountText - tempMilkVol);
+                            int progress = (int) Math.round(Float.parseFloat(originalMilkVol));
                             prevProgressBar.setProgress(progress);
 
-                            prevJugAmount.setText(String.valueOf(jugAmountText) + "L");
+                            prevJugAmount.setText(originalMilkVol + "L");
                         }
 
                         if((milkVol < jugSize - jugProgressBar.getProgress()) && milkVol < jugSize){
