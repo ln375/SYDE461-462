@@ -2,6 +2,7 @@ package com.transporterapp.syde.transporterapp.CollectMilk;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -127,33 +128,9 @@ public class MilkEntryFrag extends Fragment {
 
                 double scrollPosition = mScrollView.getScrollX();
 
-                if (scrollPosition == 0){
-                    leftArrow.setVisibility(View.INVISIBLE);
-                } else {
-                    leftArrow.setVisibility(View.VISIBLE);
-                }
-                if (scrollPosition == maxScrollX){
-                    rightArrow.setVisibility(View.INVISIBLE);
-                } else {
-                    rightArrow.setVisibility(View.VISIBLE);
-                }
+                setArrowVisibility(scrollPosition);
 
-                int numOfDots = (int) Math.ceil(jug_list.size() / 3.0);
-                double scrollSeparator = maxScrollX / numOfDots;
-
-                int position = 0;
-                double temp = scrollSeparator;
-                while (scrollPosition > temp) {
-                    temp += scrollSeparator;
-                    position++;
-                }
-
-                if (scrollPosition == maxScrollX) {
-                    position = numOfDots - 1;
-                }
-
-
-                drawPageSelectionIndicators(position, numOfDots, getView());
+                setJugPagination(scrollPosition);
 
                 return false;
             }
@@ -175,7 +152,7 @@ public class MilkEntryFrag extends Fragment {
             jugText = new TextView(getContext());
             jugAmount = new TextView(getContext());
             jugHolderView = new RelativeLayout(getContext());
-            Drawable jugDrawable = getResources().getDrawable(R.drawable.progressbar_states);
+            Drawable jugDrawable = getResources().getDrawable(R.drawable.enabled_progressbar_states);
 
             //Setup jug holder view
             RelativeLayout.LayoutParams holderParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -270,6 +247,154 @@ public class MilkEntryFrag extends Fragment {
         }
 
         drawPageSelectionIndicators(0, (int) Math.ceil(jug_list.size() / 3.0), view);
+
+        //adding listener for quality fields
+        densityTest.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.density_bad) {
+                    milkVolume.setEnabled(false);
+                    mCarouselContainer.setEnabled(false);
+                    for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
+                        RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
+                        ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
+                        jugProgressBar.setEnabled(false);
+                        Drawable jugDrawable = getResources().getDrawable(R.drawable.disabled_progressbar_states);
+                        jugProgressBar.setProgressDrawable(jugDrawable);
+                    }
+                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View view, MotionEvent motionEvent) {
+                            return true;
+                        }
+                    });
+                    Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_LONG).show();
+                } else {
+                    milkVolume.setEnabled(true);
+                    mCarouselContainer.setEnabled(true);
+                    for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
+                        RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
+                        ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
+                        jugProgressBar.setEnabled(true);
+                        Drawable jugDrawable = getResources().getDrawable(R.drawable.enabled_progressbar_states);
+                        jugProgressBar.setProgressDrawable(jugDrawable);
+                    }
+                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View view, MotionEvent motionEvent) {
+                            Log.e("ScrollValue", Integer.toString(mScrollView.getScrollX()));
+                            Log.e("Max value", Integer.toString(maxScrollX));
+
+                            double scrollPosition = mScrollView.getScrollX();
+
+                            setArrowVisibility(scrollPosition);
+
+                            setJugPagination(scrollPosition);
+
+                            return false;
+                        }
+                    });
+                }
+            }
+        });
+
+        smellTest.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.smell_bad) {
+                    milkVolume.setEnabled(false);
+                    mCarouselContainer.setEnabled(false);
+                    for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
+                        RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
+                        ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
+                        jugProgressBar.setEnabled(false);
+                        Drawable jugDrawable = getResources().getDrawable(R.drawable.disabled_progressbar_states);
+                        jugProgressBar.setProgressDrawable(jugDrawable);
+                    }
+                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View view, MotionEvent motionEvent) {
+                            return true;
+                        }
+                    });
+                    Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_LONG).show();
+                } else {
+                    milkVolume.setEnabled(true);
+                    mCarouselContainer.setEnabled(true);
+                    for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
+                        RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
+                        ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
+                        jugProgressBar.setEnabled(true);
+                        Drawable jugDrawable = getResources().getDrawable(R.drawable.enabled_progressbar_states);
+                        jugProgressBar.setProgressDrawable(jugDrawable);
+                    }
+                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View view, MotionEvent motionEvent) {
+                            Log.e("ScrollValue", Integer.toString(mScrollView.getScrollX()));
+                            Log.e("Max value", Integer.toString(maxScrollX));
+
+                            double scrollPosition = mScrollView.getScrollX();
+
+                            setArrowVisibility(scrollPosition);
+
+                            setJugPagination(scrollPosition);
+
+                            return false;
+                        }
+                    });
+                }
+            }
+        });
+
+        alcoholTest.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.alcohol_bad) {
+                    milkVolume.setEnabled(false);
+                    mCarouselContainer.setEnabled(false);
+                    for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
+                        RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
+                        ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
+                        jugProgressBar.setEnabled(false);
+                        Drawable jugDrawable = getResources().getDrawable(R.drawable.disabled_progressbar_states);
+                        jugProgressBar.setProgressDrawable(jugDrawable);
+                    }
+                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View view, MotionEvent motionEvent) {
+                            return true;
+                        }
+                    });
+                    Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_LONG).show();
+                } else {
+                    milkVolume.setEnabled(true);
+                    mCarouselContainer.setEnabled(true);
+                    for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
+                        RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
+                        ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
+                        jugProgressBar.setEnabled(true);
+                        Drawable jugDrawable = getResources().getDrawable(R.drawable.enabled_progressbar_states);
+                        jugProgressBar.setProgressDrawable(jugDrawable);
+                    }
+                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View view, MotionEvent motionEvent) {
+                            Log.e("ScrollValue", Integer.toString(mScrollView.getScrollX()));
+                            Log.e("Max value", Integer.toString(maxScrollX));
+
+                            double scrollPosition = mScrollView.getScrollX();
+
+                            setArrowVisibility(scrollPosition);
+
+                            setJugPagination(scrollPosition);
+
+                            return false;
+                        }
+                    });
+                }
+            }
+        });
         AddData();
 
         return view;
@@ -376,5 +501,35 @@ public class MilkEntryFrag extends Fragment {
         }
     }
 
+    public void setArrowVisibility(double scrollPosition){
+        if (scrollPosition == 0){
+            leftArrow.setVisibility(View.INVISIBLE);
+        } else {
+            leftArrow.setVisibility(View.VISIBLE);
+        }
+        if (scrollPosition == maxScrollX){
+            rightArrow.setVisibility(View.INVISIBLE);
+        } else {
+            rightArrow.setVisibility(View.VISIBLE);
+        }
+    }
 
+    public void setJugPagination(double scrollPosition){
+        int numOfDots = (int) Math.ceil(jug_list.size() / 3.0);
+        double scrollSeparator = maxScrollX / numOfDots;
+
+        int position = 0;
+        double temp = scrollSeparator;
+        while (scrollPosition > temp) {
+            temp += scrollSeparator;
+            position++;
+        }
+
+        if (scrollPosition == maxScrollX) {
+            position = numOfDots - 1;
+        }
+
+
+        drawPageSelectionIndicators(position, numOfDots, getView());
+    }
 }
