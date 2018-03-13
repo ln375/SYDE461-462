@@ -151,10 +151,10 @@ public class MilkEntryFrag extends Fragment {
             //Setup jug holder view
             RelativeLayout.LayoutParams holderParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             jugHolderView.setLayoutParams(holderParams);
-            jugHolderView.setPadding(10, 0, 10, 0);
+            jugHolderView.setPadding(10, 0, 10, 4);
 
             // Create new layout parameters for progress bar
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(200, 300);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(imageWidth, imageWidth);
             // Apply the layout parameters for progress bar
             jugProgressBar.setLayoutParams(lp);
             jugProgressBar.setProgress(Math.round(Float.parseFloat(jug_list.get(i).getCurrentVolume())));
@@ -497,7 +497,7 @@ public class MilkEntryFrag extends Fragment {
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
 
-            params.setMargins(4, 0, 4, 4);
+            params.setMargins(4, 4, 4, 4);
             jugPagination.addView(dots[i], params);
         }
     }
