@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
@@ -21,8 +21,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Quality"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:background="#c2d1ea"
                 android:paddingLeft="8dp"
                 android:textColor="#000000"
@@ -200,7 +200,6 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -211,8 +210,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Quantity"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:background="#c2d1ea"
                 android:paddingLeft="8dp"
                 android:textColor="#000000"
@@ -229,6 +228,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
+                    android:layout_weight="1"
                     android:text="Milk Volume:"
                     android:id="@+id/textView3"/>
 
@@ -236,20 +236,24 @@
                     android:id="@+id/milk_volume"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="10"
+                    android:layout_weight="2"
                     android:imeOptions="actionDone"
                     android:inputType="number|numberDecimal" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="L"/>
+                    android:layout_weight="1"
+                    android:text="L"
+                    android:textSize="14sp"/>
+
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -324,8 +328,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Additional Comments"
-                android:paddingTop="13dp"
-                android:paddingBottom="13dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:background="#c2d1ea"
                 android:paddingLeft="8dp"
                 android:textColor="#000000"
@@ -350,10 +354,16 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@android:color/holo_green_light"
             android:textSize="16sp"
             android:text="Save"
             android:id="@+id/milk_record_save_data"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
 
     </LinearLayout>
 
