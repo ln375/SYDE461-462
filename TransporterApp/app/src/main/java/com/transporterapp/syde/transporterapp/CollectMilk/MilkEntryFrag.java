@@ -122,13 +122,8 @@ public class MilkEntryFrag extends Fragment {
         mScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.e("ScrollValue", Integer.toString(mScrollView.getScrollX()));
-                Log.e("Max value", Integer.toString(maxScrollX));
-
                 double scrollPosition = mScrollView.getScrollX();
-
                 setArrowVisibility(scrollPosition);
-
                 setJugPagination(scrollPosition, true);
 
                 return false;
@@ -286,13 +281,8 @@ public class MilkEntryFrag extends Fragment {
                     mScrollView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View view, MotionEvent motionEvent) {
-                            Log.e("ScrollValue", Integer.toString(mScrollView.getScrollX()));
-                            Log.e("Max value", Integer.toString(maxScrollX));
-
                             double scrollPosition = mScrollView.getScrollX();
-
                             setArrowVisibility(scrollPosition);
-
                             setJugPagination(scrollPosition, true);
 
                             return false;
@@ -340,13 +330,8 @@ public class MilkEntryFrag extends Fragment {
                     mScrollView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View view, MotionEvent motionEvent) {
-                            Log.e("ScrollValue", Integer.toString(mScrollView.getScrollX()));
-                            Log.e("Max value", Integer.toString(maxScrollX));
-
                             double scrollPosition = mScrollView.getScrollX();
-
                             setArrowVisibility(scrollPosition);
-
                             setJugPagination(scrollPosition, true);
 
                             return false;
@@ -394,9 +379,6 @@ public class MilkEntryFrag extends Fragment {
                     mScrollView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View view, MotionEvent motionEvent) {
-                            Log.e("ScrollValue", Integer.toString(mScrollView.getScrollX()));
-                            Log.e("Max value", Integer.toString(maxScrollX));
-
                             double scrollPosition = mScrollView.getScrollX();
 
                             setArrowVisibility(scrollPosition);
@@ -515,7 +497,7 @@ public class MilkEntryFrag extends Fragment {
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
 
-            params.setMargins(4, 0, 4, 0);
+            params.setMargins(4, 0, 4, 4);
             jugPagination.addView(dots[i], params);
         }
     }
