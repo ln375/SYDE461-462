@@ -137,7 +137,12 @@ public class Main extends AppCompatActivity
             if(item.getTitle().equals("History Screen")) {
                 Bundle bundle = new Bundle();
                 bundle.putString("userid", userId);
-                histListFrag.setArguments(bundle);
+                if (histListFrag.getArguments() != null) {
+                    histListFrag.getArguments().clear();
+                    histListFrag.getArguments().putAll(bundle);
+                } else {
+                    histListFrag.setArguments(bundle);
+                }
                 fragmentManager.beginTransaction().replace(R.id.container, histListFrag).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if(item.getTitle().equals("Add New Milk Record")) {
