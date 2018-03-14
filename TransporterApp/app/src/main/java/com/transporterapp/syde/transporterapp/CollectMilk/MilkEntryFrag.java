@@ -182,10 +182,9 @@ public class MilkEntryFrag extends Fragment {
                 public void onClick(View v) {
                     if (milkVolume.getText().toString().isEmpty()) {
                         milkVolume.setError("Milk volume is required");
-                        Toast.makeText(getContext(),"Please enter a valid milk volume", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),"Please enter a milk volume", Toast.LENGTH_LONG).show();
                     } else if (commonUtil.isNumeric(milkVolume.getText().toString()) == false) {
-                        milkVolume.setError("Milk volume is required");
-                        Toast.makeText(getContext(),"Please enter a valid milk volume", Toast.LENGTH_LONG).show();
+                        milkVolume.setError("Invalid milk volume error:\nMilk volume must be a valid number (e.g. \"3.5\", \"3\")");
                     } else {
                         int position = (Integer) v.getTag();
                         float milkVol;

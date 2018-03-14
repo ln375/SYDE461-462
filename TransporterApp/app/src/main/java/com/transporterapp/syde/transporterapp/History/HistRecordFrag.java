@@ -55,7 +55,7 @@ public class HistRecordFrag extends Fragment {
         date.setText("Date: " + getArguments().getString("date"));
 
         TextView time = (TextView) view.findViewById(R.id.hist_record_time);
-        time.setText("Date: " + getArguments().getString("time"));
+        time.setText("Time: " + getArguments().getString("time"));
 
         Cursor curJug = dbUtil.selectStatement(DatabaseConstants.tblJug, DatabaseConstants.id, "=", getArguments().getString("jugId"), context);
         Jug jug = commonUtil.convertCursorToJug(curJug);
