@@ -23,7 +23,6 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
     private final ArrayList<FarmerItem> mValues;
     private final FarmerListFrag.OnListFragmentInteractionListener mListener;
     private FarmerFilter farmerFilter;
-    private ArrayList<FarmerItem> farmerItemList;
     private ArrayList<FarmerItem> filteredList;
 
     public MyFarmerRecyclerViewAdapter(ArrayList<FarmerItem> farmerItemList, FarmerListFrag.OnListFragmentInteractionListener listener) {
@@ -47,6 +46,8 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
         holder.mItem = filteredList.get(position);
         //holder.mIdView.setText(filteredList.get(position).getId());
         String farmerName = filteredList.get(position).getFirstName() + " " + filteredList.get(position).getLastName();
+        String phoneNumber = filteredList.get(position).getPhoneNumber();
+        holder.mIdView.setText(phoneNumber);
         holder.mContentView.setText(farmerName);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +76,7 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
+            mIdView = (TextView) view.findViewById(R.id.farmerid);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
 
