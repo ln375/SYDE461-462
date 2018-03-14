@@ -369,6 +369,7 @@ public class MilkEntryFrag extends Fragment {
          jugAlreadyClicked = false;
          prevJugSelected = "";
          dataSaved = false;
+         milkVolume.setError(null);
     }
 
     private void drawPageSelectionIndicators(int mPosition, int dotsCount, boolean enabled){
