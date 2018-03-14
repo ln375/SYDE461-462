@@ -19,6 +19,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -66,6 +67,7 @@ public class MilkEntryFrag extends Fragment {
     private String prevJugSelected = "";
     private String currentJugSelection = "";
     private boolean dataSaved = false;
+    private boolean poorQuality = false;
 
     private int jugSize = 20; //Placeholder
 
@@ -247,47 +249,12 @@ public class MilkEntryFrag extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.density_bad) {
-                    milkVolume.setEnabled(false);
-                    mCarouselContainer.setEnabled(false);
-                    for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
-                        RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
-                        ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
-                        jugProgressBar.setEnabled(false);
-                        Drawable jugDrawable = getResources().getDrawable(R.drawable.disabled_progressbar_states);
-                        jugProgressBar.setProgressDrawable(jugDrawable);
-                    }
-                    double scrollPosition = mScrollView.getScrollX();
-                    setJugPagination(scrollPosition, false);
-                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View view, MotionEvent motionEvent) {
-                            return true;
-                        }
-                    });
-                    Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_LONG).show();
+                    disableFields();
                 } else {
-                    milkVolume.setEnabled(true);
-                    mCarouselContainer.setEnabled(true);
-                    for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
-                        RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
-                        ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
-                        jugProgressBar.setEnabled(true);
-                        Drawable jugDrawable = getResources().getDrawable(R.drawable.enabled_progressbar_states);
-                        jugProgressBar.setProgressDrawable(jugDrawable);
+                    //check to see if the other quality ratings are bad
+                    if (smellTest.getCheckedRadioButtonId() != R.id.smell_bad && alcoholTest.getCheckedRadioButtonId()!= R.id.alcohol_bad) {
+                        enableFields();
                     }
-                    double scrollPosition = mScrollView.getScrollX();
-                    setJugPagination(scrollPosition, true);
-
-                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View view, MotionEvent motionEvent) {
-                            double scrollPosition = mScrollView.getScrollX();
-                            setArrowVisibility(scrollPosition);
-                            setJugPagination(scrollPosition, true);
-
-                            return false;
-                        }
-                    });
                 }
             }
         });
@@ -296,47 +263,12 @@ public class MilkEntryFrag extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.smell_bad) {
-                    milkVolume.setEnabled(false);
-                    mCarouselContainer.setEnabled(false);
-                    for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
-                        RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
-                        ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
-                        jugProgressBar.setEnabled(false);
-                        Drawable jugDrawable = getResources().getDrawable(R.drawable.disabled_progressbar_states);
-                        jugProgressBar.setProgressDrawable(jugDrawable);
-                    }
-                    double scrollPosition = mScrollView.getScrollX();
-                    setJugPagination(scrollPosition, false);
-                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View view, MotionEvent motionEvent) {
-                            return true;
-                        }
-                    });
-                    Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_LONG).show();
+                   disableFields();
                 } else {
-                    milkVolume.setEnabled(true);
-                    mCarouselContainer.setEnabled(true);
-                    for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
-                        RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
-                        ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
-                        jugProgressBar.setEnabled(true);
-                        Drawable jugDrawable = getResources().getDrawable(R.drawable.enabled_progressbar_states);
-                        jugProgressBar.setProgressDrawable(jugDrawable);
+                    //check to see if the other quality ratings are bad
+                    if (densityTest.getCheckedRadioButtonId() != R.id.density_bad && alcoholTest.getCheckedRadioButtonId()!= R.id.alcohol_bad) {
+                        enableFields();
                     }
-                    double scrollPosition = mScrollView.getScrollX();
-                    setJugPagination(scrollPosition, true);
-
-                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View view, MotionEvent motionEvent) {
-                            double scrollPosition = mScrollView.getScrollX();
-                            setArrowVisibility(scrollPosition);
-                            setJugPagination(scrollPosition, true);
-
-                            return false;
-                        }
-                    });
                 }
             }
         });
@@ -345,49 +277,12 @@ public class MilkEntryFrag extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.alcohol_bad) {
-                    milkVolume.setEnabled(false);
-                    mCarouselContainer.setEnabled(false);
-                    for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
-                        RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
-                        ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
-                        jugProgressBar.setEnabled(false);
-                        Drawable jugDrawable = getResources().getDrawable(R.drawable.disabled_progressbar_states);
-                        jugProgressBar.setProgressDrawable(jugDrawable);
-                    }
-                    double scrollPosition = mScrollView.getScrollX();
-                    setJugPagination(scrollPosition, false);
-                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View view, MotionEvent motionEvent) {
-                            return true;
-                        }
-                    });
-                    Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_LONG).show();
+                    disableFields();
                 } else {
-                    milkVolume.setEnabled(true);
-                    mCarouselContainer.setEnabled(true);
-                    for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
-                        RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
-                        ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
-                        jugProgressBar.setEnabled(true);
-                        Drawable jugDrawable = getResources().getDrawable(R.drawable.enabled_progressbar_states);
-                        jugProgressBar.setProgressDrawable(jugDrawable);
+                    //check to see if the other quality ratings are bad
+                    if (smellTest.getCheckedRadioButtonId() != R.id.smell_bad && densityTest.getCheckedRadioButtonId()!= R.id.density_bad) {
+                        enableFields();
                     }
-                    double scrollPosition = mScrollView.getScrollX();
-                    setJugPagination(scrollPosition, true);
-
-                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View view, MotionEvent motionEvent) {
-                            double scrollPosition = mScrollView.getScrollX();
-
-                            setArrowVisibility(scrollPosition);
-
-                            setJugPagination(scrollPosition, true);
-
-                            return false;
-                        }
-                    });
                 }
             }
         });
@@ -403,9 +298,9 @@ public class MilkEntryFrag extends Fragment {
                     public void onClick(View v) {
                         String farmerId = getArguments().getString("farmerid");
                         String transporterId = getArguments().getString("transporterId");
-                        String smellIndex = String.valueOf(smellTest.indexOfChild(getView().findViewById(smellTest.getCheckedRadioButtonId())));
-                        String densityIndex = String.valueOf(densityTest.indexOfChild(getView().findViewById(densityTest.getCheckedRadioButtonId())));
-                        String alcoholIndex = String.valueOf(alcoholTest.indexOfChild(getView().findViewById(alcoholTest.getCheckedRadioButtonId())));
+                        String smellRating = convertQualityRating(smellTest);
+                        String densityRating = convertQualityRating(densityTest);
+                        String alcoholRating = convertQualityRating(alcoholTest);
                         String jugId = jugIdClicked;
                         String comments = txtComments.getText().toString();
                         String milkweight = milkVolume.getText().toString();
@@ -418,11 +313,11 @@ public class MilkEntryFrag extends Fragment {
                         String todayTime = dateFormat.format(date);
 
                         // Make Milk volume required field
-                        if(TextUtils.isEmpty(milkweight)){
+                        if(TextUtils.isEmpty(milkweight) && poorQuality == false){
                             milkVolume.setError("Milk volume is required");
                             Toast.makeText(getContext(),"Please enter a valid milk volume", Toast.LENGTH_LONG).show();
                         } else {
-                            if (jugAlreadyClicked == false) {
+                            if (jugAlreadyClicked == false && poorQuality == false) {
                                 Toast.makeText(getContext(),"Please select a jug", Toast.LENGTH_LONG).show();
                             } else {
                                 List<String> columns = new ArrayList<>();
@@ -430,7 +325,7 @@ public class MilkEntryFrag extends Fragment {
                                 columns.remove(DatabaseConstants.coltrFarmerTransporter.length - 1);
                                 columns.remove(0);
 
-                                List<String> values = Arrays.asList(transporterId, farmerId, jugId, todayDate, todayTime, milkweight, alcoholIndex, smellIndex, comments, densityIndex);
+                                List<String> values = Arrays.asList(transporterId, farmerId, jugId, todayDate, todayTime, milkweight, alcoholRating, smellRating, comments, densityRating);
                                 saveData(columns, values, v.getContext());
 
                                 Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();
@@ -459,8 +354,10 @@ public class MilkEntryFrag extends Fragment {
         dbUtil.insertStatement(DatabaseConstants.tbltrFarmerTransporter, columns, values, context);
         Cursor cursor = dbUtil.selectStatement(DatabaseConstants.tblJug, DatabaseConstants.id, "=", currentJugSelection, context);
         Jug jug = commonUtil.convertCursorToJug(cursor);
-        double finalVolume = Double.valueOf(jug.getCurrentVolume()) + Double.valueOf(values.get(5));
-        dbUtil.updateStatement(DatabaseConstants.tblJug, DatabaseConstants.currentVolume, String.valueOf(finalVolume), DatabaseConstants.id, "=", currentJugSelection, context);
+        if (jug != null) {
+            double finalVolume = Double.valueOf(jug.getCurrentVolume()) + Double.valueOf(values.get(5));
+            dbUtil.updateStatement(DatabaseConstants.tblJug, DatabaseConstants.currentVolume, String.valueOf(finalVolume), DatabaseConstants.id, "=", currentJugSelection, context);
+        }
         dataSaved = true;
     }
 
@@ -532,5 +429,70 @@ public class MilkEntryFrag extends Fragment {
 
 
         drawPageSelectionIndicators(position, numOfDots, enabled);
+    }
+
+    public void disableFields(){
+        milkVolume.setEnabled(false);
+        mCarouselContainer.setEnabled(false);
+        for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
+            RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
+            ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
+            jugProgressBar.setEnabled(false);
+            Drawable jugDrawable = getResources().getDrawable(R.drawable.disabled_progressbar_states);
+            jugProgressBar.setProgressDrawable(jugDrawable);
+        }
+        double scrollPosition = mScrollView.getScrollX();
+        setJugPagination(scrollPosition, false);
+        mScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
+            }
+        });
+        poorQuality = true;
+        Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_LONG).show();
+    }
+
+    public void enableFields(){
+        milkVolume.setEnabled(true);
+        mCarouselContainer.setEnabled(true);
+        for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
+            RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(i);
+            ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
+            jugProgressBar.setEnabled(true);
+            Drawable jugDrawable = getResources().getDrawable(R.drawable.enabled_progressbar_states);
+            jugProgressBar.setProgressDrawable(jugDrawable);
+        }
+        double scrollPosition = mScrollView.getScrollX();
+        setJugPagination(scrollPosition, true);
+        poorQuality = false;
+        mScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                double scrollPosition = mScrollView.getScrollX();
+
+                setArrowVisibility(scrollPosition);
+
+                setJugPagination(scrollPosition, true);
+
+                return false;
+            }
+        });
+    }
+
+    public String convertQualityRating(RadioGroup radioGroup){
+        String rating = "1";
+        List<String> qualityRating = new ArrayList<>();
+        if (radioGroup.getCheckedRadioButtonId() == R.id.density_bad || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_bad || radioGroup.getCheckedRadioButtonId() == R.id.smell_bad) {
+            qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "\'Bad\'", getContext());
+        } else if (radioGroup.getCheckedRadioButtonId() == R.id.density_good || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_good || radioGroup.getCheckedRadioButtonId() == R.id.smell_good) {
+            qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "\'Good\'", getContext());
+        } else if (radioGroup.getCheckedRadioButtonId() == R.id.density_okay || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_okay || radioGroup.getCheckedRadioButtonId() == R.id.smell_okay) {
+            qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "\'Okay\'", getContext());
+        }
+        if (qualityRating.size() > 0) {
+            rating = qualityRating.get(0);
+        }
+        return rating;
     }
 }

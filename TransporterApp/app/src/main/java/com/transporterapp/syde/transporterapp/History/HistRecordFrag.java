@@ -60,17 +60,28 @@ public class HistRecordFrag extends Fragment {
         Cursor curJug = dbUtil.selectStatement(DatabaseConstants.tblJug, DatabaseConstants.id, "=", getArguments().getString("jugId"), context);
         Jug jug = commonUtil.convertCursorToJug(curJug);
         TextView txtJug = (TextView) view.findViewById(R.id.hist_record_jug);
-        txtJug.setText("Jug: " + jug.getSize() + " L " + jug.getType());
+        if (jug != null) {
+            txtJug.setText("Jug: " + jug.getSize() + " L " + jug.getType());
+        } else {
+            txtJug.setText("Jug: N/A");
+        }
+
 
         TextView milkWeight = (TextView) view.findViewById(R.id.hist_record_milk_volume);
-        milkWeight.setText("Milk Weight: " + getArguments().getString("milkweight"));
+        String milk = getArguments().getString("milkweight");
+        if (milk.isEmpty()) {
+            milkWeight.setText("Milk Weight: N/A");
+        } else {
+            milkWeight.setText("Milk Weight: " + getArguments().getString("milkweight"));
+        }
+
 
         TextView alcohol = (TextView) view.findViewById(R.id.hist_record_alcohol);
         String temp = "N/A";
         if (getArguments().getString("alcohol").isEmpty()){
             alcohol.setText("Alcohol Test: " + temp);
         } else {
-            temp = commonUtil.getQualityRating(getArguments().getString("alcohol"));
+            temp = commonUtil.getQualityRating(getArguments().getString("alcohol"), context);
             alcohol.setText("Alcohol Test: " + temp);
         }
 
@@ -79,7 +90,7 @@ public class HistRecordFrag extends Fragment {
             temp = "N/A";
             density.setText("Density Test: " + temp);
         } else {
-            temp = commonUtil.getQualityRating(getArguments().getString("density"));
+            temp = commonUtil.getQualityRating(getArguments().getString("density"), context);
             density.setText("Density Test: " + temp);
         }
 
@@ -88,13 +99,13 @@ public class HistRecordFrag extends Fragment {
             temp = "N/A";
             smell.setText("Smell Test: " + temp);
         } else {
-            temp = commonUtil.getQualityRating(getArguments().getString("smell"));
+            temp = commonUtil.getQualityRating(getArguments().getString("smell"), context);
             smell.setText("Smell Test: " + temp);
         }
 
         TextView comments = (TextView) view.findViewById(R.id.hist_record_comments);
         if (getArguments().getString("comments").isEmpty()){
-            comments.setText("Comments: " + temp);
+            comments.setText("Comments: N/A");
         } else {
             comments.setText("Comments: " + getArguments().getString("comments"));
         }

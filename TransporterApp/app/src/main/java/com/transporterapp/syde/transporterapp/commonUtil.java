@@ -1,5 +1,6 @@
 package com.transporterapp.syde.transporterapp;
 
+import android.content.Context;
 import android.database.Cursor;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
@@ -7,6 +8,7 @@ import com.transporterapp.syde.transporterapp.DataStructures.Jug;
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.DataStructures.TransporterItem;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
+import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -170,26 +172,13 @@ public class commonUtil {
     }
 
 
-    public static String getQualityRating(String index) {
-        String temp = "";
-        switch (index) {
-            case "0":
-                temp = "Good";
-                break;
-            case "1":
-                temp = "Okay";
-                break;
-            case "2":
-                temp = "Bad";
-                break;
-            case "3":
-                temp = "N/A";
-                break;
-            default:
-                temp = "N/A";
-
+    public static String getQualityRating(String index, Context context) {
+        List<String> qualityRating = dbUtil.selectStatement("qualityratings", "rating", "id", "=", index, context);
+        if (qualityRating != null && qualityRating.size() > 0) {
+            return qualityRating.get(0);
+        } else {
+            return "";
         }
-        return temp;
     }
 
     public static String getMonthofYear(int index) {
