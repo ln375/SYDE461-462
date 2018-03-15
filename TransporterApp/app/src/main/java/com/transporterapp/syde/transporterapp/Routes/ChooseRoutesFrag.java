@@ -1,6 +1,5 @@
-package com.transporterapp.syde.transporterapp.FarmerList;
+package com.transporterapp.syde.transporterapp.Routes;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,21 +7,18 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
-import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
-import com.transporterapp.syde.transporterapp.UIDecorations.DividerItemDecoration;
+import com.transporterapp.syde.transporterapp.DataStructures.Routes;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
+import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,25 +27,25 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextListener{
+public class ChooseRoutesFrag extends Fragment {
 
+    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
+    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private MyFarmerRecyclerViewAdapter farmerRecyclerViewAdapter;
-    private String routeId = "";
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public FarmerListFrag() {
+    public ChooseRoutesFrag() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static FarmerListFrag newInstance(int columnCount) {
-        FarmerListFrag fragment = new FarmerListFrag();
+    public static ChooseRoutesFrag newInstance(int columnCount) {
+        ChooseRoutesFrag fragment = new ChooseRoutesFrag();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -59,50 +55,36 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-
-        String date = commonUtil.getCurrentDate();
 
         // Set title bar
-        ((Main) getActivity()).setActionBarTitle(date);
+        //((Main) getActivity()).getSupportActionBar().hide();
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-            routeId = getArguments().getString("routeId");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_farmer_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_route_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (view instanceof LinearLayout) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.routes);
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-
-            initFarmerList(recyclerView, context);
-           }
+            Cursor records = dbUtil.selectStatement(DatabaseConstants.tblRoute, "" , "", "", context);
+            List<Routes> routesList = commonUtil.convertCursortToRouteItem(records);
+            recyclerView.setAdapter(new MyRouteRecyclerViewAdapter(routesList, mListener));
+        }
         return view;
     }
 
-    /*
-    * Initialize farmer list
-     */
-    private void initFarmerList(RecyclerView recyclerView, Context context){
-        Cursor farmers = dbUtil.selectStatement("farmers", "route_id", "=", routeId, context);
-        List<FarmerItem> convertedFarmerList = commonUtil.convertCursorToFarmerItemList(farmers);
-        ArrayList<FarmerItem> convertedFarmerArrayList = new ArrayList<FarmerItem>(convertedFarmerList);
-        farmerRecyclerViewAdapter = new MyFarmerRecyclerViewAdapter(convertedFarmerArrayList, mListener);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
-        recyclerView.setAdapter(farmerRecyclerViewAdapter);
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -121,32 +103,6 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         mListener = null;
     }
 
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.search_menu, menu);
-        super.onCreateOptionsMenu(menu,inflater);
-
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-        searchView.setSubmitButtonEnabled(true);
-        searchView.setOnQueryTextListener(this);
-    }
-
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        farmerRecyclerViewAdapter.getFilter().filter(query);
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String query) {
-        farmerRecyclerViewAdapter.getFilter().filter(query);
-        return true;
-    }
-
-
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -158,7 +114,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(FarmerItem item);
+
+        void onListFragmentInteraction(Routes item);
     }
 }

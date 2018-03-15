@@ -6,6 +6,7 @@ import android.database.Cursor;
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.DataStructures.Jug;
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
+import com.transporterapp.syde.transporterapp.DataStructures.Routes;
 import com.transporterapp.syde.transporterapp.DataStructures.TransporterItem;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
@@ -129,6 +130,30 @@ public class commonUtil {
             return new TransporterItem(id, firstName, lastName, phoneNumber, routeId);
         }
         return null;
+    }
+
+    /**
+     * Converts a cursor representing a route list to List</Routes>
+     *
+     * @param routes
+     * @return
+     */
+    public static List<Routes> convertCursortToRouteItem(Cursor routes) {
+        java.util.List<Routes> routeList = new ArrayList<>();
+
+        if (routes.getCount()== 0) {
+            return null;
+        }
+
+        while(routes.moveToNext()) {
+            String id = routes.getString(Arrays.asList(DatabaseConstants.colRoute).indexOf(DatabaseConstants.id));
+            String routeOrder = routes.getString(Arrays.asList(DatabaseConstants.colRoute).indexOf(DatabaseConstants.route));
+
+            Routes temp = Routes.createRoutes(id, routeOrder);
+            routeList.add(temp);
+        }
+
+        return routeList;
     }
 
     /**

@@ -69,4 +69,6 @@ public class DatabaseConstants {
     public static final String type = "type";
 
     public static final String currentVolume = "currentVolume";
+
+    public static final String route = "route";
 }
