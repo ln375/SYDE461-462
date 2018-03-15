@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
+import com.transporterapp.syde.transporterapp.DataStructures.Jug;
 import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceItem;
 import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceListFragment;
 import com.transporterapp.syde.transporterapp.FarmerList.FarmerListFrag;
@@ -31,6 +32,10 @@ import com.transporterapp.syde.transporterapp.FarmerProfile.FarmerProfileFrag;
 import com.transporterapp.syde.transporterapp.History.HistListFrag;
 import com.transporterapp.syde.transporterapp.History.HistRecordFrag;
 import com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment;
+import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
+import com.transporterapp.syde.transporterapp.databases.dbUtil;
+
+import java.util.List;
 
 import static com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment.PREFS_NAME;
 
@@ -115,7 +120,12 @@ public class Main extends AppCompatActivity
                             .add(R.id.container,farmerListFragmentForMilkEntry, BACK_STACK_ROOT_TAG)
                             .addToBackStack(BACK_STACK_ROOT_TAG)
                             .commit();
-
+                    List<Jug> jugList = commonUtil.convertCursorToJugList(dbUtil.selectStatement(DatabaseConstants.tblJug, "", "", "", getApplicationContext()));
+                    double collectedMilk = 0;
+                    for (Jug jug : jugList) {
+                        collectedMilk += Double.valueOf(jug.getCurrentVolume());
+                    }
+                    setActionBarTitle("Milk Collected: " + collectedMilk + "L");
 
                 } else {
                     toggle.setDrawerIndicatorEnabled(false);
@@ -146,7 +156,12 @@ public class Main extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.container, histListFrag).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if(item.getTitle().equals("Add New Milk Record")) {
-                setActionBarTitle(commonUtil.getCurrentDate());
+                List<Jug> jugList = commonUtil.convertCursorToJugList(dbUtil.selectStatement(DatabaseConstants.tblJug, "", "", "", getApplicationContext()));
+                double collectedMilk = 0;
+                for (Jug jug : jugList) {
+                    collectedMilk += Double.valueOf(jug.getCurrentVolume());
+                }
+                setActionBarTitle("Milk Collected: " + collectedMilk + "L");
                 menuFragmentId = item.getItemId();
                 fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForMilkEntry).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
@@ -183,7 +198,12 @@ public class Main extends AppCompatActivity
     public void onBackPressed() {
         if(milkEntryFragment.isVisible()){
             if (milkEntryFragment.areDataFieldsEmpty()) {
-                setActionBarTitle(commonUtil.getCurrentDate());
+                List<Jug> jugList = commonUtil.convertCursorToJugList(dbUtil.selectStatement(DatabaseConstants.tblJug, "", "", "", getApplicationContext()));
+                double collectedMilk = 0;
+                for (Jug jug : jugList) {
+                    collectedMilk += Double.valueOf(jug.getCurrentVolume());
+                }
+                setActionBarTitle("Milk Collected: " + collectedMilk + "L");
                 milkEntryFragment.clearData();
                 super.onBackPressed();
             } else {
