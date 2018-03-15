@@ -487,7 +487,7 @@ public class MilkEntryFrag extends Fragment {
             qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "\'Bad\'", getContext());
         } else if (radioGroup.getCheckedRadioButtonId() == R.id.density_good || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_good || radioGroup.getCheckedRadioButtonId() == R.id.smell_good) {
             qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "\'Good\'", getContext());
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.density_okay || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_okay || radioGroup.getCheckedRadioButtonId() == R.id.smell_okay) {
+        } else if (radioGroup.getCheckedRadioButtonId() == R.id.density_28  || radioGroup.getCheckedRadioButtonId() == R.id.density_29 || radioGroup.getCheckedRadioButtonId() == R.id.density_30 || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_okay) {
             qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "\'Okay\'", getContext());
         }
         if (qualityRating.size() > 0) {
