@@ -3,6 +3,7 @@ package com.transporterapp.syde.transporterapp.FarmerList;
 import android.app.SearchManager;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.ExportData.ExportDataFrag;
@@ -97,8 +99,8 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
             initFarmerList(recyclerView, context);
            }
 
-        final Button button = (Button) view.findViewById(R.id.save_logbook);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button saveLogbookButton = (Button) view.findViewById(R.id.save_logbook);
+        saveLogbookButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 fragmentManager.beginTransaction().replace(R.id.container, exportDataFrag).addToBackStack(null).commit();
             }
