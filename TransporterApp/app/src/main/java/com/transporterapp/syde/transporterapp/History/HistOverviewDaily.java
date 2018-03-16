@@ -7,82 +7,56 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.transporterapp.syde.transporterapp.R;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link HistMainFrag.OnFragmentInteractionListener} interface
+ * {@link HistOverviewDaily.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link HistMainFrag#newInstance} factory method to
+ * Use the {@link HistOverviewDaily#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HistMainFrag extends Fragment {
+public class HistOverviewDaily extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    private HistListFrag histListFrag = new HistListFrag();
-    private HistOverviewFrag histOverviewFrag = new HistOverviewFrag();
-    private Button btnOverview;
-    private Button btnTransaction;
 
-    public HistMainFrag() {
+    public HistOverviewDaily() {
         // Required empty public constructor
     }
 
-    public static HistMainFrag newInstance(String param1, String param2) {
-        HistMainFrag fragment = new HistMainFrag();
-        return fragment;
+    public static HistOverviewDaily newInstance(int page, String title) {
+        HistOverviewDaily histFragDaily = new HistOverviewDaily();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        args.putString("someTitle", title);
+        histFragDaily.setArguments(args);
+        return histFragDaily;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_hist_main, container, false);
-        btnOverview = (Button) v.findViewById(R.id.hist_overview_button);
-        btnTransaction = (Button) v.findViewById(R.id.hist_transaction_button);
-
-        btnTransaction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("userid", getArguments().getString("userid"));
-
-                if (histListFrag.getArguments() != null) {
-                    histListFrag.getArguments().clear();
-                    histListFrag.getArguments().putAll(bundle);
-                } else {
-                    histListFrag.setArguments(bundle);
-                }
-
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, histListFrag).addToBackStack(null).commit();
-            }
-        });
-
-        btnOverview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("userid", getArguments().getString("userid"));
-
-                if (histOverviewFrag.getArguments() != null) {
-                    histOverviewFrag.getArguments().clear();
-                    histOverviewFrag.getArguments().putAll(bundle);
-                } else {
-                    histOverviewFrag.setArguments(bundle);
-                }
-
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, histOverviewFrag).addToBackStack(null).commit();
-            }
-        });
-
+        View v = inflater.inflate(R.layout.fragment_hist_overview_daily, container, false);
         return v;
     }
 

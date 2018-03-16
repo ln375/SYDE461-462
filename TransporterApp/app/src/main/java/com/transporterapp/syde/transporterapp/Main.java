@@ -33,6 +33,9 @@ import com.transporterapp.syde.transporterapp.ExportData.ExportDataFrag;
 import com.transporterapp.syde.transporterapp.FarmerProfile.FarmerProfileFrag;
 import com.transporterapp.syde.transporterapp.History.HistListFrag;
 import com.transporterapp.syde.transporterapp.History.HistMainFrag;
+import com.transporterapp.syde.transporterapp.History.HistOverviewDaily;
+import com.transporterapp.syde.transporterapp.History.HistOverviewFrag;
+import com.transporterapp.syde.transporterapp.History.HistOverviewMonthly;
 import com.transporterapp.syde.transporterapp.History.HistRecordFrag;
 import com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
@@ -48,7 +51,8 @@ import static com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment.P
 
 public class Main extends AppCompatActivity
         implements OnListFragmentInteractionListener, HistListFrag.OnListFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener, ExportDataFrag.OnFragmentInteractionListener,
-        DeviceListFragment.OnListFragmentInteractionListener, ChooseRoutesFrag.OnListFragmentInteractionListener, HistMainFrag.OnFragmentInteractionListener    {
+        DeviceListFragment.OnListFragmentInteractionListener, ChooseRoutesFrag.OnListFragmentInteractionListener, HistMainFrag.OnFragmentInteractionListener , HistOverviewFrag.OnFragmentInteractionListener,
+        HistOverviewMonthly.OnFragmentInteractionListener, HistOverviewDaily.OnFragmentInteractionListener {
     public static Main instance = null;
     private HistRecordFrag histRecordFrag = new HistRecordFrag();
     private HistListFrag histListFrag = new HistListFrag();
