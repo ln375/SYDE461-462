@@ -168,6 +168,7 @@ public class MilkEntryFrag extends Fragment {
             //Layout of jug text
             RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             textParams.addRule(RelativeLayout.BELOW, jugProgressBar.getId());
+            textParams.addRule(RelativeLayout.ALIGN_PARENT_START);
             jugText.setLayoutParams(textParams);
             jugText.setText("Jug " + jug_list.get(i).getId());
 
