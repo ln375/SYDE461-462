@@ -106,13 +106,22 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putString("routeId", routeId);
-                addFarmerFrag.setArguments(bundle);
+
+                if (addFarmerFrag.getArguments() != null) {
+                    addFarmerFrag.getArguments().clear();
+                    addFarmerFrag.getArguments().putAll(bundle);
+                } else {
+                    addFarmerFrag.setArguments(bundle);
+                }
                 fragmentManager.beginTransaction().replace(R.id.container, addFarmerFrag).addToBackStack(null).commit();
 
             }
         });
 
         final Button saveLogbookButton = (Button) view.findViewById(R.id.save_logbook);
+        if (exportDataFrag.getArguments() != null) {
+            exportDataFrag.getArguments().clear();
+        }
         saveLogbookButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 fragmentManager.beginTransaction().replace(R.id.container, exportDataFrag).addToBackStack(null).commit();

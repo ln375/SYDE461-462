@@ -3,36 +3,41 @@ package com.transporterapp.syde.transporterapp.History;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.Toast;
 
 import com.transporterapp.syde.transporterapp.R;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link HistMainFrag.OnFragmentInteractionListener} interface
+ * {@link HistOverviewFrag.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link HistMainFrag#newInstance} factory method to
+ * Use the {@link HistOverviewFrag#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HistMainFrag extends Fragment {
+public class HistOverviewFrag extends Fragment {
+    private FragmentPagerAdapter mFragmentPagerAdapter;
+    private ViewPager mViewPager;
+    private TabLayout tablayout;
 
     private OnFragmentInteractionListener mListener;
-    private HistListFrag histListFrag = new HistListFrag();
-    private HistOverviewFrag histOverviewFrag = new HistOverviewFrag();
-    private Button btnOverview;
-    private Button btnTransaction;
 
-    public HistMainFrag() {
+    public HistOverviewFrag() {
         // Required empty public constructor
     }
 
-    public static HistMainFrag newInstance(String param1, String param2) {
-        HistMainFrag fragment = new HistMainFrag();
+
+    public static HistOverviewFrag newInstance() {
+        HistOverviewFrag fragment = new HistOverviewFrag();
+
         return fragment;
     }
 
@@ -44,45 +49,38 @@ public class HistMainFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_hist_main, container, false);
-        btnOverview = (Button) v.findViewById(R.id.hist_overview_button);
-        btnTransaction = (Button) v.findViewById(R.id.hist_transaction_button);
+        View v = inflater.inflate(R.layout.fragment_hist_overview, container, false);
+        tablayout = (TabLayout) v.findViewById(R.id.sliding_tabs);
+        ViewPager vpPager = (ViewPager) v.findViewById(R.id.overviewPager);
+        mFragmentPagerAdapter = new MyPagerAdapter(getChildFragmentManager());
+        vpPager.setAdapter(mFragmentPagerAdapter);
+        tablayout.setupWithViewPager(vpPager);
 
-        btnTransaction.setOnClickListener(new View.OnClickListener() {
+        // Attach the page change listener inside the activity
+        vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            // This method will be invoked when a new page becomes selected.
             @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("userid", getArguments().getString("userid"));
+            public void onPageSelected(int position) {
+                Toast.makeText(getActivity(),
+                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
+            }
 
-                if (histListFrag.getArguments() != null) {
-                    histListFrag.getArguments().clear();
-                    histListFrag.getArguments().putAll(bundle);
-                } else {
-                    histListFrag.setArguments(bundle);
-                }
+            // This method will be invoked when the current page is scrolled
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Code goes here
+            }
 
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, histListFrag).addToBackStack(null).commit();
+            // Called when the scroll state changes:
+            // SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING, SCROLL_STATE_SETTLING
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Code goes here
             }
         });
-
-        btnOverview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("userid", getArguments().getString("userid"));
-
-                if (histOverviewFrag.getArguments() != null) {
-                    histOverviewFrag.getArguments().clear();
-                    histOverviewFrag.getArguments().putAll(bundle);
-                } else {
-                    histOverviewFrag.setArguments(bundle);
-                }
-
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, histOverviewFrag).addToBackStack(null).commit();
-            }
-        });
-
         return v;
     }
 

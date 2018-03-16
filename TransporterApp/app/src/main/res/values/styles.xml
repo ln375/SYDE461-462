@@ -36,7 +36,7 @@
     </style>
 
     <style name="textStyleHeader" parent="AppTheme">
-        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
 </resources>

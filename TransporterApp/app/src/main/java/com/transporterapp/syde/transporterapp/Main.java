@@ -34,6 +34,9 @@ import com.transporterapp.syde.transporterapp.ExportData.ExportDataFrag;
 import com.transporterapp.syde.transporterapp.FarmerProfile.FarmerProfileFrag;
 import com.transporterapp.syde.transporterapp.History.HistListFrag;
 import com.transporterapp.syde.transporterapp.History.HistMainFrag;
+import com.transporterapp.syde.transporterapp.History.HistOverviewDaily;
+import com.transporterapp.syde.transporterapp.History.HistOverviewFrag;
+import com.transporterapp.syde.transporterapp.History.HistOverviewMonthly;
 import com.transporterapp.syde.transporterapp.History.HistRecordFrag;
 import com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
@@ -49,7 +52,8 @@ import static com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment.P
 
 public class Main extends AppCompatActivity
         implements OnListFragmentInteractionListener, HistListFrag.OnListFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener, ExportDataFrag.OnFragmentInteractionListener,
-        DeviceListFragment.OnListFragmentInteractionListener, ChooseRoutesFrag.OnListFragmentInteractionListener, HistMainFrag.OnFragmentInteractionListener, AddFarmerFrag.OnFragmentInteractionListener {
+        DeviceListFragment.OnListFragmentInteractionListener, ChooseRoutesFrag.OnListFragmentInteractionListener, HistMainFrag.OnFragmentInteractionListener , HistOverviewFrag.OnFragmentInteractionListener,
+        HistOverviewMonthly.OnFragmentInteractionListener, HistOverviewDaily.OnFragmentInteractionListener, AddFarmerFrag.OnFragmentInteractionListener {
     public static Main instance = null;
     private HistRecordFrag histRecordFrag = new HistRecordFrag();
     private HistListFrag histListFrag = new HistListFrag();
@@ -361,7 +365,12 @@ public class Main extends AppCompatActivity
     public void onListFragmentInteraction(Routes item) {
         Bundle bundle = new Bundle();
         bundle.putString("routeId", item.getRouteId());
-        farmerListFragmentForMilkEntry.setArguments(bundle);
+        if (farmerListFragmentForMilkEntry.getArguments() != null) {
+            farmerListFragmentForMilkEntry.getArguments().clear();
+            farmerListFragmentForMilkEntry.getArguments().putAll(bundle);
+        } else {
+            farmerListFragmentForMilkEntry.setArguments(bundle);
+        }
         fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForMilkEntry, BACK_STACK_ROOT_TAG).addToBackStack(BACK_STACK_ROOT_TAG).commit();
 
     }
