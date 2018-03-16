@@ -9,9 +9,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
@@ -151,7 +153,6 @@ public class HistOverviewDaily extends Fragment {
             List<MilkRecord> milkRecords = commonUtil.convertCursorToMilkRecordList(records);
 
             TableRow row= new TableRow(v.getContext());
-            TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
             TextView date = new TextView(v.getContext());
             date.setText(relevantDates.get(i));
             date.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
