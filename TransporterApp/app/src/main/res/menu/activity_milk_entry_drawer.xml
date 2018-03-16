@@ -3,17 +3,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/collectMilkActivity"
-            android:icon="@drawable/ic_menu_collect_milk"
-            android:title="@string/nav_menu_collect_milk" />
-        <item
             android:id="@+id/histActivity"
             android:icon="@drawable/ic_menu_hist"
             android:title="@string/nav_menu_history_screen" />
-        <item
+        <!-- <item
             android:id="@+id/farmersActivity"
             android:icon="@drawable/ic_menu_farmers"
-            android:title="@string/nav_menu_farmers_screen"/>
+            android:title="@string/nav_menu_farmers_screen"/> -->
         <item
             android:id="@+id/exportActivity"
             android:icon="@drawable/ic_phonelink"

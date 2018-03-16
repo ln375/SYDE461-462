@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.transporterapp.syde.transporterapp.DataStructures.Jug;
+import com.transporterapp.syde.transporterapp.DataStructures.Routes;
 import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceItem;
 import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceListFragment;
 import com.transporterapp.syde.transporterapp.FarmerList.FarmerListFrag;
@@ -36,6 +37,7 @@ import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.util.List;
+import com.transporterapp.syde.transporterapp.Routes.ChooseRoutesFrag;
 
 import static com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment.PREFS_NAME;
 
@@ -44,7 +46,7 @@ import static com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment.P
 
 public class Main extends AppCompatActivity
         implements OnListFragmentInteractionListener, HistListFrag.OnListFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener, ExportDataFrag.OnFragmentInteractionListener,
-        DeviceListFragment.OnListFragmentInteractionListener{
+        DeviceListFragment.OnListFragmentInteractionListener, ChooseRoutesFrag.OnListFragmentInteractionListener    {
     public static Main instance = null;
     private HistRecordFrag histRecordFrag = new HistRecordFrag();
     private HistListFrag histListFrag = new HistListFrag();
@@ -55,6 +57,7 @@ public class Main extends AppCompatActivity
     private LoginFragment loginFrag = new LoginFragment();
     private ExportDataFrag exportDataFrag = new ExportDataFrag();
     private FarmerProfileFrag farmerProfileFrag = new FarmerProfileFrag();
+    private ChooseRoutesFrag chooseRoutesFrag = new ChooseRoutesFrag();
     private Toolbar toolbar;
 
     private DrawerLayout drawer;
@@ -116,8 +119,9 @@ public class Main extends AppCompatActivity
                     bundle.putString("userid", userId);
                     farmerListFragmentForFarmerProfile.setArguments(bundle);
                     farmerListFragmentForMilkEntry.setArguments(bundle);
+                    chooseRoutesFrag.setArguments(bundle);
                     fragmentManager.beginTransaction()
-                            .add(R.id.container,farmerListFragmentForMilkEntry, BACK_STACK_ROOT_TAG)
+                            .add(R.id.container,chooseRoutesFrag, BACK_STACK_ROOT_TAG)
                             .addToBackStack(BACK_STACK_ROOT_TAG)
                             .commit();
                     List<Jug> jugList = commonUtil.convertCursorToJugList(dbUtil.selectStatement(DatabaseConstants.tblJug, "", "", "", getApplicationContext()));
@@ -211,7 +215,7 @@ public class Main extends AppCompatActivity
             }
         } else if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
-        } else if (histListFrag.isVisible() || farmerListFragmentForMilkEntry.isVisible() || farmerListFragmentForFarmerProfile.isVisible() || exportDataFrag.isVisible()){
+        } else if (histListFrag.isVisible() || farmerListFragmentForFarmerProfile.isVisible() || exportDataFrag.isVisible()){
             //Don't allow backpress on these screens
         }else {
             super.onBackPressed();
@@ -250,14 +254,14 @@ public class Main extends AppCompatActivity
         bundle.putString("farmerid", item.getId());
         bundle.putString("transporterId", userId);
 
-        if (menuFragmentId == R.id.farmersActivity){
+       /* if (menuFragmentId == R.id.farmersActivity){
             //Navigate to farmer profile frag
             farmerProfileFrag.setArguments(bundle);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, farmerProfileFrag)
                     .addToBackStack(null)
                     .commit();
-        } else {
+        } else {*/
             //Navigate to milk entry frag
             milkEntryFragment.setArguments(bundle);
             try{
@@ -270,7 +274,7 @@ public class Main extends AppCompatActivity
                 String temp2 = "Hello";
             }
 
-        }
+        //}
     }
 
     /**
@@ -349,6 +353,15 @@ public class Main extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(DeviceItem item) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(Routes item) {
+        Bundle bundle = new Bundle();
+        bundle.putString("routeId", item.getRouteId());
+        farmerListFragmentForMilkEntry.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForMilkEntry, BACK_STACK_ROOT_TAG).addToBackStack(BACK_STACK_ROOT_TAG).commit();
 
     }
 }
