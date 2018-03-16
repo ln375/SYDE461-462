@@ -166,7 +166,7 @@ public class HistOverviewDaily extends Fragment {
                 sum += Double.valueOf(record.getMilkWeight());
             }
             TextView volumeCollected = new TextView(v.getContext());
-            volumeCollected.setText(String.valueOf(sum));
+            volumeCollected.setText(String.valueOf(sum) + " L");
             volumeCollected.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
             RelativeLayout progressBarHolder = new RelativeLayout(getContext());

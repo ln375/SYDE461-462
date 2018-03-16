@@ -173,7 +173,7 @@ public class HistOverviewMonthly extends Fragment {
             numberOfCollections.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
             TextView volumeCollected = new TextView(v.getContext());
-            volumeCollected.setText(String.valueOf(totalVolume));
+            volumeCollected.setText(String.valueOf(totalVolume) + " L");
 
             RelativeLayout progressBarHolder = new RelativeLayout(getContext());
             ProgressBar progressBar = new ProgressBar(getContext(), null, android.R.attr.progressBarStyleHorizontal);

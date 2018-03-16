@@ -66,8 +66,7 @@ public class HistOverviewFrag extends Fragment {
             // This method will be invoked when a new page becomes selected.
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(getActivity(),
-                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
+                
             }
 
             // This method will be invoked when the current page is scrolled
