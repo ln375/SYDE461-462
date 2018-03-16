@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
@@ -31,6 +32,7 @@ import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.ExportData.ExportDataFrag;
 import com.transporterapp.syde.transporterapp.FarmerProfile.FarmerProfileFrag;
 import com.transporterapp.syde.transporterapp.History.HistListFrag;
+import com.transporterapp.syde.transporterapp.History.HistMainFrag;
 import com.transporterapp.syde.transporterapp.History.HistRecordFrag;
 import com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
@@ -46,7 +48,7 @@ import static com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment.P
 
 public class Main extends AppCompatActivity
         implements OnListFragmentInteractionListener, HistListFrag.OnListFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener, ExportDataFrag.OnFragmentInteractionListener,
-        DeviceListFragment.OnListFragmentInteractionListener, ChooseRoutesFrag.OnListFragmentInteractionListener    {
+        DeviceListFragment.OnListFragmentInteractionListener, ChooseRoutesFrag.OnListFragmentInteractionListener, HistMainFrag.OnFragmentInteractionListener    {
     public static Main instance = null;
     private HistRecordFrag histRecordFrag = new HistRecordFrag();
     private HistListFrag histListFrag = new HistListFrag();
@@ -57,6 +59,7 @@ public class Main extends AppCompatActivity
     private LoginFragment loginFrag = new LoginFragment();
     private ExportDataFrag exportDataFrag = new ExportDataFrag();
     private FarmerProfileFrag farmerProfileFrag = new FarmerProfileFrag();
+    private HistMainFrag histMainFrag = new HistMainFrag();
     private ChooseRoutesFrag chooseRoutesFrag = new ChooseRoutesFrag();
     private Toolbar toolbar;
 
@@ -151,23 +154,26 @@ public class Main extends AppCompatActivity
             if(item.getTitle().equals("History Screen")) {
                 Bundle bundle = new Bundle();
                 bundle.putString("userid", userId);
-                if (histListFrag.getArguments() != null) {
-                    histListFrag.getArguments().clear();
-                    histListFrag.getArguments().putAll(bundle);
+                if (histMainFrag.getArguments() != null) {
+                    histMainFrag.getArguments().clear();
+                    histMainFrag.getArguments().putAll(bundle);
                 } else {
-                    histListFrag.setArguments(bundle);
+                    histMainFrag.setArguments(bundle);
                 }
-                fragmentManager.beginTransaction().replace(R.id.container, histListFrag).addToBackStack(null).commit();
+                //fragmentManager.beginTransaction().replace(R.id.container, histListFrag).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, histMainFrag).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if(item.getTitle().equals("Add New Milk Record")) {
-                List<Jug> jugList = commonUtil.convertCursorToJugList(dbUtil.selectStatement(DatabaseConstants.tblJug, "", "", "", getApplicationContext()));
-                double collectedMilk = 0;
-                for (Jug jug : jugList) {
-                    collectedMilk += Double.valueOf(jug.getCurrentVolume());
+                Bundle bundle = new Bundle();
+                bundle.putString("userid", userId);
+                if (chooseRoutesFrag.getArguments() != null) {
+                    chooseRoutesFrag.getArguments().clear();
+                    chooseRoutesFrag.getArguments().putAll(bundle);
+                } else {
+                    chooseRoutesFrag.setArguments(bundle);
                 }
-                setActionBarTitle("Milk Collected: " + collectedMilk + "L");
-                menuFragmentId = item.getItemId();
-                fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForMilkEntry).addToBackStack(null).commit();
+
+                fragmentManager.beginTransaction().replace(R.id.container, chooseRoutesFrag).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
             } else if (item.getTitle().equals("Farmers Screen")) {
                 setActionBarTitle(commonUtil.getCurrentDate());

@@ -128,7 +128,7 @@ public class dbUtil {
      * @param context
      * @return
      */
-    public static List<String> selectStatement(String tableName, String columnName, List<String> whereCondition, List<String> whereOperators, List<String> whereValue, Context context){
+    public static Cursor selectStatement(String tableName, String columnName, List<String> whereCondition, List<String> whereOperators, List<String> whereValue, Context context){
         List<String> list = new ArrayList<>();
 
         String sql = "SELECT " + columnName + " FROM " + tableName;
@@ -140,16 +140,8 @@ public class dbUtil {
 
         setInstance(context);
 
-        Cursor cursor = database.rawQuery(sql, null);
-        cursor.moveToFirst();
-
-        while (!cursor.isAfterLast()) {
-            list.add(cursor.getString(0));
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return list;
+        Cursor cursor = database.rawQuery(sql, null);;
+        return cursor;
     }
 
 
@@ -247,15 +239,15 @@ public class dbUtil {
      * @return
      */
     private static String convertWhereConditionsToString(List<String> whereCondition, List<String> whereOperators, List<String> whereValue) {
-        String result = "";
+        String result = " WHERE";
         int index = 0;
         if (whereCondition.size() == whereValue.size()) {
-            String add = " WHERE {} {} '{}' AND";
+            String add = " {} {} '{}' AND";
             for (String item : whereCondition) {
                 result = result + add;
-                result.replaceFirst("\\{\\}", item);
-                result.replaceFirst("\\{\\}", whereOperators.get(index));
-                result.replaceFirst("\\{\\}", whereValue.get(index));
+                result = result.replaceFirst("\\{\\}", item);
+                result = result.replaceFirst("\\{\\}", whereOperators.get(index));
+                result = result.replaceFirst("\\{\\}", whereValue.get(index));
                 index++;
             }
 

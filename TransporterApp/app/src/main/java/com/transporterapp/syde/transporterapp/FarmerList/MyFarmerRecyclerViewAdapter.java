@@ -77,7 +77,7 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.farmerid);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mContentView = (TextView) view.findViewById(R.id.name);
         }
 
         @Override

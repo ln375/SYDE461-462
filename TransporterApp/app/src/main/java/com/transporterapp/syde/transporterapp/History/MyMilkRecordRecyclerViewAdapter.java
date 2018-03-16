@@ -16,11 +16,6 @@ import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link MilkRecord} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilkRecordRecyclerViewAdapter.ViewHolder> {
 
     private final List<MilkRecord> mValues;
@@ -48,7 +43,9 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
         List<FarmerItem> farmer = commonUtil.convertCursorToFarmerItemList(dbUtil.selectStatement(DatabaseConstants.tblFarmer, "id", "=", farmerId, view.getContext()));
         if (farmer != null) {
             String name = farmer.get(0).getFirstName() + " " + farmer.get(0).getLastName();
-            holder.mContentView.setText(mValues.get(position).getDate() + " : " + name);
+            String volume = mValues.get(position).getMilkWeight() + "L";
+            holder.farmerName.setText(name);
+            holder.volume.setText(volume);
         }
 
 
@@ -74,19 +71,21 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView farmerName;
+        public final TextView volume;
         public MilkRecord mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mIdView = (TextView) view.findViewById(R.id.collectionOrder);
+            farmerName = (TextView) view.findViewById(R.id.name);
+            volume = (TextView) view.findViewById(R.id.volume);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + farmerName.getText() + "'";
         }
     }
 }

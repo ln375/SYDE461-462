@@ -68,7 +68,7 @@ public class MyRouteRecyclerViewAdapter extends RecyclerView.Adapter<MyRouteRecy
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mContentView = (TextView) view.findViewById(R.id.name);
         }
 
         @Override

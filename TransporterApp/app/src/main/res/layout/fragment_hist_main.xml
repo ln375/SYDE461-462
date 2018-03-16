@@ -1,0 +1,44 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.transporterapp.syde.transporterapp.History.HistMainFrag">
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="15dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:text="Overview"
+            android:id="@+id/hist_overview_button"/>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="15dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:text="Transaction"
+            android:id="@+id/hist_transaction_button"/>
+
+    </LinearLayout>
+
+</FrameLayout>
