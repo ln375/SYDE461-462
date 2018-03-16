@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.ExportData.ExportDataFrag;
@@ -87,7 +88,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         View view = inflater.inflate(R.layout.fragment_farmer_list, container, false);
 
         // Set the adapter
-        if (view instanceof LinearLayout) {
+        if (view instanceof ScrollView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.farmer_list);
             if (mColumnCount <= 1) {
