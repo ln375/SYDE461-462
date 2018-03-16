@@ -20,13 +20,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
+import com.transporterapp.syde.transporterapp.DataStructures.Jug;
 import com.transporterapp.syde.transporterapp.ExportData.ExportDataFrag;
 import com.transporterapp.syde.transporterapp.UIDecorations.DividerItemDecoration;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
+import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.util.ArrayList;
@@ -70,11 +73,6 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        String date = commonUtil.getCurrentDate();
-
-        // Set title bar
-        ((Main) getActivity()).setActionBarTitle(date);
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             routeId = getArguments().getString("routeId");
@@ -106,6 +104,15 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
                 fragmentManager.beginTransaction().replace(R.id.container, exportDataFrag).addToBackStack(null).commit();
             }
         });
+
+        List<Jug> jugList = commonUtil.convertCursorToJugList(dbUtil.selectStatement(DatabaseConstants.tblJug, "", "", "", this.getContext()));
+        double collectedMilk = 0;
+        for (Jug jug : jugList) {
+            collectedMilk += Double.valueOf(jug.getCurrentVolume());
+        }
+
+        final TextView totalMilkCollected = (TextView) view.findViewById(R.id.total_milk_collected);
+        totalMilkCollected.setText(collectedMilk + " L Total");
 
         return view;
     }

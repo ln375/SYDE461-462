@@ -127,12 +127,6 @@ public class Main extends AppCompatActivity
                             .add(R.id.container,chooseRoutesFrag, BACK_STACK_ROOT_TAG)
                             .addToBackStack(BACK_STACK_ROOT_TAG)
                             .commit();
-                    List<Jug> jugList = commonUtil.convertCursorToJugList(dbUtil.selectStatement(DatabaseConstants.tblJug, "", "", "", getApplicationContext()));
-                    double collectedMilk = 0;
-                    for (Jug jug : jugList) {
-                        collectedMilk += Double.valueOf(jug.getCurrentVolume());
-                    }
-                    setActionBarTitle("Milk Collected: " + collectedMilk + "L");
 
                 } else {
                     toggle.setDrawerIndicatorEnabled(false);
