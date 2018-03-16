@@ -57,7 +57,7 @@ public class ChooseRoutesFrag extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Set title bar
-        //((Main) getActivity()).getSupportActionBar().hide();
+        ((Main) getActivity()).setActionBarTitle("Dairy Diary");
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
