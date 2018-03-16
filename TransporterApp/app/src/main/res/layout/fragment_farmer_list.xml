@@ -1,44 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:name="com.transporterapp.syde.transporterapp.farmerListFrag"
     app:layoutManager="LinearLayoutManager"
     tools:context=".FarmerList.FarmerListFrag"
-    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    >
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/farmer_list"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="8.5"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            tools:listitem="@layout/fragment_farmer" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/save_logbook"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2.5"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@android:color/holo_green_light"
-            android:layout_gravity="center_horizontal"
-            android:text="Save Logbook"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/header"
+                android:paddingTop="30dp"
+                android:paddingBottom="4dp">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/routeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/header_text"
+                    android:text="Route"
+                    android:layout_weight="8.5" />
+
+                <TextView
+                    android:id="@+id/total_milk_collected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/header_text"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:textColor="#000000"
+                    android:layout_weight="1.5" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/farmer_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8.5"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                tools:listitem="@layout/fragment_farmer" />
+
+            <Button
+                android:id="@+id/save_logbook"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2.5"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/holo_green_light"
+                android:layout_gravity="center_horizontal"
+                android:text="Save Logbook"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_farmer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_add" />
 
 
 
-</ScrollView>
 
+</RelativeLayout>

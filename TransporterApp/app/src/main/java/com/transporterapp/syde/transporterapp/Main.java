@@ -24,6 +24,7 @@ import com.transporterapp.syde.transporterapp.DataStructures.Jug;
 import com.transporterapp.syde.transporterapp.DataStructures.Routes;
 import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceItem;
 import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceListFragment;
+import com.transporterapp.syde.transporterapp.FarmerList.AddFarmerFrag;
 import com.transporterapp.syde.transporterapp.FarmerList.FarmerListFrag;
 import com.transporterapp.syde.transporterapp.FarmerList.FarmerListFrag.OnListFragmentInteractionListener;
 import com.transporterapp.syde.transporterapp.CollectMilk.MilkEntryFrag;
@@ -52,7 +53,7 @@ import static com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment.P
 public class Main extends AppCompatActivity
         implements OnListFragmentInteractionListener, HistListFrag.OnListFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener, ExportDataFrag.OnFragmentInteractionListener,
         DeviceListFragment.OnListFragmentInteractionListener, ChooseRoutesFrag.OnListFragmentInteractionListener, HistMainFrag.OnFragmentInteractionListener , HistOverviewFrag.OnFragmentInteractionListener,
-        HistOverviewMonthly.OnFragmentInteractionListener, HistOverviewDaily.OnListFragmentInteractionListener {
+        HistOverviewMonthly.OnFragmentInteractionListener, HistOverviewDaily.OnListFragmentInteractionListener, AddFarmerFrag.OnFragmentInteractionListener  {
     public static Main instance = null;
     private HistRecordFrag histRecordFrag = new HistRecordFrag();
     private HistListFrag histListFrag = new HistListFrag();
@@ -131,12 +132,6 @@ public class Main extends AppCompatActivity
                             .add(R.id.container,chooseRoutesFrag, BACK_STACK_ROOT_TAG)
                             .addToBackStack(BACK_STACK_ROOT_TAG)
                             .commit();
-                    List<Jug> jugList = commonUtil.convertCursorToJugList(dbUtil.selectStatement(DatabaseConstants.tblJug, "", "", "", getApplicationContext()));
-                    double collectedMilk = 0;
-                    for (Jug jug : jugList) {
-                        collectedMilk += Double.valueOf(jug.getCurrentVolume());
-                    }
-                    setActionBarTitle("Milk Collected: " + collectedMilk + "L");
 
                 } else {
                     toggle.setDrawerIndicatorEnabled(false);
@@ -370,7 +365,12 @@ public class Main extends AppCompatActivity
     public void onListFragmentInteraction(Routes item) {
         Bundle bundle = new Bundle();
         bundle.putString("routeId", item.getRouteId());
-        farmerListFragmentForMilkEntry.setArguments(bundle);
+        if (farmerListFragmentForMilkEntry.getArguments() != null) {
+            farmerListFragmentForMilkEntry.getArguments().clear();
+            farmerListFragmentForMilkEntry.getArguments().putAll(bundle);
+        } else {
+            farmerListFragmentForMilkEntry.setArguments(bundle);
+        }
         fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForMilkEntry, BACK_STACK_ROOT_TAG).addToBackStack(BACK_STACK_ROOT_TAG).commit();
 
     }

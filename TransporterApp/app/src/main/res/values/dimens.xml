@@ -7,6 +7,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="header_text">18sp</dimen>
     <dimen name="button_margin">8dp</dimen>
     <dimen name="historyDefaultWidth">0dp</dimen>
     <dimen name="historyBigWidth">7dp</dimen>
