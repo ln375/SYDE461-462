@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
@@ -49,6 +50,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
     private MyFarmerRecyclerViewAdapter farmerRecyclerViewAdapter;
     private String routeId = "";
     private ExportDataFrag exportDataFrag = new ExportDataFrag();
+    private AddFarmerFrag addFarmerFrag = new AddFarmerFrag();
 
 
     /**
@@ -86,7 +88,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         View view = inflater.inflate(R.layout.fragment_farmer_list, container, false);
 
         // Set the adapter
-        if (view instanceof ScrollView) {
+        if (view instanceof RelativeLayout) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.farmer_list);
             if (mColumnCount <= 1) {
@@ -97,6 +99,18 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
 
             initFarmerList(recyclerView, context);
            }
+
+        FloatingActionButton addFarmerFAB = (FloatingActionButton) view.findViewById(R.id.add_farmer);
+        addFarmerFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("routeId", routeId);
+                addFarmerFrag.setArguments(bundle);
+                fragmentManager.beginTransaction().replace(R.id.container, addFarmerFrag).addToBackStack(null).commit();
+
+            }
+        });
 
         final Button saveLogbookButton = (Button) view.findViewById(R.id.save_logbook);
         saveLogbookButton.setOnClickListener(new View.OnClickListener() {
