@@ -394,7 +394,7 @@ public class MilkEntryFrag extends Fragment {
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
 
-            params.setMargins(4, 4, 4, 4);
+            params.setMargins(4, 13, 4, 4);
             jugPagination.addView(dots[i], params);
         }
     }
