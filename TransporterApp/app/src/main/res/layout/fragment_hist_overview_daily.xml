@@ -2,12 +2,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.transporterapp.syde.transporterapp.History.HistOverviewDaily">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="OH HAYYY" />
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*" android:id="@+id/dailyTable">
+        <TableRow>
+            <TextView
+                android:id="@+id/dateHeader"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:text="Date"
+                android:textSize="12dp"
+                android:textColor="@color/bodyText"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="@dimen/text_margin"
+                android:textAppearance="?attr/textAppearanceListItem" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:text="Number of Collections"
+                android:textSize="12dp"
+                android:textColor="@color/bodyText"
+                android:gravity="center"
+                android:id="@+id/numberOfCollectionsHeader"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:id="@+id/volumeHeader"
+                android:textColor="@color/bodyText"
+                android:text="Volume"
+                android:textSize="12dp"
+                android:gravity="center"
+                android:layout_margin="@dimen/text_margin"
+                android:textAppearance="?attr/textAppearanceListItem"/>
+        </TableRow>
+    </TableLayout>
 
 </FrameLayout>

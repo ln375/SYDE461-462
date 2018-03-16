@@ -8,4 +8,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="button_margin">8dp</dimen>
+    <dimen name="historyDefaultWidth">0dp</dimen>
+    <dimen name="historyBigWidth">7dp</dimen>
 </resources>

@@ -25,7 +25,6 @@ import com.transporterapp.syde.transporterapp.R;
  */
 public class HistOverviewFrag extends Fragment {
     private FragmentPagerAdapter mFragmentPagerAdapter;
-    private ViewPager mViewPager;
     private TabLayout tablayout;
 
     private OnFragmentInteractionListener mListener;
@@ -35,10 +34,13 @@ public class HistOverviewFrag extends Fragment {
     }
 
 
-    public static HistOverviewFrag newInstance() {
-        HistOverviewFrag fragment = new HistOverviewFrag();
-
-        return fragment;
+    public static HistOverviewFrag newInstance(int page, String title) {
+        HistOverviewFrag histOverviewFrag = new HistOverviewFrag();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        args.putString("someTitle", title);
+        histOverviewFrag.setArguments(args);
+        return histOverviewFrag;
     }
 
     @Override
