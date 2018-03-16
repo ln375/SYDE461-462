@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
         <item name="titleTextColor">@android:color/white</item>
+        <item name="android:textViewStyle">@style/textStyleBody</item>
 
     </style>
 
@@ -19,7 +20,8 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
+    </style>
 
     <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="titleTextColor">@android:color/white</item>
@@ -27,6 +29,14 @@
 
     <style name="hamburgerIconStyle" parent="AppTheme">
         <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
+    <style name="textStyleBody" parent="AppTheme">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="textStyleHeader" parent="AppTheme">
+        <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
 </resources>

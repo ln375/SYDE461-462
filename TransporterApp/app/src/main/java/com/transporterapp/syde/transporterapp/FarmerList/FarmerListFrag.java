@@ -3,8 +3,10 @@ package com.transporterapp.syde.transporterapp.FarmerList;
 import android.app.SearchManager;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,8 +16,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
+import com.transporterapp.syde.transporterapp.ExportData.ExportDataFrag;
 import com.transporterapp.syde.transporterapp.UIDecorations.DividerItemDecoration;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
@@ -38,6 +44,8 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
     private OnListFragmentInteractionListener mListener;
     private MyFarmerRecyclerViewAdapter farmerRecyclerViewAdapter;
     private String routeId = "";
+    private ExportDataFrag exportDataFrag = new ExportDataFrag();
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -75,12 +83,13 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         View view = inflater.inflate(R.layout.fragment_farmer_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (view instanceof LinearLayout) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.farmer_list);
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -89,6 +98,14 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
 
             initFarmerList(recyclerView, context);
            }
+
+        final Button saveLogbookButton = (Button) view.findViewById(R.id.save_logbook);
+        saveLogbookButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                fragmentManager.beginTransaction().replace(R.id.container, exportDataFrag).addToBackStack(null).commit();
+            }
+        });
+
         return view;
     }
 

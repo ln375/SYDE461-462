@@ -13,6 +13,8 @@
     <color name="gray">#8e8e8e</color>
     <color name="darkgray">#708090</color>
     <color name="bodyText">#3B444B</color>
+    <color name="header">#D6DAF0</color>
+    <color name="lineDividerGray">#d3d3d3</color>
 
 
 </resources>

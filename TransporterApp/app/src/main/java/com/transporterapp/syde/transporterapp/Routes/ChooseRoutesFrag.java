@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.transporterapp.syde.transporterapp.DataStructures.Routes;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
+import com.transporterapp.syde.transporterapp.UIDecorations.DividerItemDecoration;
 import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
@@ -57,7 +58,7 @@ public class ChooseRoutesFrag extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Set title bar
-        //((Main) getActivity()).getSupportActionBar().hide();
+        ((Main) getActivity()).setActionBarTitle("Dairy Diary");
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -80,6 +81,7 @@ public class ChooseRoutesFrag extends Fragment {
             }
             Cursor records = dbUtil.selectStatement(DatabaseConstants.tblRoute, "" , "", "", context);
             List<Routes> routesList = commonUtil.convertCursortToRouteItem(records);
+            recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
             recyclerView.setAdapter(new MyRouteRecyclerViewAdapter(routesList, mListener));
         }
         return view;

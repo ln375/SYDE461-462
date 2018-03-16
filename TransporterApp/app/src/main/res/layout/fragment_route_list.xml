@@ -14,10 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
-        android:layout_marginBottom="@dimen/nav_header_vertical_spacing"
-        android:text="Start a new route:"/>
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="30dp"
+        android:paddingBottom="4dp"
+        android:background="@drawable/header"
+        android:textColor="#000000"
+        android:text="Select a route:"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/routes"
