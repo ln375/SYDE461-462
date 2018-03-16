@@ -14,7 +14,7 @@
             <TextView
                 android:id="@+id/dateHeader"
                 android:layout_width="0dp"
-                android:layout_weight="17"
+                android:layout_weight="19"
                 android:text="Date"
                 android:textSize="14dp"
                 android:textColor="@color/bodyText"

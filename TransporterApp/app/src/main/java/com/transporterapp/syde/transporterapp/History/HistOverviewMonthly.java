@@ -126,7 +126,7 @@ public class HistOverviewMonthly extends Fragment {
             Date date = Date.valueOf(temp);
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
-            String month = getMonthString(cal.get(Calendar.MONTH)) + " " + String.valueOf(cal.get(Calendar.YEAR));
+            String month = commonUtil.getMonthString(cal.get(Calendar.MONTH)) + " " + String.valueOf(cal.get(Calendar.YEAR));
             dates.add(month);
         }
 
@@ -152,7 +152,7 @@ public class HistOverviewMonthly extends Fragment {
                 Date date = Date.valueOf(record.getDate());
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
-                String month = getMonthString(cal.get(Calendar.MONTH)) + " " + String.valueOf(cal.get(Calendar.YEAR));
+                String month = commonUtil.getMonthString(cal.get(Calendar.MONTH)) + " " + String.valueOf(cal.get(Calendar.YEAR));
                 if (relevantDates.get(i).equalsIgnoreCase(month)) {
                     numOfTrips++;
                     totalVolume += Double.valueOf(record.getMilkWeight());
@@ -160,7 +160,6 @@ public class HistOverviewMonthly extends Fragment {
             }
 
             // Now add table row
-
             TableRow row = new TableRow(v.getContext());
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
             TextView date = new TextView(v.getContext());
@@ -191,36 +190,5 @@ public class HistOverviewMonthly extends Fragment {
         }
     }
 
-    public String getMonthString(int i){
-        switch (i){
-            case 1:
-                return "January";
-            case 2:
-                return "February";
-            case 3:
-                return "March";
-            case 4:
-                return "April";
-            case 5:
-                return "May";
-            case 6:
-                return "June";
-            case 7:
-                return "July";
-            case 8:
-                return "August";
-            case 9:
-                return "September";
-            case 10:
-                return "October";
-            case 11:
-                return "November";
-            case 12:
-                return "December";
-            default:
-                return null;
-        }
 
-
-    }
 }

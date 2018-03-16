@@ -30,6 +30,7 @@ import com.transporterapp.syde.transporterapp.databases.dbUtil;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -152,11 +153,19 @@ public class HistOverviewDaily extends Fragment {
             Cursor records = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "*", whereCondition, whereOperator, whereValue, getContext());
             List<MilkRecord> milkRecords = commonUtil.convertCursorToMilkRecordList(records);
 
+            Date temp = Date.valueOf(relevantDates.get(i));
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(temp);
+            String collectionDate = commonUtil.getMonthString(cal.get(Calendar.MONTH)) + " " + String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+
             TableRow row= new TableRow(v.getContext());
             TextView date = new TextView(v.getContext());
-            date.setText(relevantDates.get(i));
+            date.setText(collectionDate);
             date.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
+            List<String> farmerContributed = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter,"farmer_id", "date", "=", "2018-03-16", getContext());
+
+            String huh = "hullo";
 
             TextView numberOfCollections = new TextView(v.getContext());
             numberOfCollections.setText(Integer.toString(milkRecords.size()));

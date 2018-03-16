@@ -18,6 +18,7 @@
         android:paddingTop="30dp"
         android:paddingBottom="4dp"
         android:background="@drawable/header"
+        android:gravity="center_vertical"
         android:textColor="#000000"
         android:text="Select a route:"/>
 
