@@ -176,7 +176,7 @@ public class MilkEntryFrag extends Fragment {
             RelativeLayout.LayoutParams jugAmountParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             jugAmountParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             jugAmount.setLayoutParams(jugAmountParams);
-            jugAmount.setText(jug_list.get(i).getCurrentVolume() + "/" + jug_list.get(i).getSize()  + "L");
+            jugAmount.setText(jug_list.get(i).getCurrentVolume() + "L");
 
             jugProgressBar.setOnClickListener(new View.OnClickListener() {
                 @Override
