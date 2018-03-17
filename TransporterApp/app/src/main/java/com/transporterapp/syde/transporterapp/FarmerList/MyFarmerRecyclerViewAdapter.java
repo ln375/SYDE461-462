@@ -10,7 +10,10 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
+import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +29,13 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
     private final FarmerListFrag.OnListFragmentInteractionListener mListener;
     private FarmerFilter farmerFilter;
     private ArrayList<FarmerItem> filteredList;
-    private List<String> mfarmersContributedIds;
+    private List<MilkRecord> mPendingMilkRecords;
 
-    public MyFarmerRecyclerViewAdapter(ArrayList<FarmerItem> farmerItemList, FarmerListFrag.OnListFragmentInteractionListener listener, List<String> farmersContributedIds) {
+    public MyFarmerRecyclerViewAdapter(ArrayList<FarmerItem> farmerItemList, FarmerListFrag.OnListFragmentInteractionListener listener, List<MilkRecord> pendingMilkRecords) {
         mValues = farmerItemList;
         mListener = listener;
         filteredList = farmerItemList;
-        mfarmersContributedIds = farmersContributedIds;
+        mPendingMilkRecords = pendingMilkRecords;
 
         getFilter();
     }
@@ -48,17 +51,19 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = filteredList.get(position);
-        //holder.mIdView.setText(filteredList.get(position).getId());
         String farmerName = filteredList.get(position).getFirstName() + " " + filteredList.get(position).getLastName();
         String phoneNumber = filteredList.get(position).getPhoneNumber();
         holder.mIdView.setText(phoneNumber);
         holder.mContentView.setText(farmerName);
 
-        for (String farmerId : mfarmersContributedIds){
-            Log.d("test:", farmerId);
-            if (holder.mItem.getId().equals(farmerId)){
-                Log.d("holder:", holder.mItem.getFirstName());
-                holder.mView.setBackgroundColor(holder.mView.getResources().getColor(R.color.lightergreen));
+        if(mPendingMilkRecords != null) {
+            for (MilkRecord record : mPendingMilkRecords){
+                Log.d("test:", record.getFarmerId());
+                if (holder.mItem.getId().equals(record.getFarmerId())){
+                    Log.d("holder:", holder.mItem.getFirstName());
+                    holder.mView.setBackgroundColor(holder.mView.getResources().getColor(R.color.lightergreen));
+                    holder.mCollectedVol.setText(record.getMilkWeight() + " L");
+                }
             }
         }
 
@@ -85,13 +90,14 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
         public final TextView mIdView;
         public final TextView mContentView;
         public FarmerItem mItem;
+        public final TextView mCollectedVol;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.farmerid);
             mContentView = (TextView) view.findViewById(R.id.name);
-
+            mCollectedVol = (TextView) view.findViewById(R.id.collectedVol);
         }
 
 

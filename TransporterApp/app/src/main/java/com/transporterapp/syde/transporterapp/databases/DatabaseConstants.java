@@ -21,7 +21,7 @@ public class DatabaseConstants {
     public static final String tbltrFarmerTransporter = "tr_farmer_transporter";
 
     public static final String[] coltrFarmerTransporter = new String[]{"id", "transporter_id", "farmer_id", "jug_id", "date", "time",
-            "milk_weight", "alcohol", "smell", "comments", "density", "tr_transporter_cooling_id", "route_id"};
+            "milk_weight", "alcohol", "smell", "comments", "density", "tr_transporter_cooling_id", "route_id", "status"};
 
     public static final String tbltrTransporterCooling = "tr_transporter_cooling";
 
@@ -35,6 +35,12 @@ public class DatabaseConstants {
     public static final String id = "id";
 
     public static final String route_id = "route_id";
+
+    public static final String status = "status";
+
+    public static final String status_pending = "pending";
+
+    public static final String status_synced = "synced";
 
     public static final String first_name = "first_name";
 

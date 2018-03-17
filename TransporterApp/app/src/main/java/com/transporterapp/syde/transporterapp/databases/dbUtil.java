@@ -129,8 +129,6 @@ public class dbUtil {
      * @return
      */
     public static Cursor selectStatement(String tableName, String columnName, List<String> whereCondition, List<String> whereOperators, List<String> whereValue, Context context){
-        List<String> list = new ArrayList<>();
-
         String sql = "SELECT " + columnName + " FROM " + tableName;
         if (!whereCondition.isEmpty()) {
 

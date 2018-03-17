@@ -313,6 +313,7 @@ public class MilkEntryFrag extends Fragment {
                         int idx = densityTest.indexOfChild(radioButton);
                         RadioButton r = (RadioButton)  densityTest.getChildAt(idx);
                         String densityRating = r.getText().toString();
+                        String status = DatabaseConstants.status_pending;
 
                                 //convertQualityRating(densityTest);
                         String alcoholRating = convertQualityRating(alcoholTest);
@@ -337,10 +338,10 @@ public class MilkEntryFrag extends Fragment {
                             } else {
                                 List<String> columns = new ArrayList<>();
                                 columns.addAll(Arrays.asList(DatabaseConstants.coltrFarmerTransporter));
-                                columns.remove(DatabaseConstants.coltrFarmerTransporter.length - 1);
+                                columns.remove(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.tr_transporter_cooling_id));
                                 columns.remove(0);
 
-                                List<String> values = Arrays.asList(transporterId, farmerId, jugId, todayDate, todayTime, milkweight, alcoholRating, smellRating, comments, densityRating, mRouteId);
+                                List<String> values = Arrays.asList(transporterId, farmerId, jugId, todayDate, todayTime, milkweight, alcoholRating, smellRating, comments, densityRating, mRouteId, status);
                                 saveData(columns, values, v.getContext());
 
                                 Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();

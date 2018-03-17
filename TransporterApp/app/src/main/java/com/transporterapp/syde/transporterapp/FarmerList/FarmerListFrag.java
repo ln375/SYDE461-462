@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.DataStructures.Jug;
+import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.ExportData.ExportDataFrag;
 import com.transporterapp.syde.transporterapp.UIDecorations.DividerItemDecoration;
 import com.transporterapp.syde.transporterapp.Main;
@@ -36,6 +37,7 @@ import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -56,6 +58,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
     private ExportDataFrag exportDataFrag = new ExportDataFrag();
     private AddFarmerFrag addFarmerFrag = new AddFarmerFrag();
     private List<String> farmerContributed;
+    private List<MilkRecord> pendingMilkRecords;
 
 
     /**
@@ -153,15 +156,12 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         List<FarmerItem> convertedFarmerList = commonUtil.convertCursorToFarmerItemList(farmers);
         ArrayList<FarmerItem> convertedFarmerArrayList = new ArrayList<FarmerItem>(convertedFarmerList);
 
-        for (FarmerItem farmerItem : convertedFarmerArrayList){
-            String farmer_id = farmerItem.getId();
-            String farmer_name = farmerItem.getFirstName();
-            String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        List<String> whereCondition = new ArrayList<String>(Arrays.asList(DatabaseConstants.status, DatabaseConstants.route_id));
+        List<String> whereOperator = new ArrayList<String>(Arrays.asList("=", "="));
+        List<String> whereValue = new ArrayList<String>(Arrays.asList(DatabaseConstants.status_pending, routeId));
+        pendingMilkRecords = commonUtil.convertCursorToMilkRecordList(dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "*", whereCondition, whereOperator, whereValue, getContext()));
 
-            farmerContributed = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter,"farmer_id", "date", "=", date, context);
-        }
-
-        farmerRecyclerViewAdapter = new MyFarmerRecyclerViewAdapter(convertedFarmerArrayList, mListener, farmerContributed);
+        farmerRecyclerViewAdapter = new MyFarmerRecyclerViewAdapter(convertedFarmerArrayList, mListener, pendingMilkRecords);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         recyclerView.setAdapter(farmerRecyclerViewAdapter);
     }

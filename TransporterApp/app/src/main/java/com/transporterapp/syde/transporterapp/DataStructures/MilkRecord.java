@@ -19,11 +19,12 @@ public class MilkRecord {
     public final String density;
     public final String trTransporterCoolingId;
     public final String routeId;
+    public final String status;
 
 
     public MilkRecord(String id, String transporterId, String farmerId, String jugId, String date,
                       String time, String milkWeight, String alcohol, String smell, String comments,
-                      String density, String trTransporterCoolingId, String routeId){
+                      String density, String trTransporterCoolingId, String routeId, String status){
         this.id = id;
         this.transporterId = transporterId;
         this.farmerId = farmerId;
@@ -37,13 +38,14 @@ public class MilkRecord {
         this.density = density;
         this.trTransporterCoolingId = trTransporterCoolingId;
         this.routeId = routeId;
+        this.status = status;
     }
 
     public static MilkRecord createMilkRecord(String id, String transporterId, String farmerId, String jugId, String date,
                             String time, String milkWeight, String alcohol, String smell, String comments,
-                            String density, String trTransporterCoolingId, String routeId) {
+                            String density, String trTransporterCoolingId, String routeId, String status) {
         return new MilkRecord(id, transporterId, farmerId, jugId, date, time, milkWeight, alcohol,
-                smell, comments, density, trTransporterCoolingId, routeId);
+                smell, comments, density, trTransporterCoolingId, routeId, status);
     }
 
     public String getId() {
@@ -96,5 +98,13 @@ public class MilkRecord {
 
     public String getRouteId(){
         return routeId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status){
+        status = status;
     }
 }
