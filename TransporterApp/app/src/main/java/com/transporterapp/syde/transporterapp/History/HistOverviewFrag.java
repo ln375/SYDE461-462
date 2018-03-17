@@ -25,7 +25,6 @@ import com.transporterapp.syde.transporterapp.R;
  */
 public class HistOverviewFrag extends Fragment {
     private FragmentPagerAdapter mFragmentPagerAdapter;
-    private ViewPager mViewPager;
     private TabLayout tablayout;
 
     private OnFragmentInteractionListener mListener;
@@ -35,10 +34,13 @@ public class HistOverviewFrag extends Fragment {
     }
 
 
-    public static HistOverviewFrag newInstance() {
-        HistOverviewFrag fragment = new HistOverviewFrag();
-
-        return fragment;
+    public static HistOverviewFrag newInstance(int page, String title) {
+        HistOverviewFrag histOverviewFrag = new HistOverviewFrag();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        args.putString("someTitle", title);
+        histOverviewFrag.setArguments(args);
+        return histOverviewFrag;
     }
 
     @Override
@@ -64,8 +66,7 @@ public class HistOverviewFrag extends Fragment {
             // This method will be invoked when a new page becomes selected.
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(getActivity(),
-                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
+                
             }
 
             // This method will be invoked when the current page is scrolled

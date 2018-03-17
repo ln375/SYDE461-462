@@ -30,6 +30,7 @@ import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -260,9 +261,9 @@ public class HistListFrag extends Fragment {
                 Collections.sort(milkRecords, new Comparator<MilkRecord>() {
                     @Override
                     public int compare(MilkRecord r1, MilkRecord r2) {
-                        if (Integer.valueOf(r1.getTime()) > Integer.valueOf(r2.getTime())) {
+                        if (Date.valueOf(r1.getDate()).after(Date.valueOf(r2.getDate()))) {
                             return 1;
-                        } else if (Integer.valueOf(r1.getTime()) < Integer.valueOf(r2.getTime())){
+                        } else if (Date.valueOf(r2.getDate()).after(Date.valueOf(r1.getDate()))) {
                             return -1;
                         }
                         return 0;

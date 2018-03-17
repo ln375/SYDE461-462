@@ -16,7 +16,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     HistOverviewFrag overviewFrag = new HistOverviewFrag();
     HistOverviewDaily overviewDaily = new HistOverviewDaily();
 
-    private String tabTitles[] = new String[]{"Monthly", "Daily"};
+    private String tabTitles[] = new String[]{"Daily", "Monthly"};
 
 
     public MyPagerAdapter(FragmentManager fragmentManager) {
@@ -34,9 +34,9 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0: // Fragment # 0 - This will show FirstFragment
-                return HistOverviewMonthly.newInstance(0, "Monthly");
+                return HistOverviewDaily.newInstance(0, "Daily");
             case 1: // Fragment # 0 - This will show FirstFragment different title
-                return HistOverviewDaily.newInstance(1, "Daily");
+                return HistOverviewMonthly.newInstance(1, "Monthly");
             default:
                 return new HistOverviewFrag();
         }
@@ -53,10 +53,10 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         // save the appropriate reference depending on position
         switch (position) {
             case 0:
-                overviewMonthly = (HistOverviewMonthly) createdFragment;
+                overviewDaily = (HistOverviewDaily) createdFragment;
                 break;
             case 1:
-                overviewDaily = (HistOverviewDaily) createdFragment;
+                overviewMonthly = (HistOverviewMonthly) createdFragment;
                 break;
             default:
                 overviewFrag = (HistOverviewFrag) createdFragment;

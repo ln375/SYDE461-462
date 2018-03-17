@@ -53,7 +53,7 @@ import static com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment.P
 public class Main extends AppCompatActivity
         implements OnListFragmentInteractionListener, HistListFrag.OnListFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener, ExportDataFrag.OnFragmentInteractionListener,
         DeviceListFragment.OnListFragmentInteractionListener, ChooseRoutesFrag.OnListFragmentInteractionListener, HistMainFrag.OnFragmentInteractionListener , HistOverviewFrag.OnFragmentInteractionListener,
-        HistOverviewMonthly.OnFragmentInteractionListener, HistOverviewDaily.OnFragmentInteractionListener, AddFarmerFrag.OnFragmentInteractionListener {
+        HistOverviewMonthly.OnFragmentInteractionListener, HistOverviewDaily.OnListFragmentInteractionListener, AddFarmerFrag.OnFragmentInteractionListener  {
     public static Main instance = null;
     private HistRecordFrag histRecordFrag = new HistRecordFrag();
     private HistListFrag histListFrag = new HistListFrag();
@@ -374,4 +374,5 @@ public class Main extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForMilkEntry, BACK_STACK_ROOT_TAG).addToBackStack(BACK_STACK_ROOT_TAG).commit();
 
     }
+
 }

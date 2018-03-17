@@ -9,4 +9,6 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="header_text">18sp</dimen>
     <dimen name="button_margin">8dp</dimen>
+    <dimen name="historyDefaultWidth">0dp</dimen>
+    <dimen name="historyBigWidth">7dp</dimen>
 </resources>

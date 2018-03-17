@@ -1,14 +1,35 @@
 package com.transporterapp.syde.transporterapp.History;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
+import com.transporterapp.syde.transporterapp.DataStructures.Jug;
+import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.R;
+import com.transporterapp.syde.transporterapp.commonUtil;
+import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
+import com.transporterapp.syde.transporterapp.databases.dbUtil;
+
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,15 +77,11 @@ public class HistOverviewMonthly extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_hist_overview_monthly, container, false);
+        View v = inflater.inflate(R.layout.fragment_hist_overview_monthly, container, false);
+        init(v);
+        return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -97,4 +114,81 @@ public class HistOverviewMonthly extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void init(View v) {
+        TableLayout monthlyList = (TableLayout) v.findViewById(R.id.monthlyTable);
+        List<MilkRecord> relevantRecords = commonUtil.convertCursorToMilkRecordList(dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, DatabaseConstants.transporter_id, "=", "9", v.getContext()));
+        List<String> relevantDates = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, DatabaseConstants.date, DatabaseConstants.transporter_id, "=", "9", v.getContext());
+
+        // Organize relevantDates by month and year
+        Set<String> dates = new HashSet<>();
+        for (String temp : relevantDates) {
+            Date date = Date.valueOf(temp);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            String month = commonUtil.getMonthString(cal.get(Calendar.MONTH)) + " " + String.valueOf(cal.get(Calendar.YEAR));
+            dates.add(month);
+        }
+
+        relevantDates.clear();
+        relevantDates.addAll(dates);
+
+        // Get ProgressBar Max
+        List<Jug> jugList = commonUtil.convertCursorToJugList(dbUtil.selectStatement(DatabaseConstants.tblJug, "", "", "", v.getContext()));
+        int progressBarMax = 0;
+        for (Jug jug : jugList) {
+            progressBarMax += (int) Math.ceil(Double.valueOf(jug.getCurrentVolume()));
+        }
+
+        progressBarMax = progressBarMax * 30;
+
+
+        for (int i = 0; i < relevantDates.size(); i++) {
+            int numOfTrips = 0;
+            double totalVolume = 0;
+
+            //Check milkRecord list to see which items match the relevant date
+            for (MilkRecord record: relevantRecords) {
+                Date date = Date.valueOf(record.getDate());
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                String month = commonUtil.getMonthString(cal.get(Calendar.MONTH)) + " " + String.valueOf(cal.get(Calendar.YEAR));
+                if (relevantDates.get(i).equalsIgnoreCase(month)) {
+                    numOfTrips++;
+                    totalVolume += Double.valueOf(record.getMilkWeight());
+                }
+            }
+
+            // Now add table row
+            TableRow row = new TableRow(v.getContext());
+            TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+            TextView date = new TextView(v.getContext());
+            date.setText(relevantDates.get(i));
+            date.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+
+            TextView numberOfCollections = new TextView(v.getContext());
+            numberOfCollections.setText(Integer.toString(numOfTrips));
+            numberOfCollections.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+            TextView volumeCollected = new TextView(v.getContext());
+            volumeCollected.setText(String.valueOf(totalVolume) + " L");
+            volumeCollected.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+            RelativeLayout progressBarHolder = new RelativeLayout(getContext());
+            ProgressBar progressBar = new ProgressBar(getContext(), null, android.R.attr.progressBarStyleHorizontal);
+            progressBar.setProgress((int) Math.ceil(totalVolume));
+            progressBar.setMax(progressBarMax);
+            progressBarHolder.addView(progressBar);
+            progressBarHolder.setPadding(0, 0, 1, 0);
+
+            row.addView(date);
+            row.addView(numberOfCollections);
+            row.addView(volumeCollected);
+            row.addView(progressBarHolder);
+            monthlyList.addView(row);
+        }
+    }
+
+
 }
