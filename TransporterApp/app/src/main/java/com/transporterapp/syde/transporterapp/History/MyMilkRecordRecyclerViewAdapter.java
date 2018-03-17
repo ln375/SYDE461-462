@@ -47,7 +47,7 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
         List<FarmerItem> farmer = commonUtil.convertCursorToFarmerItemList(dbUtil.selectStatement(DatabaseConstants.tblFarmer, "id", "=", farmerId, view.getContext()));
         if (farmer != null) {
             String name = farmer.get(0).getFirstName() + " " + farmer.get(0).getLastName();
-            String volume = mValues.get(position).getMilkWeight() + "L";
+            String volume = mValues.get(position).getMilkWeight() + " L";
             holder.farmerName.setText(name);
             holder.volume.setText(volume);
         }
