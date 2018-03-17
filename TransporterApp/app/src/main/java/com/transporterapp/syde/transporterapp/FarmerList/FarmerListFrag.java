@@ -55,6 +55,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
     private OnListFragmentInteractionListener mListener;
     private MyFarmerRecyclerViewAdapter farmerRecyclerViewAdapter;
     private String routeId = "";
+    private String transporterId = "";
     private ExportDataFrag exportDataFrag = new ExportDataFrag();
     private AddFarmerFrag addFarmerFrag = new AddFarmerFrag();
     private List<String> farmerContributed;
@@ -86,6 +87,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             routeId = getArguments().getString("routeId");
+            transporterId = getArguments().getString("transporterId");
         }
     }
 
@@ -127,8 +129,15 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         });
 
         final Button saveLogbookButton = (Button) view.findViewById(R.id.save_logbook);
+        Bundle bundle = new Bundle();
+        bundle.putString("transporterId", transporterId);
+
+
         if (exportDataFrag.getArguments() != null) {
             exportDataFrag.getArguments().clear();
+            exportDataFrag.getArguments().putAll(bundle);
+        } else {
+            exportDataFrag.setArguments(bundle);
         }
         saveLogbookButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

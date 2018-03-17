@@ -77,6 +77,7 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
     private RadioButton btnBluetooth;
     private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private static List<BluetoothDevice> devices = new ArrayList<>();
+    private String transporterId = "";
 
 
 
@@ -95,6 +96,7 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            transporterId = getArguments().getString("transporterId");
         }
     }
 
@@ -179,7 +181,10 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
                             });
 
                             // Update status of records internally
-                            dbUtil.updateStatement(DatabaseConstants.tbltrFarmerTransporter, DatabaseConstants.status, DatabaseConstants.status_synced, DatabaseConstants.status, "=", DatabaseConstants.status_pending, getContext());                        }
+                            dbUtil.updateStatement(DatabaseConstants.tbltrFarmerTransporter, DatabaseConstants.status, DatabaseConstants.status_synced, DatabaseConstants.status, "=", DatabaseConstants.status_pending, getContext());
+                            dbUtil.updateStatement(DatabaseConstants.tblJug, DatabaseConstants.currentVolume, "0", DatabaseConstants.transporter_id, "=", transporterId, getContext());
+                        }
+
 
                     }
                 }

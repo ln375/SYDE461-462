@@ -369,6 +369,7 @@ public class Main extends AppCompatActivity
     public void onListFragmentInteraction(Routes item) {
         Bundle bundle = new Bundle();
         bundle.putString("routeId", item.getRouteId());
+        bundle.putString("transporterId", userId);
         if (farmerListFragmentForMilkEntry.getArguments() != null) {
             farmerListFragmentForMilkEntry.getArguments().clear();
             farmerListFragmentForMilkEntry.getArguments().putAll(bundle);
