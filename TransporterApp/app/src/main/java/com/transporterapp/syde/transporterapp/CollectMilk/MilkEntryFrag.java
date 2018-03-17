@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -26,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.transporterapp.syde.transporterapp.DataStructures.Jug;
+import com.transporterapp.syde.transporterapp.ExportData.ExportDataFrag;
+import com.transporterapp.syde.transporterapp.FarmerList.FarmerListFrag;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
@@ -49,6 +52,7 @@ public class MilkEntryFrag extends Fragment {
     private RadioGroup alcoholTest;
     private EditText txtComments;
     private String mFarmerName;
+    private String mRouteId;
     private LinearLayout mCarouselContainer;
     private HorizontalScrollView mScrollView;
     private LinearLayout jugPagination;
@@ -59,6 +63,7 @@ public class MilkEntryFrag extends Fragment {
     private List<Jug> jug_list = new ArrayList<Jug>();
 
     private static final String FARMER_NAME = "farmername";
+    private static final String ROUTE_ID = "routeId";
 
     //Number of Jugs - may need to change this number later or add function to add jugs
     private final static int INITIAL_JUG_COUNT=5;
@@ -68,6 +73,9 @@ public class MilkEntryFrag extends Fragment {
     private String currentJugSelection = "";
     private boolean dataSaved = false;
     private boolean poorQuality = false;
+
+
+
 
     private int jugSize = 20; //Placeholder
 
@@ -81,6 +89,7 @@ public class MilkEntryFrag extends Fragment {
 
         if (getArguments() != null) {
             mFarmerName = getArguments().getString(FARMER_NAME);
+            mRouteId = getArguments().getString(ROUTE_ID);
 
             // Set title bar
             ((Main) getActivity()).setActionBarTitle(mFarmerName);
@@ -330,6 +339,7 @@ public class MilkEntryFrag extends Fragment {
 
                                 Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();
                                 getActivity().onBackPressed();
+
                             }
                         }
 
@@ -485,11 +495,11 @@ public class MilkEntryFrag extends Fragment {
         String rating = "1";
         List<String> qualityRating = new ArrayList<>();
         if (radioGroup.getCheckedRadioButtonId() == R.id.density_bad || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_bad || radioGroup.getCheckedRadioButtonId() == R.id.smell_bad) {
-            qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "\'Bad\'", getContext());
+            qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "Bad", getContext());
         } else if (radioGroup.getCheckedRadioButtonId() == R.id.density_good || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_good || radioGroup.getCheckedRadioButtonId() == R.id.smell_good) {
-            qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "\'Good\'", getContext());
+            qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "Good", getContext());
         } else if (radioGroup.getCheckedRadioButtonId() == R.id.density_28  || radioGroup.getCheckedRadioButtonId() == R.id.density_29 || radioGroup.getCheckedRadioButtonId() == R.id.density_30 || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_okay) {
-            qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "\'Okay\'", getContext());
+            qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "Okay", getContext());
         }
         if (qualityRating.size() > 0) {
             rating = qualityRating.get(0);

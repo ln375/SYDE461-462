@@ -212,7 +212,6 @@ public class Main extends AppCompatActivity
                 for (Jug jug : jugList) {
                     collectedMilk += Double.valueOf(jug.getCurrentVolume());
                 }
-                setActionBarTitle("Milk Collected: " + collectedMilk + "L");
                 milkEntryFragment.clearData();
                 super.onBackPressed();
             } else {
@@ -258,6 +257,7 @@ public class Main extends AppCompatActivity
         bundle.putString("farmername", fullFarmerName);
         bundle.putString("farmerid", item.getId());
         bundle.putString("transporterId", userId);
+        bundle.putString("routeId", item.routeId);
 
        /* if (menuFragmentId == R.id.farmersActivity){
             //Navigate to farmer profile frag

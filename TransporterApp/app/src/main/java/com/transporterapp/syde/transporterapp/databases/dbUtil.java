@@ -99,7 +99,7 @@ public class dbUtil {
 
         String sql = "SELECT " + columnName + " FROM " + tableName;
         if (!whereCondition.isEmpty()) {
-            sql = sql + " WHERE " + whereCondition + " " + whereOperator + " " + whereValue;
+            sql = sql + " WHERE " + whereCondition + " " + whereOperator + " \'" + whereValue + "\'";
         }
 
         setInstance(context);

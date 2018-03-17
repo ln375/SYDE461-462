@@ -1,6 +1,7 @@
 package com.transporterapp.syde.transporterapp.FarmerList;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link FarmerItem} and makes a call to the
@@ -24,11 +26,13 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
     private final FarmerListFrag.OnListFragmentInteractionListener mListener;
     private FarmerFilter farmerFilter;
     private ArrayList<FarmerItem> filteredList;
+    private List<String> mfarmersContributedIds;
 
-    public MyFarmerRecyclerViewAdapter(ArrayList<FarmerItem> farmerItemList, FarmerListFrag.OnListFragmentInteractionListener listener) {
+    public MyFarmerRecyclerViewAdapter(ArrayList<FarmerItem> farmerItemList, FarmerListFrag.OnListFragmentInteractionListener listener, List<String> farmersContributedIds) {
         mValues = farmerItemList;
         mListener = listener;
         filteredList = farmerItemList;
+        mfarmersContributedIds = farmersContributedIds;
 
         getFilter();
     }
@@ -49,6 +53,15 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
         String phoneNumber = filteredList.get(position).getPhoneNumber();
         holder.mIdView.setText(phoneNumber);
         holder.mContentView.setText(farmerName);
+
+        for (String farmerId : mfarmersContributedIds){
+            Log.d("test:", farmerId);
+            if (holder.mItem.getId().equals(farmerId)){
+                Log.d("holder:", holder.mItem.getFirstName());
+                holder.mView.setBackgroundColor(holder.mView.getResources().getColor(R.color.lightergreen));
+            }
+        }
+
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +91,9 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.farmerid);
             mContentView = (TextView) view.findViewById(R.id.name);
+
         }
+
 
         @Override
         public String toString() {

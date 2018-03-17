@@ -12,6 +12,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,8 +34,11 @@ import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A fragment representing a list of Items.
@@ -51,6 +55,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
     private String routeId = "";
     private ExportDataFrag exportDataFrag = new ExportDataFrag();
     private AddFarmerFrag addFarmerFrag = new AddFarmerFrag();
+    private List<String> farmerContributed;
 
 
     /**
@@ -147,7 +152,16 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         Cursor farmers = dbUtil.selectStatement("farmers", "route_id", "=", routeId, context);
         List<FarmerItem> convertedFarmerList = commonUtil.convertCursorToFarmerItemList(farmers);
         ArrayList<FarmerItem> convertedFarmerArrayList = new ArrayList<FarmerItem>(convertedFarmerList);
-        farmerRecyclerViewAdapter = new MyFarmerRecyclerViewAdapter(convertedFarmerArrayList, mListener);
+
+        for (FarmerItem farmerItem : convertedFarmerArrayList){
+            String farmer_id = farmerItem.getId();
+            String farmer_name = farmerItem.getFirstName();
+            String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+            farmerContributed = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter,"farmer_id", "date", "=", date, context);
+        }
+
+        farmerRecyclerViewAdapter = new MyFarmerRecyclerViewAdapter(convertedFarmerArrayList, mListener, farmerContributed);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         recyclerView.setAdapter(farmerRecyclerViewAdapter);
     }
