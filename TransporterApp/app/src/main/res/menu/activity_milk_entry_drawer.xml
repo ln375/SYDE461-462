@@ -15,10 +15,7 @@
             android:id="@+id/farmersActivity"
             android:icon="@drawable/ic_menu_farmers"
             android:title="@string/nav_menu_farmers_screen"/> -->
-        <item
-            android:id="@+id/exportActivity"
-            android:icon="@drawable/ic_phonelink"
-            android:title="@string/nav_menu_export_screen"/>
+
     </group>
 
     <group android:checkableBehavior="single">
