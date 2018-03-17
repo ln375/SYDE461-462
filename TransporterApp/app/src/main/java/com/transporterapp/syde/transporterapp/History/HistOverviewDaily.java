@@ -161,7 +161,9 @@ public class HistOverviewDaily extends Fragment {
             for (MilkRecord record : relevantRecords) {
                 if (relevantDates.get(i).equalsIgnoreCase(record.getDate())) {
                     numOfTrips++;
-                    totalVolume += Double.valueOf(record.getMilkWeight());
+                    if (!record.getMilkWeight().isEmpty()) {
+                        totalVolume += Double.valueOf(record.getMilkWeight());
+                    }
                 }
             }
 

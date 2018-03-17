@@ -61,8 +61,13 @@ public class MyFarmerRecyclerViewAdapter extends RecyclerView.Adapter<MyFarmerRe
                 Log.d("test:", record.getFarmerId());
                 if (holder.mItem.getId().equals(record.getFarmerId())){
                     Log.d("holder:", holder.mItem.getFirstName());
-                    holder.mView.setBackgroundColor(holder.mView.getResources().getColor(R.color.lightergreen));
-                    holder.mCollectedVol.setText(record.getMilkWeight() + " L");
+                    if (record.getMilkWeight().isEmpty()) {
+                        holder.mCollectedVol.setText(record.getMilkWeight() + "--");
+                        holder.mView.setBackgroundColor(holder.mView.getResources().getColor(R.color.lighterred));
+                    } else {
+                        holder.mView.setBackgroundColor(holder.mView.getResources().getColor(R.color.lightergreen));
+                        holder.mCollectedVol.setText(record.getMilkWeight() + " L");
+                    }
                 }
             }
         }

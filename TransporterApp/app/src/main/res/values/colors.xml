@@ -17,6 +17,7 @@
     <color name="header">#CCC7B9</color>
     <color name="lineDividerGray">#d3d3d3</color>
     <color name="lightergreen">#B9F6CA</color>
+    <color name="lighterred">#F5B7B1</color>
 
 
 </resources>

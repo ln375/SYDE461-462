@@ -35,6 +35,8 @@ import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,6 +98,9 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
                              Bundle savedInstanceState) {
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         View view = inflater.inflate(R.layout.fragment_farmer_list, container, false);
+
+        TextView routeTxt = (TextView) view.findViewById(R.id.routeText);
+        routeTxt.setText("Route: " + routeId);
 
         // Set the adapter
         if (view instanceof RelativeLayout) {

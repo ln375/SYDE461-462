@@ -156,7 +156,9 @@ public class HistOverviewMonthly extends Fragment {
                 String month = commonUtil.getMonthString(cal.get(Calendar.MONTH)) + " " + String.valueOf(cal.get(Calendar.YEAR));
                 if (relevantDates.get(i).equalsIgnoreCase(month)) {
                     numOfTrips++;
-                    totalVolume += Double.valueOf(record.getMilkWeight());
+                    if (!record.getMilkWeight().isEmpty()) {
+                        totalVolume += Double.valueOf(record.getMilkWeight());
+                    }
                 }
             }
 

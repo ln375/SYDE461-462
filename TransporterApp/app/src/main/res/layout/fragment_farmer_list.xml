@@ -37,7 +37,7 @@
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:textColor="#000000"
                     android:textSize="@dimen/header_text"
-                    android:text="Route"
+                    android:text=""
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:layout_weight="8.5" />
