@@ -77,15 +77,12 @@ public class HistOverviewDaily extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_hist_overview_daily, container, false);
-
-        init(v);
-
         return v;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
+        init(view);
     }
 
     @Override
@@ -123,35 +120,49 @@ public class HistOverviewDaily extends Fragment {
     public void init(View v){
         TableLayout dailyList = (TableLayout) v.findViewById(R.id.dailyTable);
         List<String> relevantDates = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, DatabaseConstants.date, DatabaseConstants.transporter_id, "=", "9", v.getContext());
+        List<MilkRecord> relevantRecords = commonUtil.convertCursorToMilkRecordList(dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, DatabaseConstants.transporter_id, "=", "9", v.getContext()));
         Set<String> dates = new HashSet<>();
         dates.addAll(relevantDates);
         relevantDates.clear();
         relevantDates.addAll(dates);
 
+        // Sort dates so most recent collections are shown first
         Collections.sort(relevantDates, new Comparator<String>() {
             @Override
             public int compare(String r1, String r2) {
                 if (Date.valueOf(r1).after(Date.valueOf(r2))) {
-                    return 1;
-                } else if (Date.valueOf(r2).after(Date.valueOf(r1))) {
                     return -1;
+                } else if (Date.valueOf(r2).after(Date.valueOf(r1))) {
+                    return 1;
                 }
                 return 0;
             }
         });
 
-        List<Jug> jugList = commonUtil.convertCursorToJugList(dbUtil.selectStatement(DatabaseConstants.tblJug, "", "", "", v.getContext()));
+        // Get progressbar max
+        List<Jug> jugList = commonUtil.convertCursorToJugList(dbUtil.selectStatement(DatabaseConstants.tblJug, DatabaseConstants.transporter_id, "=", "9", v.getContext()));
         int progressBarMax = 0;
         for (Jug jug : jugList) {
-            progressBarMax += (int) Math.ceil(Double.valueOf(jug.getCurrentVolume()));
+            progressBarMax += (int) Math.ceil(Double.valueOf(jug.getSize()));
         }
 
+
         for (int i = 0; i <relevantDates.size(); i++) {
-            List<String> whereCondition = new ArrayList<String>(Arrays.asList(DatabaseConstants.transporter_id, DatabaseConstants.date));
+            /*List<String> whereCondition = new ArrayList<String>(Arrays.asList(DatabaseConstants.transporter_id, DatabaseConstants.date));
             List<String> whereOperator = new ArrayList<String>(Arrays.asList("=", "="));
             List<String> whereValue = new ArrayList<String>(Arrays.asList("9", relevantDates.get(i)));
             Cursor records = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "*", whereCondition, whereOperator, whereValue, getContext());
-            List<MilkRecord> milkRecords = commonUtil.convertCursorToMilkRecordList(records);
+            List<MilkRecord> milkRecords = commonUtil.convertCursorToMilkRecordList(records);*/
+
+            int numOfTrips = 0;
+            double totalVolume = 0;
+
+            for (MilkRecord record : relevantRecords) {
+                if (relevantDates.get(i).equalsIgnoreCase(record.getDate())) {
+                    numOfTrips++;
+                    totalVolume += Double.valueOf(record.getMilkWeight());
+                }
+            }
 
             Date temp = Date.valueOf(relevantDates.get(i));
             Calendar cal = Calendar.getInstance();
@@ -163,25 +174,18 @@ public class HistOverviewDaily extends Fragment {
             date.setText(collectionDate);
             date.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
-            List<String> farmerContributed = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter,"farmer_id", "date", "=", "2018-03-16", getContext());
-
-            String huh = "hullo";
 
             TextView numberOfCollections = new TextView(v.getContext());
-            numberOfCollections.setText(Integer.toString(milkRecords.size()));
+            numberOfCollections.setText(Integer.toString(numOfTrips));
             numberOfCollections.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
-            double sum = 0;
-            for (MilkRecord record: milkRecords) {
-                sum += Double.valueOf(record.getMilkWeight());
-            }
             TextView volumeCollected = new TextView(v.getContext());
-            volumeCollected.setText(String.valueOf(sum) + " L");
+            volumeCollected.setText(String.valueOf(totalVolume) + " L");
             volumeCollected.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
             RelativeLayout progressBarHolder = new RelativeLayout(getContext());
             ProgressBar progressBar = new ProgressBar(getContext(), null, android.R.attr.progressBarStyleHorizontal);
-            progressBar.setProgress((int) Math.ceil(sum));
+            progressBar.setProgress((int) Math.ceil(totalVolume));
             progressBar.setMax(progressBarMax);
             progressBarHolder.addView(progressBar);
             progressBarHolder.setPadding(0,0,1,0);

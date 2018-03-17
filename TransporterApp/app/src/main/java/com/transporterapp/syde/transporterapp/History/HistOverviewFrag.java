@@ -26,6 +26,7 @@ import com.transporterapp.syde.transporterapp.R;
 public class HistOverviewFrag extends Fragment {
     private FragmentPagerAdapter mFragmentPagerAdapter;
     private TabLayout tablayout;
+    private String transporterId = "";
 
     private OnFragmentInteractionListener mListener;
 
@@ -46,6 +47,7 @@ public class HistOverviewFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        transporterId = getArguments().getString("userid");
     }
 
     @Override
@@ -66,7 +68,7 @@ public class HistOverviewFrag extends Fragment {
             // This method will be invoked when a new page becomes selected.
             @Override
             public void onPageSelected(int position) {
-                
+
             }
 
             // This method will be invoked when the current page is scrolled

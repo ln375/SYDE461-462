@@ -13,7 +13,7 @@
             <TextView
                 android:id="@+id/dateHeader"
                 android:layout_width="0dp"
-                android:layout_weight="7"
+                android:layout_weight="5.5"
                 android:text="Date"
                 android:textSize="14dp"
                 android:textColor="@color/bodyText"
