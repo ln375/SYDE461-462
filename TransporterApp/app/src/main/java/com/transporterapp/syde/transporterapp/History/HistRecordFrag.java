@@ -18,6 +18,8 @@ import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
+import org.w3c.dom.Text;
+
 public class HistRecordFrag extends Fragment {
 
     private TextView milkVolume;
@@ -44,70 +46,73 @@ public class HistRecordFrag extends Fragment {
         FarmerItem farmer = commonUtil.convertCursortToFarmerItem(curFarmer);
 
         TextView farmerName = (TextView) view.findViewById(R.id.hist_record_farmer_name);
-        farmerName.setText("Farmer: " + farmer.getFirstName() + " " + farmer.getLastName());
+        farmerName.setText(farmer.getFirstName() + " " + farmer.getLastName());
 
-        TextView transporterName = (TextView) view.findViewById(R.id.hist_record_transporter_name);
-        Cursor curTransporter = dbUtil.selectStatement(DatabaseConstants.tblTransporter, DatabaseConstants.id, "=", getArguments().getString("transporterId"), context);
-        TransporterItem transporter = commonUtil.convertCursortToTransporterItem(curTransporter);
-        transporterName.setText("Transporter: " +transporter.getFirstName() + " " + transporter.getLastName());
+        TextView farmerId = (TextView) view.findViewById(R.id.hist_record_farmer_id);
+        farmerId.setText(farmer.getId());
 
         TextView date = (TextView) view.findViewById(R.id.hist_record_date);
-        date.setText("Date: " + getArguments().getString("date"));
+        date.setText(getArguments().getString("date"));
 
         TextView time = (TextView) view.findViewById(R.id.hist_record_time);
-        time.setText("Time: " + getArguments().getString("time"));
+        time.setText(getArguments().getString("time"));
 
         Cursor curJug = dbUtil.selectStatement(DatabaseConstants.tblJug, DatabaseConstants.id, "=", getArguments().getString("jugId"), context);
         Jug jug = commonUtil.convertCursorToJug(curJug);
         TextView txtJug = (TextView) view.findViewById(R.id.hist_record_jug);
         if (jug != null) {
-            txtJug.setText("Jug: " + jug.getSize() + " L " + jug.getType());
+            txtJug.setText(jug.getId());
         } else {
-            txtJug.setText("Jug: N/A");
+            txtJug.setText("N/A");
         }
+
+        TextView farmerPhone = (TextView) view.findViewById(R.id.hist_record_farmer_phone);
+        farmerPhone.setText(getArguments().getString("phoneNumber"));
 
 
         TextView milkWeight = (TextView) view.findViewById(R.id.hist_record_milk_volume);
         String milk = getArguments().getString("milkweight");
         if (milk.isEmpty()) {
-            milkWeight.setText("Milk Weight: N/A");
+            milkWeight.setText("N/A");
         } else {
-            milkWeight.setText("Milk Weight: " + getArguments().getString("milkweight"));
+            milkWeight.setText(getArguments().getString("milkweight") + " L");
         }
+
+        TextView transactionID = (TextView) view.findViewById(R.id.hist_record_transaction_id);
+        transactionID.setText(getArguments().getString("milkRecordId"));
 
 
         TextView alcohol = (TextView) view.findViewById(R.id.hist_record_alcohol);
         String temp = "N/A";
         if (getArguments().getString("alcohol").isEmpty()){
-            alcohol.setText("Alcohol Test: " + temp);
+            alcohol.setText(temp);
         } else {
             temp = commonUtil.getQualityRating(getArguments().getString("alcohol"), context);
-            alcohol.setText("Alcohol Test: " + temp);
+            alcohol.setText(temp);
         }
 
         TextView density = (TextView) view.findViewById(R.id.hist_record_density);
         if (getArguments().getString("density").isEmpty()){
             temp = "N/A";
-            density.setText("Density Test: " + temp);
+            density.setText(temp);
         } else {
-            temp = commonUtil.getQualityRating(getArguments().getString("density"), context);
-            density.setText("Density Test: " + temp);
+            density.setText(getArguments().getString("density"));
         }
 
         TextView smell = (TextView) view.findViewById(R.id.hist_record_smell);
         if (getArguments().getString("smell").isEmpty()){
             temp = "N/A";
-            smell.setText("Smell Test: " + temp);
+            smell.setText(temp);
         } else {
             temp = commonUtil.getQualityRating(getArguments().getString("smell"), context);
-            smell.setText("Smell Test: " + temp);
+            smell.setText(temp);
         }
 
         TextView comments = (TextView) view.findViewById(R.id.hist_record_comments);
         if (getArguments().getString("comments").isEmpty()){
-            comments.setText("Comments: N/A");
+            comments.setText("N/A");
         } else {
-            comments.setText("Comments: " + getArguments().getString("comments"));
+            comments.setText(getArguments().getString("comments"));
         }
 
 

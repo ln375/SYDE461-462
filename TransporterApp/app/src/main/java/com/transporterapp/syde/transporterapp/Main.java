@@ -302,6 +302,9 @@ public class Main extends AppCompatActivity
         bundle.putString("density", item.getDensity());
         bundle.putString("comments", item.getComments());
         bundle.putString("trTransporterCoolingId", item.getTrTransporterCoolingId());
+
+        FarmerItem farmer = commonUtil.convertCursortToFarmerItem(dbUtil.selectStatement(DatabaseConstants.tblFarmer, DatabaseConstants.id, "=", item.getFarmerId(), getApplicationContext()));
+        bundle.putString("phoneNumber", farmer.getPhoneNumber());
         histRecordFrag.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.container, histRecordFrag, BACK_STACK_ROOT_TAG).addToBackStack(BACK_STACK_ROOT_TAG).commit();
     }

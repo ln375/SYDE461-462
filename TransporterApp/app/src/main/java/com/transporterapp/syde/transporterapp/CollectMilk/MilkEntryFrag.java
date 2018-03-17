@@ -308,7 +308,13 @@ public class MilkEntryFrag extends Fragment {
                         String farmerId = getArguments().getString("farmerid");
                         String transporterId = getArguments().getString("transporterId");
                         String smellRating = convertQualityRating(smellTest);
-                        String densityRating = convertQualityRating(densityTest);
+                        int radioButtonID = densityTest.getCheckedRadioButtonId();
+                        View radioButton = densityTest.findViewById(radioButtonID);
+                        int idx = densityTest.indexOfChild(radioButton);
+                        RadioButton r = (RadioButton)  densityTest.getChildAt(idx);
+                        String densityRating = r.getText().toString();
+
+                                //convertQualityRating(densityTest);
                         String alcoholRating = convertQualityRating(alcoholTest);
                         String jugId = jugIdClicked;
                         String comments = txtComments.getText().toString();
@@ -498,9 +504,9 @@ public class MilkEntryFrag extends Fragment {
             qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "Bad", getContext());
         } else if (radioGroup.getCheckedRadioButtonId() == R.id.density_good || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_good || radioGroup.getCheckedRadioButtonId() == R.id.smell_good) {
             qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "Good", getContext());
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.density_28  || radioGroup.getCheckedRadioButtonId() == R.id.density_29 || radioGroup.getCheckedRadioButtonId() == R.id.density_30 || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_okay) {
+        } /*else if (radioGroup.getCheckedRadioButtonId() == R.id.density_28  || radioGroup.getCheckedRadioButtonId() == R.id.density_29 || radioGroup.getCheckedRadioButtonId() == R.id.density_30 || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_okay) {
             qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "Okay", getContext());
-        }
+        }*/
         if (qualityRating.size() > 0) {
             rating = qualityRating.get(0);
         }

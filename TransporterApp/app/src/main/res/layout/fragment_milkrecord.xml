@@ -18,13 +18,26 @@
             android:layout_margin="@dimen/text_margin"
             android:textAppearance="?attr/textAppearanceListItem" />
 
-        <ImageView
+        <TextView
+            android:id="@+id/id"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/select_route_mini"
+            android:textAlignment="center"
+            android:paddingTop="17dp"
+            android:paddingRight="20dp"
+            android:textStyle="bold"
+            android:text="1"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+<!--        <ImageView
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="match_parent"
             android:src="@drawable/notebook"
             android:gravity="center_vertical"
-            android:id="@+id/routePicture"/>
+            android:id="@+id/routePicture"/>-->
 
         <TextView
             android:id="@+id/name"
