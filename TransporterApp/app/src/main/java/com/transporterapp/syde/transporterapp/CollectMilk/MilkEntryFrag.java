@@ -340,7 +340,7 @@ public class MilkEntryFrag extends Fragment {
                                 columns.remove(DatabaseConstants.coltrFarmerTransporter.length - 1);
                                 columns.remove(0);
 
-                                List<String> values = Arrays.asList(transporterId, farmerId, jugId, todayDate, todayTime, milkweight, alcoholRating, smellRating, comments, densityRating);
+                                List<String> values = Arrays.asList(transporterId, farmerId, jugId, todayDate, todayTime, milkweight, alcoholRating, smellRating, comments, densityRating, mRouteId);
                                 saveData(columns, values, v.getContext());
 
                                 Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();

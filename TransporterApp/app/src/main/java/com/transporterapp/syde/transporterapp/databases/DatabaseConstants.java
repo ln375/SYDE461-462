@@ -21,7 +21,7 @@ public class DatabaseConstants {
     public static final String tbltrFarmerTransporter = "tr_farmer_transporter";
 
     public static final String[] coltrFarmerTransporter = new String[]{"id", "transporter_id", "farmer_id", "jug_id", "date", "time",
-            "milk_weight", "alcohol", "smell", "comments", "density", "tr_transporter_cooling_id"};
+            "milk_weight", "alcohol", "smell", "comments", "density", "tr_transporter_cooling_id", "route_id"};
 
     public static final String tbltrTransporterCooling = "tr_transporter_cooling";
 

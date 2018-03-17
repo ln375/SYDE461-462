@@ -14,6 +14,8 @@ import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilkRecordRecyclerViewAdapter.ViewHolder> {
@@ -38,6 +40,8 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
+        holder.routeId.setText(mValues.get(position).getRouteId());
+
         String farmerId = mValues.get(position).getFarmerId();
 
         List<FarmerItem> farmer = commonUtil.convertCursorToFarmerItemList(dbUtil.selectStatement(DatabaseConstants.tblFarmer, "id", "=", farmerId, view.getContext()));
@@ -73,6 +77,7 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
         public final TextView mIdView;
         public final TextView farmerName;
         public final TextView volume;
+        public final TextView routeId;
         public MilkRecord mItem;
 
         public ViewHolder(View view) {
@@ -81,6 +86,7 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
             mIdView = (TextView) view.findViewById(R.id.collectionOrder);
             farmerName = (TextView) view.findViewById(R.id.name);
             volume = (TextView) view.findViewById(R.id.volume);
+            routeId = (TextView) view.findViewById(R.id.id);
         }
 
         @Override

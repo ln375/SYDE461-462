@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.Main;
@@ -29,6 +30,8 @@ import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
+
+import org.w3c.dom.Text;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -51,9 +54,11 @@ public class HistListFrag extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private String transporterId = "";
+    public String mrouteId = "";
     private OnListFragmentInteractionListener mListener;
     private Button sortButton;
     private Button calendarButton;
+    private TextView routeId;
     private RecyclerView recyclerView;
     Calendar myCalendar = Calendar.getInstance();
 
@@ -81,6 +86,7 @@ public class HistListFrag extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             transporterId = getArguments().getString("userid");
+            mrouteId = getArguments().getString("routeid");
         }
     }
 
@@ -91,6 +97,7 @@ public class HistListFrag extends Fragment {
         View view = inflater.inflate(R.layout.fragment_milkrecord_list, container, false);
         calendarButton = (Button) view.findViewById(R.id.calendarButton);
         sortButton = (Button) view.findViewById(R.id.sortButton);
+
         // Set title bar
         ((Main) getActivity()).setActionBarTitle("History");
 

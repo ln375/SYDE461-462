@@ -56,7 +56,7 @@ public class USBTransfer {
             // Write rows
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                String[] milkRecord = new String[12];
+                String[] milkRecord = new String[13];
                 milkRecord[0] = cursor.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.id));
                 milkRecord[1] = cursor.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.transporter_id));
                 milkRecord[2] = cursor.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.farmer_id));
@@ -69,6 +69,7 @@ public class USBTransfer {
                 milkRecord[9] = cursor.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.comments));
                 milkRecord[10] = cursor.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.density));
                 milkRecord[11] = cursor.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.tr_transporter_cooling_id));
+                milkRecord[12] = cursor.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.route_id));
 
                 writer.writeNext(milkRecord);
                 cursor.moveToNext();

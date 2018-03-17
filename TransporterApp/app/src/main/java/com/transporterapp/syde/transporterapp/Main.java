@@ -302,6 +302,7 @@ public class Main extends AppCompatActivity
         bundle.putString("density", item.getDensity());
         bundle.putString("comments", item.getComments());
         bundle.putString("trTransporterCoolingId", item.getTrTransporterCoolingId());
+        bundle.putString("routeid", item.getRouteId());
 
         FarmerItem farmer = commonUtil.convertCursortToFarmerItem(dbUtil.selectStatement(DatabaseConstants.tblFarmer, DatabaseConstants.id, "=", item.getFarmerId(), getApplicationContext()));
         bundle.putString("phoneNumber", farmer.getPhoneNumber());
