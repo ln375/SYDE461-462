@@ -39,6 +39,7 @@ import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceListFr
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
+import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.io.BufferedInputStream;
 import java.io.Console;
@@ -176,7 +177,9 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
 
                                 }
                             });
-                        }
+
+                            // Update status of records internally
+                            dbUtil.updateStatement(DatabaseConstants.tbltrFarmerTransporter, DatabaseConstants.status, DatabaseConstants.status_synced, DatabaseConstants.status, "=", DatabaseConstants.status_pending, getContext());                        }
 
                     }
                 }
