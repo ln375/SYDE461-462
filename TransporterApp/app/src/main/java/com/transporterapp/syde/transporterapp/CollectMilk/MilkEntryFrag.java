@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -43,6 +44,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import be.derycke.pieter.com.COM;
+
 
 public class MilkEntryFrag extends Fragment {
 
@@ -54,6 +57,12 @@ public class MilkEntryFrag extends Fragment {
     private EditText txtComments;
     private String mFarmerName;
     private String mRouteId;
+    private String mWeight;
+    private String mAlcohol;
+    private String mSmell;
+    private String mDensity;
+    private String mComments;
+    public boolean mPrevRecord = false;
     private LinearLayout mCarouselContainer;
     private HorizontalScrollView mScrollView;
     private LinearLayout jugPagination;
@@ -65,6 +74,12 @@ public class MilkEntryFrag extends Fragment {
 
     private static final String FARMER_NAME = "farmername";
     private static final String ROUTE_ID = "routeId";
+    private static final String MILK_WEIGHT = "milkweight";
+    private static final String PREV_RECORD = "prevRecord";
+    private static final String ALCOHOL = "alcohol";
+    private static final String SMELL = "smell";
+    private static final String DENSITY = "density";
+    private static final String COMMENTS = "comments";
 
     //Number of Jugs - may need to change this number later or add function to add jugs
     private final static int INITIAL_JUG_COUNT=5;
@@ -91,6 +106,12 @@ public class MilkEntryFrag extends Fragment {
         if (getArguments() != null) {
             mFarmerName = getArguments().getString(FARMER_NAME);
             mRouteId = getArguments().getString(ROUTE_ID);
+            mWeight = getArguments().getString(MILK_WEIGHT);
+            mAlcohol = getArguments().getString(ALCOHOL);
+            mSmell = getArguments().getString(SMELL);
+            mDensity = getArguments().getString(DENSITY);
+            mComments = getArguments().getString(COMMENTS);
+            mPrevRecord = getArguments().getBoolean(PREV_RECORD);
 
             // Set title bar
             ((Main) getActivity()).setActionBarTitle(mFarmerName);
@@ -297,10 +318,15 @@ public class MilkEntryFrag extends Fragment {
                 }
             }
         });
+
+        initFields(mPrevRecord);
+
         AddData();
 
         return view;
     }
+
+
 
     public void AddData() {
         SaveData.setOnClickListener(
@@ -514,5 +540,77 @@ public class MilkEntryFrag extends Fragment {
             rating = qualityRating.get(0);
         }
         return rating;
+    }
+
+    public void initFields(boolean prevRecord) {
+        if (prevRecord == true) {
+            milkVolume.setText(mWeight);
+            txtComments.setText(mComments);
+
+            switch (mSmell) {
+                case "1":
+
+                    smellTest.check(R.id.smell_unchecked);
+                    break;
+                case "2":
+                    smellTest.check(R.id.smell_bad);
+                    break;
+                case "4":
+                    smellTest.check(R.id.smell_good);
+                    break;
+                default:
+                    smellTest.check(R.id.smell_unchecked);
+                    break;
+            }
+
+            switch (mAlcohol) {
+                case "1":
+                    alcoholTest.check(R.id.alcohol_unchecked);
+                    break;
+                case "2":
+                    alcoholTest.check(R.id.alcohol_bad);
+                    break;
+                case "3":
+                    alcoholTest.check(R.id.alcohol_okay);
+                    break;
+                case "4":
+                    alcoholTest.check(R.id.alcohol_good);
+                    break;
+                default:
+                    alcoholTest.check(R.id.smell_unchecked);
+                    break;
+            }
+
+            switch (mDensity) {
+                case "N/A":
+                    densityTest.check(R.id.density_unchecked);
+                    break;
+                case "27":
+                    densityTest.check(R.id.density_bad);
+                    break;
+                case "28":
+                    densityTest.check(R.id.density_28);
+                    break;
+                case "29":
+                    densityTest.check(R.id.density_29);
+                    break;
+                case "30":
+                    densityTest.check(R.id.density_30);
+                    break;
+                case "31+":
+                    densityTest.check(R.id.density_good);
+                    break;
+                default:
+                    densityTest.check(R.id.density_unchecked);
+                    break;
+            }
+
+            if (mSmell.equalsIgnoreCase("2") || mAlcohol.equalsIgnoreCase("2") || mDensity.equalsIgnoreCase("27")) {
+                disableFields();
+            }
+
+        } else {
+            clearData();
+        }
     }
 }

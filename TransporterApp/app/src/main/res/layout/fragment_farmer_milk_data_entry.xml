@@ -47,7 +47,6 @@
                     android:id="@+id/smell_test"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checkedButton="@+id/smell_unchecked"
                     android:layout_below="@+id/textSmell"
                     android:orientation="horizontal">
 
@@ -93,7 +92,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textDensity"
-                    android:checkedButton="@+id/density_unchecked"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -155,7 +153,6 @@
                     android:id="@+id/alcohol_test"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checkedButton="@+id/alcohol_unchecked"
                     android:orientation="horizontal"
                     android:layout_below="@+id/textAlcohol">
 

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -42,6 +43,8 @@ import com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import com.transporterapp.syde.transporterapp.Routes.ChooseRoutesFrag;
 
@@ -207,15 +210,14 @@ public class Main extends AppCompatActivity
     public void onBackPressed() {
         if(milkEntryFragment.isVisible()){
             if (milkEntryFragment.areDataFieldsEmpty()) {
-                List<Jug> jugList = commonUtil.convertCursorToJugList(dbUtil.selectStatement(DatabaseConstants.tblJug, "", "", "", getApplicationContext()));
-                double collectedMilk = 0;
-                for (Jug jug : jugList) {
-                    collectedMilk += Double.valueOf(jug.getCurrentVolume());
-                }
                 milkEntryFragment.clearData();
                 super.onBackPressed();
             } else {
-                showUnsavedDataMessage(milkEntryFragment, this);
+                if (!milkEntryFragment.mPrevRecord) {
+                    showUnsavedDataMessage(milkEntryFragment, this);
+                } else {
+                    super.onBackPressed();
+                }
             }
         } else if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
@@ -259,27 +261,39 @@ public class Main extends AppCompatActivity
         bundle.putString("transporterId", userId);
         bundle.putString("routeId", item.routeId);
 
-       /* if (menuFragmentId == R.id.farmersActivity){
-            //Navigate to farmer profile frag
-            farmerProfileFrag.setArguments(bundle);
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, farmerProfileFrag)
-                    .addToBackStack(null)
-                    .commit();
-        } else {*/
-            //Navigate to milk entry frag
-            milkEntryFragment.setArguments(bundle);
+        // Check if user has already entered in data
+        List<String> whereCondition = new ArrayList<String>(Arrays.asList(DatabaseConstants.farmer_id, DatabaseConstants.status));
+        List<String> whereOperator = new ArrayList<String>(Arrays.asList("=", "="));
+        List<String> whereValue = new ArrayList<String>(Arrays.asList(item.getId(), DatabaseConstants.status_pending));
+        Cursor result = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "*", whereCondition, whereOperator, whereValue, getApplicationContext());
+
+        MilkRecord record = commonUtil.convertCursorToMilkRecord(result);
+        boolean recordExists = false;
+        if (record != null) {
+            recordExists = true;
+            bundle.putBoolean("prevRecord", true);
+            bundle.putString("milkweight", record.getMilkWeight());
+            bundle.putString("alcohol", record.getAlcohol());
+            bundle.putString("smell", record.getSmell());
+            bundle.putString("density", record.getDensity());
+            bundle.putString("comments", record.getComments());
+        } else {
+            bundle.putBoolean("prevRecord", false);
+        }
+
+        MilkEntryFrag temp = new MilkEntryFrag(); //so nasty..
+        temp.setArguments(bundle);
+
+        milkEntryFragment.setArguments(bundle);
+
             try{
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, milkEntryFragment)
+                        .replace(R.id.container, temp)
                         .addToBackStack(null)
                         .commit();
             } catch (Exception e) {
-                String temp = e.getLocalizedMessage();
-                String temp2 = "Hello";
-            }
+        }
 
-        //}
     }
 
     /**
@@ -380,4 +394,13 @@ public class Main extends AppCompatActivity
 
     }
 
+    private Fragment getVisibleFragment() {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment != null && fragment.isVisible())
+                return fragment;
+        }
+        return null;
+    }
 }

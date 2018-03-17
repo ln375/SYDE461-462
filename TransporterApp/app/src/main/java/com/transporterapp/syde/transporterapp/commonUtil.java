@@ -97,6 +97,28 @@ public class commonUtil {
         return milkRecords;
     }
 
+    public static MilkRecord convertCursorToMilkRecord(Cursor milkRecord) {
+        while(milkRecord.moveToNext()) {
+            String id = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf("id"));
+            String transporterId = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.transporter_id));
+            String farmerId = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.farmer_id));
+            String jugId = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.jug_id));
+            String date = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.date));
+            String time = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.time));
+            String milkWeight = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.milk_weight));
+            String alcohol = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.alcohol));
+            String smell = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.smell));
+            String comments = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.comments));
+            String density = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.density));
+            String trTransporterCoolingId = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.tr_transporter_cooling_id));
+            String routeId = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.route_id));
+            String status = milkRecord.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.status));
+
+            return new MilkRecord(id, transporterId, farmerId, jugId, date, time, milkWeight, alcohol, smell, comments, density, trTransporterCoolingId, routeId, status);
+        }
+        return null;
+    }
+
     /**
      * Converts a cursor representing a farmer item to FarmerItem
      *
