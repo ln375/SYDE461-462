@@ -16,6 +16,7 @@ import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilkRecordRecyclerViewAdapter.ViewHolder> {
@@ -47,7 +48,8 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
         List<FarmerItem> farmer = commonUtil.convertCursorToFarmerItemList(dbUtil.selectStatement(DatabaseConstants.tblFarmer, "id", "=", farmerId, view.getContext()));
         if (farmer != null) {
             String name = farmer.get(0).getFirstName() + " " + farmer.get(0).getLastName();
-            String volume = mValues.get(position).getMilkWeight() + " L";
+            DecimalFormat df = new DecimalFormat("#.##");
+            String volume = df.format(Double.valueOf(mValues.get(position).getMilkWeight())) + " L";
             holder.farmerName.setText(name);
             holder.volume.setText(volume);
         }
