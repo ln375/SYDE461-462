@@ -7,9 +7,12 @@
         >
         <shape android:shape="rectangle">
             <solid android:color="#e2e2e2" />
+
             <corners
                 android:bottomRightRadius="10dp"
                 android:topRightRadius="10dp"/>
+
+            <stroke android:width="1px" android:color="@color/colorPrimaryDark"/>
         </shape>
     </rotate>
 </item>
@@ -20,11 +23,12 @@
             android:toDegrees="90"
             >
             <shape>
-                <solid android:color="@color/colorPrimary"/>
+                <solid android:color="@color/ivory"/>
                 <corners
                     android:bottomRightRadius="10dp"
                     android:topRightRadius="10dp"
                     />
+                <stroke android:width="1px" android:color="@color/colorPrimaryDark"/>
             </shape>
         </rotate>
     </clip>
