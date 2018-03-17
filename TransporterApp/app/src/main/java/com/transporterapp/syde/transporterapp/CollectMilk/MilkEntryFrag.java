@@ -36,6 +36,7 @@ import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -229,7 +230,8 @@ public class MilkEntryFrag extends Fragment {
                             milkVol += temp;
                             int progress = Math.round(milkVol);
                             jugProgressBar.setProgress(progress);
-                            jugAmount.setText(String.valueOf(milkVol) + "L");
+                            DecimalFormat df = new DecimalFormat("#.#");
+                            jugAmount.setText(String.valueOf(df.format(milkVol)) + "L");
                         } else {
                             Toast.makeText(getContext(),"Please select a different jug", Toast.LENGTH_SHORT).show();
                         }

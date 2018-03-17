@@ -22,6 +22,7 @@ import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -171,8 +172,10 @@ public class HistOverviewMonthly extends Fragment {
             numberOfCollections.setText(Integer.toString(numOfTrips));
             numberOfCollections.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
+            DecimalFormat df = new DecimalFormat("#.#");
+
             TextView volumeCollected = new TextView(v.getContext());
-            volumeCollected.setText(String.valueOf(totalVolume) + " L");
+            volumeCollected.setText(String.valueOf(df.format(totalVolume)) + " L");
             volumeCollected.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
             RelativeLayout progressBarHolder = new RelativeLayout(getContext());
