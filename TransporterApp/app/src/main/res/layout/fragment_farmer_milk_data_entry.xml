@@ -23,7 +23,7 @@
                 android:text="Quality"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:background="#c2d1ea"
+                android:background="@color/header"
                 android:paddingLeft="8dp"
                 android:textColor="#000000"
                 android:textSize="17dp" />
@@ -205,7 +205,7 @@
                 android:text="Quantity"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:background="#c2d1ea"
+                android:background="@color/header"
                 android:paddingLeft="8dp"
                 android:textColor="#000000"
                 android:textSize="17dp" />
@@ -262,7 +262,7 @@
                     android:text="Jug Selection"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:background="#c2d1ea"
+                    android:background="@color/header"
                     android:paddingLeft="8dp"
                     android:textColor="#000000"
                     android:textSize="17dp" />
@@ -326,7 +326,7 @@
                 android:text="Additional Comments"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:background="#c2d1ea"
+                android:background="@color/header"
                 android:paddingLeft="8dp"
                 android:textColor="#000000"
                 android:textSize="17dp"
