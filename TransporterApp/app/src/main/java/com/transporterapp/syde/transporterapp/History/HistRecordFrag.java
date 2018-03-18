@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
@@ -128,6 +129,9 @@ public class HistRecordFrag extends Fragment {
         }
 
         LinearLayout mainLayout = (LinearLayout) view.findViewById(R.id.hist_record_layout);
+        LinearLayout editHistoryLayout = new LinearLayout(getContext());
+        editHistoryLayout.setOrientation(LinearLayout.VERTICAL);
+        ScrollView scrollView = new ScrollView(getContext());
 
         // Get relevant info for edit history
         List<HistMilkRecord> histMilkRecords = commonUtil.convertCursorToHistMilkRecordList(dbUtil.selectStatement(DatabaseConstants.tblHisttrFarmerTransporter, DatabaseConstants.tr_farmer_transporter_id, "=", milkRecordId, context));
@@ -162,13 +166,15 @@ public class HistRecordFrag extends Fragment {
                     for (String change : changes) {
                         TextView editHistory = new TextView(context);
                         editHistory.setText(change);
-                        mainLayout.addView(editHistory);
+                        editHistoryLayout.addView(editHistory);
                     }
 
                 } catch (ParseException e) {
 
                 }
             }
+            scrollView.addView(editHistoryLayout);
+            mainLayout.addView(scrollView);
         }
 
         return view;
