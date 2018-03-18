@@ -190,6 +190,26 @@ public class dbUtil {
         }
     }
 
+    public static void updateStatement(String tableName, List<String> col, List<String> value,  String whereCondition, String whereOperator, String whereValue, Context context){
+        setInstance(context);
+
+        String sql = "";
+        if (!whereCondition.isEmpty()) {
+            sql = whereCondition + whereOperator + " ?";
+        }
+
+        ContentValues contentValues = new ContentValues();
+
+        for (int i = 0; i < col.size(); i++) {
+            contentValues.put(col.get(i), value.get(i));
+        }
+
+        try {
+            database.update(tableName, contentValues, sql, new String[]{whereValue});
+        } catch (Exception e) {
+        }
+    }
+
     /**
      * Deletes a row in a table based on a specific condition
      * Example Usage: dbUtil.deleteStatement(trFarmerTransporter, "id", ">", "10", this);

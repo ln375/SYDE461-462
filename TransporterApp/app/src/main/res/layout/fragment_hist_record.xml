@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hist_record_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -282,6 +283,23 @@
         android:textSize="14sp"
         android:text="Comments: N/A"
         android:id="@+id/hist_record_comments"/>
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="15dp"/>
+
+    <TextView android:id="@+id/edit_hist_label"
+        android:textSize="16sp"
+        android:text="Edit History"
+        android:lines="1"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimaryDark"/>
 
 
 </LinearLayout>

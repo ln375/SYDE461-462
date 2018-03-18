@@ -20,13 +20,18 @@ public class DatabaseConstants {
 
     public static final String tbltrFarmerTransporter = "tr_farmer_transporter";
 
+    public static final String tblHisttrFarmerTransporter = "hist_tr_farmer_transporter";
+
     public static final String[] coltrFarmerTransporter = new String[]{"id", "transporter_id", "farmer_id", "jug_id", "date", "time",
             "milk_weight", "alcohol", "smell", "comments", "density", "tr_transporter_cooling_id", "route_id", "status"};
+
+    public static final String[] colHistTrFarmerTransporter = new String[]{"id", "transporter_id", "farmer_id", "jug_id", "modified_date", "modified_time",
+            "milk_weight", "alcohol", "smell", "comments", "density", "tr_transporter_cooling_id", "route_id", "status", "tr_farmer_transporter_id"};
 
     public static final String tbltrTransporterCooling = "tr_transporter_cooling";
 
     public static final String[] coltrTransporterCooling = new String[]{"id", "transporter_id", "route_id", "jug_id", "date", "time",
-            "enroute_weight", "measured_weight", "alcohol", "density", "smell", "comments"};
+            "enroute_weight", "measured_weight", "alcohol", "density", "smell", "comments", "tr_farmer_transporter_id"};
 
     public static final String tblTransporter = "transporter";
 
@@ -58,6 +63,10 @@ public class DatabaseConstants {
 
     public static final String time = "time";
 
+    public static final String modified_date = "modified_date";
+
+    public static final String modified_time = "modified_time";
+
     public static final String milk_weight = "milk_weight";
 
     public static final String alcohol = "alcohol";
@@ -67,6 +76,8 @@ public class DatabaseConstants {
     public static final String comments = "comments";
 
     public static final String tr_transporter_cooling_id = "tr_transporter_cooling_id";
+
+    public static final String tr_farmer_transporter_id = "tr_farmer_transporter_id";
 
     public static final String density = "density";
 

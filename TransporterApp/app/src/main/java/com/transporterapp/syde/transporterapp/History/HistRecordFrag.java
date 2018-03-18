@@ -7,11 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
+import com.transporterapp.syde.transporterapp.DataStructures.HistMilkRecord;
 import com.transporterapp.syde.transporterapp.DataStructures.Jug;
+import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.DataStructures.TransporterItem;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
@@ -19,6 +22,14 @@ import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import org.w3c.dom.Text;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class HistRecordFrag extends Fragment {
 
@@ -79,7 +90,8 @@ public class HistRecordFrag extends Fragment {
         }
 
         TextView transactionID = (TextView) view.findViewById(R.id.hist_record_transaction_id);
-        transactionID.setText(getArguments().getString("milkRecordId"));
+        String milkRecordId = getArguments().getString("milkRecordId");
+        transactionID.setText(milkRecordId);
 
 
         TextView alcohol = (TextView) view.findViewById(R.id.hist_record_alcohol);
@@ -115,6 +127,49 @@ public class HistRecordFrag extends Fragment {
             comments.setText(getArguments().getString("comments"));
         }
 
+        LinearLayout mainLayout = (LinearLayout) view.findViewById(R.id.hist_record_layout);
+
+        // Get relevant info for edit history
+        List<HistMilkRecord> histMilkRecords = commonUtil.convertCursorToHistMilkRecordList(dbUtil.selectStatement(DatabaseConstants.tblHisttrFarmerTransporter, DatabaseConstants.tr_farmer_transporter_id, "=", milkRecordId, context));
+        Collections.sort(histMilkRecords, new Comparator<HistMilkRecord>() {
+            @Override
+            public int compare(HistMilkRecord o1, HistMilkRecord o2) {
+                if (Integer.valueOf(o1.getId()) > Integer.valueOf(o2.getId())) {
+                    return 1;
+                } else if (Integer.valueOf(o1.getId()) < Integer.valueOf(o2.getId())){
+                    return -1;
+                }
+                return 0;
+            }
+        });
+        if (histMilkRecords != null) {
+            for (int i = 0; i < histMilkRecords.size() - 1; i++) {
+                try {
+                    HistMilkRecord firstRecord = histMilkRecords.get(i);
+                    HistMilkRecord secondRecord = histMilkRecords.get(i+1);
+
+                    List<String> changes = new ArrayList<>();
+
+                    if (i == 0) {
+
+                        DateFormat df = new SimpleDateFormat("HH:mm");
+                        changes.add(firstRecord.getDate() + " " + df.format(new SimpleDateFormat("HH:mm:ss").parse(firstRecord.getTime())) + " - Record created");
+                    }
+
+                    //compare firstRecord with secondRecord
+                    changes.addAll(commonUtil.compareHistMilkRecords(firstRecord, secondRecord));
+
+                    for (String change : changes) {
+                        TextView editHistory = new TextView(context);
+                        editHistory.setText(change);
+                        mainLayout.addView(editHistory);
+                    }
+
+                } catch (ParseException e) {
+
+                }
+            }
+        }
 
         return view;
     }
