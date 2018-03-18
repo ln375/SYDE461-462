@@ -216,7 +216,7 @@ public class Main extends AppCompatActivity
             }
         } else if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
-        } else if (histListFrag.isVisible() || farmerListFragmentForFarmerProfile.isVisible() || exportDataFrag.isVisible()){
+        } else if (histMainFrag.isVisible() || farmerListFragmentForFarmerProfile.isVisible() || exportDataFrag.isVisible() || chooseRoutesFrag.isVisible()){
             //Don't allow backpress on these screens
         }else {
             super.onBackPressed();
