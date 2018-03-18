@@ -320,12 +320,10 @@ public class MilkEntryFrag extends Fragment {
                                     jugAmount.setText(String.valueOf(df.format(milkVol)) + " L");
                                 }
                             }
-
+                            //Toast.makeText(getContext(),"Jug " + jugIdClicked, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getContext(),"Please select a different jug", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"Milk quantity does not fit inside jug.", Toast.LENGTH_SHORT).show();
                         }
-
-                        Toast.makeText(getContext(),"Jug " + jugIdClicked, Toast.LENGTH_SHORT).show();
 
                         if (jugAlreadyClicked == false) {
                             jugAlreadyClicked = true;
