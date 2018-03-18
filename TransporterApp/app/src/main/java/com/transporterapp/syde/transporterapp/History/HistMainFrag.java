@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 
 /**
@@ -46,6 +47,10 @@ public class HistMainFrag extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_hist_main, container, false);
+
+        // Set title bar
+        ((Main) getActivity()).setActionBarTitle("History");
+
         btnOverview = (Button) v.findViewById(R.id.hist_overview_button);
         btnTransaction = (Button) v.findViewById(R.id.hist_transaction_button);
 

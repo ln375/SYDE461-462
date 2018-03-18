@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.transporterapp.syde.transporterapp.DataStructures.Jug;
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
+import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
@@ -78,6 +79,9 @@ public class HistOverviewDaily extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_hist_overview_daily, container, false);
+
+        // Set title bar
+        ((Main) getActivity()).setActionBarTitle("History");
         return v;
     }
 

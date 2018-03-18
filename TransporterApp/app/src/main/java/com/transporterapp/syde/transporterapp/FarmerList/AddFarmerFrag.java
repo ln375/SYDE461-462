@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.transporterapp.syde.transporterapp.DataStructures.Jug;
+import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
@@ -89,6 +90,9 @@ public class AddFarmerFrag extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_farmer, container, false);
+
+        // Set title bar
+        ((Main) getActivity()).setActionBarTitle("Add Farmer");
 
         fragmentManager = getActivity().getSupportFragmentManager();
         firstName = (EditText) view.findViewById(R.id.first_name);

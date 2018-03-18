@@ -116,6 +116,9 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
         lblExportInstructionsTitle = (TextView) view.findViewById(R.id.lblExportInstructionsTitle);
         devicesSpinner = (Spinner) view.findViewById(R.id.devices_spinner);
 
+        // Set title bar
+        ((Main) getActivity()).setActionBarTitle("Export Data");
+
         prepCSVFiles();
         sendCSVFiles();
         chooseExportMethod();
