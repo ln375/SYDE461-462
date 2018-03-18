@@ -92,10 +92,7 @@
             android:layout_marginBottom="10dp"
             android:background="@android:color/holo_green_light"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/white"
-            android:text="Add Farmer"
-            android:paddingBottom="10dp"
-            android:paddingRight="10dp"/>
+            android:text="Add Farmer"/>
 
     </LinearLayout>
 
