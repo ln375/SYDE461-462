@@ -128,6 +128,8 @@ public class Main extends AppCompatActivity
                 if (hasLoggedIn) {
                     Bundle bundle = new Bundle();
                     bundle.putString("userid", userId);
+                    farmerListFragmentForFarmerProfile.setArguments(bundle);
+                    farmerListFragmentForMilkEntry.setArguments(bundle);
                     chooseRoutesFrag.setArguments(bundle);
                     fragmentManager.beginTransaction()
                             .add(R.id.container,chooseRoutesFrag, BACK_STACK_ROOT_TAG)
@@ -266,15 +268,17 @@ public class Main extends AppCompatActivity
         Cursor result = dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "*", whereCondition, whereOperator, whereValue, getApplicationContext());
 
         MilkRecord record = commonUtil.convertCursorToMilkRecord(result);
-        boolean recordExists = false;
         if (record != null) {
-            recordExists = true;
             bundle.putBoolean("prevRecord", true);
             bundle.putString("milkweight", record.getMilkWeight());
             bundle.putString("alcohol", record.getAlcohol());
             bundle.putString("smell", record.getSmell());
             bundle.putString("density", record.getDensity());
             bundle.putString("comments", record.getComments());
+            bundle.putString("trfarmertransporter", record.getId());
+            bundle.putString("jugid", record.getJugId());
+            bundle.putString("date", record.getDate());
+            bundle.putString("time", record.getTime());
         } else {
             bundle.putBoolean("prevRecord", false);
         }
@@ -318,7 +322,13 @@ public class Main extends AppCompatActivity
 
         FarmerItem farmer = commonUtil.convertCursortToFarmerItem(dbUtil.selectStatement(DatabaseConstants.tblFarmer, DatabaseConstants.id, "=", item.getFarmerId(), getApplicationContext()));
         bundle.putString("phoneNumber", farmer.getPhoneNumber());
-        histRecordFrag.setArguments(bundle);
+
+        if (histRecordFrag.getArguments() != null) {
+            histRecordFrag.getArguments().clear();
+            histRecordFrag.getArguments().putAll(bundle);
+        } else {
+            histRecordFrag.setArguments(bundle);
+        }
         fragmentManager.beginTransaction().replace(R.id.container, histRecordFrag, BACK_STACK_ROOT_TAG).addToBackStack(BACK_STACK_ROOT_TAG).commit();
     }
 
