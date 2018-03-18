@@ -547,6 +547,24 @@ public class MilkEntryFrag extends Fragment {
             double finalVolume = Double.valueOf(jug.getCurrentVolume()) + Double.valueOf(values.get(5));
             dbUtil.updateStatement(DatabaseConstants.tblJug, DatabaseConstants.currentVolume, String.valueOf(finalVolume), DatabaseConstants.id, "=", currentJugSelection, context);
         }
+
+        // update history table
+        List<String> col = new ArrayList<>();
+        col.addAll(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter));
+
+        Cursor mostRecentTransaction = dbUtil.getMostRecent(DatabaseConstants.tbltrFarmerTransporter, context);
+        mTrFarmerTransporterId = commonUtil.getMostRecentId(mostRecentTransaction);
+
+        List<String> vals = new ArrayList<>();
+        vals.addAll(values);
+        vals.add(mTrFarmerTransporterId);
+
+        col.remove(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.tr_transporter_cooling_id));
+        col.remove(0);
+
+        dbUtil.insertStatement(DatabaseConstants.tblHisttrFarmerTransporter, col, vals, context);
+
+
         dataSaved = true;
     }
 

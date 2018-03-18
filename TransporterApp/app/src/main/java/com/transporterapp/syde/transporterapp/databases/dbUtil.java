@@ -273,4 +273,13 @@ public class dbUtil {
         }
         return result;
     }
+
+    public static Cursor getMostRecent(String tablename, Context context) {
+        String sql = "SELECT MAX(id) FROM " + tablename;
+
+        setInstance(context);
+
+        Cursor cursor = database.rawQuery(sql, null);;
+        return cursor;
+    }
 }
