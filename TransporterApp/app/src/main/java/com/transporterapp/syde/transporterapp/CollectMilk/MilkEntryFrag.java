@@ -85,7 +85,7 @@ public class MilkEntryFrag extends Fragment {
 
     //Number of Jugs - may need to change this number later or add function to add jugs
     private final static int INITIAL_JUG_COUNT=5;
-    private String jugIdClicked;
+    private String jugIdClicked = "";
     private boolean jugAlreadyClicked = false;
     private String prevJugSelected = "";
     private String currentJugSelection = "";
@@ -466,8 +466,41 @@ public class MilkEntryFrag extends Fragment {
     }
 
     public boolean areDataFieldsEmpty(){
-        if (dataSaved == true) {
-            return true;
+        if (mPrevRecord) {
+            // Check to make sure values are still the same
+            String smellRating = convertQualityRating(smellTest);
+            int radioButtonID = densityTest.getCheckedRadioButtonId();
+            View radioButton = densityTest.findViewById(radioButtonID);
+            int idx = densityTest.indexOfChild(radioButton);
+            RadioButton r = (RadioButton)  densityTest.getChildAt(idx);
+            String densityRating = r.getText().toString();
+
+            String alcoholRating = convertQualityRating(alcoholTest);
+            String jugId = jugIdClicked;
+            String comments = txtComments.getText().toString();
+            String milkweight = milkVolume.getText().toString();
+
+            if (smellRating.equalsIgnoreCase(mSmell)) {
+                if (densityRating.equalsIgnoreCase(mDensity)) {
+                    if (alcoholRating.equalsIgnoreCase(mAlcohol)) {
+                        if (jugId.isEmpty() || jugId.equalsIgnoreCase(mJugId)) {
+                            if (comments.equalsIgnoreCase(mComments)) {
+                                if (milkweight.equalsIgnoreCase(mWeight)) {
+                                    return true;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            if (smellRating.equalsIgnoreCase(mSmell) && densityRating.equalsIgnoreCase(mDensity) && alcoholRating.equalsIgnoreCase(mAlcohol) && jugId.equalsIgnoreCase(mJugId)
+                    && comments.equalsIgnoreCase(mComments) && milkweight.equalsIgnoreCase(mWeight)) {
+                return true;
+            } else {
+                return false;
+            }
         }
         if ((smellTest.getCheckedRadioButtonId() == R.id.smell_unchecked) && (densityTest.getCheckedRadioButtonId() == R.id.density_unchecked) && (alcoholTest.getCheckedRadioButtonId() == R.id.alcohol_unchecked)
                 && (txtComments.getText().toString().isEmpty()) && (milkVolume.getText().toString().isEmpty())) {
