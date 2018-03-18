@@ -206,20 +206,17 @@ public class Main extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if(milkEntryFragment.isVisible()){
-            if (milkEntryFragment.areDataFieldsEmpty()) {
-                milkEntryFragment.clearData();
+        Fragment frag = fragmentManager.findFragmentById(R.id.container);
+        if(frag instanceof MilkEntryFrag){
+            if (((MilkEntryFrag) frag).areDataFieldsEmpty()) {
+                ((MilkEntryFrag) frag).clearData();
                 super.onBackPressed();
             } else {
-                if (!milkEntryFragment.mPrevRecord) {
-                    showUnsavedDataMessage(milkEntryFragment, this);
-                } else {
-                    super.onBackPressed();
-                }
+                showUnsavedDataMessage(((MilkEntryFrag) frag), this);
             }
         } else if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
-        } else if (histListFrag.isVisible() || farmerListFragmentForFarmerProfile.isVisible() || exportDataFrag.isVisible()){
+        } else if (histMainFrag.isVisible() || farmerListFragmentForFarmerProfile.isVisible() || exportDataFrag.isVisible() || chooseRoutesFrag.isVisible()){
             //Don't allow backpress on these screens
         }else {
             super.onBackPressed();
@@ -283,8 +280,6 @@ public class Main extends AppCompatActivity
 
         MilkEntryFrag temp = new MilkEntryFrag(); //so nasty..
         temp.setArguments(bundle);
-
-        milkEntryFragment.setArguments(bundle);
 
             try{
                 fragmentManager.beginTransaction()
@@ -356,7 +351,8 @@ public class Main extends AppCompatActivity
         public void onClick(DialogInterface dialog, int which) {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
-                    milkEntryFragment.clearData();
+                    Fragment frag = fragmentManager.findFragmentById(R.id.container);
+                    ((MilkEntryFrag) frag).clearData();
                     Main.super.onBackPressed();
                     break;
 
