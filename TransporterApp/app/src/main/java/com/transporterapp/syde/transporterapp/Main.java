@@ -207,7 +207,7 @@ public class Main extends AppCompatActivity
         Fragment frag = fragmentManager.findFragmentById(R.id.container);
         if(frag instanceof MilkEntryFrag){
             if (((MilkEntryFrag) frag).areDataFieldsEmpty()) {
-                ((MilkEntryFrag) frag).clearData();
+                //((MilkEntryFrag) frag).clearData();
                 super.onBackPressed();
             } else {
                 showUnsavedDataMessage(((MilkEntryFrag) frag), this);
@@ -350,7 +350,7 @@ public class Main extends AppCompatActivity
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
                     Fragment frag = fragmentManager.findFragmentById(R.id.container);
-                    ((MilkEntryFrag) frag).clearData();
+                    //((MilkEntryFrag) frag).clearData();
                     Main.super.onBackPressed();
                     break;
 

@@ -89,6 +89,7 @@ public class MilkEntryFrag extends Fragment {
     private boolean jugAlreadyClicked = false;
     private String prevJugSelected = "";
     private String currentJugSelection = "";
+    private int currentJugPosition = 0;
     private boolean clearedSavedJug = false;
     private boolean dataSaved = false;
     private boolean poorQuality = false;
@@ -241,6 +242,7 @@ public class MilkEntryFrag extends Fragment {
 
                         jugIdClicked = jug_list.get(position).getId();
                         currentJugSelection = jugIdClicked;
+                        currentJugPosition = position;
 
                         milkVol = Float.parseFloat(milkVolume.getText().toString());
 
@@ -249,18 +251,19 @@ public class MilkEntryFrag extends Fragment {
                             if (!clearedSavedJug) {
                                 if (!currentJugSelection.equalsIgnoreCase(mJugId)) {
                                     // need to change progress bar of previous saved jug
+                                    if (!oldPos.isEmpty()) {
+                                        //Remove milk from originally selected jug
+                                        RelativeLayout otherJug = (RelativeLayout) mCarouselContainer.getChildAt(Integer.valueOf(oldPos));
+                                        TextView prevJugAmount = (TextView) otherJug.getChildAt(2);
+                                        ProgressBar prevProgressBar = (ProgressBar) otherJug.getChildAt(0);
 
-                                    //Remove milk from originally selected jug
-                                    RelativeLayout otherJug = (RelativeLayout) mCarouselContainer.getChildAt(Integer.valueOf(oldPos));
-                                    TextView prevJugAmount = (TextView) otherJug.getChildAt(2);
-                                    ProgressBar prevProgressBar = (ProgressBar) otherJug.getChildAt(0);
-
-                                    Jug originalJug = jug_list.get(Integer.valueOf(oldPos));
-                                    Float temp = Float.parseFloat(originalJug.getCurrentVolume()) - Float.parseFloat(mWeight);
-                                    int progress = (int) Math.round(temp);
-                                    prevProgressBar.setProgress(progress);
-                                    DecimalFormat df = new DecimalFormat("#.##");
-                                    prevJugAmount.setText(String.valueOf(df.format(temp)) + " L");
+                                        Jug originalJug = jug_list.get(Integer.valueOf(oldPos));
+                                        Float temp = Float.parseFloat(originalJug.getCurrentVolume()) - Float.parseFloat(mWeight);
+                                        int progress = (int) Math.round(temp);
+                                        prevProgressBar.setProgress(progress);
+                                        DecimalFormat df = new DecimalFormat("#.##");
+                                        prevJugAmount.setText(String.valueOf(df.format(temp)) + " L");
+                                    }
                                     clearedSavedJug = true;
                                 }
                             }
@@ -309,15 +312,17 @@ public class MilkEntryFrag extends Fragment {
                                     jugAmount.setText(String.valueOf(df.format(milkVol)) + " L");
                                 } else {
                                     // if milk vol is different
-                                    Jug originalJug = jug_list.get(Integer.valueOf(oldPos));
-                                    Float trueOriginalAmount = Float.parseFloat(originalJug.getCurrentVolume()) - Float.parseFloat(mWeight);
+                                    if (!oldPos.isEmpty()) {
+                                        Jug originalJug = jug_list.get(Integer.valueOf(oldPos));
+                                        Float trueOriginalAmount = Float.parseFloat(originalJug.getCurrentVolume()) - Float.parseFloat(mWeight);
 
-                                    Double temp = Double.valueOf(trueOriginalAmount);
-                                    milkVol += temp;
-                                    int progress = Math.round(milkVol);
-                                    jugProgressBar.setProgress(progress);
-                                    DecimalFormat df = new DecimalFormat("#.#");
-                                    jugAmount.setText(String.valueOf(df.format(milkVol)) + " L");
+                                        Double temp = Double.valueOf(trueOriginalAmount);
+                                        milkVol += temp;
+                                        int progress = Math.round(milkVol);
+                                        jugProgressBar.setProgress(progress);
+                                        DecimalFormat df = new DecimalFormat("#.#");
+                                        jugAmount.setText(String.valueOf(df.format(milkVol)) + " L");
+                                    }
                                 }
                             }
                             //Toast.makeText(getContext(),"Jug " + jugIdClicked, Toast.LENGTH_SHORT).show();
@@ -349,6 +354,13 @@ public class MilkEntryFrag extends Fragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.density_bad) {
                     disableFields();
+                    if (!mPrevRecord) {
+                        Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (!dataSaved) {
+                            Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 } else {
                     //check to see if the other quality ratings are bad
                     if (smellTest.getCheckedRadioButtonId() != R.id.smell_bad && alcoholTest.getCheckedRadioButtonId()!= R.id.alcohol_bad) {
@@ -363,6 +375,13 @@ public class MilkEntryFrag extends Fragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.smell_bad) {
                    disableFields();
+                    if (!mPrevRecord) {
+                        Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (!dataSaved) {
+                            Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 } else {
                     //check to see if the other quality ratings are bad
                     if (densityTest.getCheckedRadioButtonId() != R.id.density_bad && alcoholTest.getCheckedRadioButtonId()!= R.id.alcohol_bad) {
@@ -377,6 +396,13 @@ public class MilkEntryFrag extends Fragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.alcohol_bad) {
                     disableFields();
+                    if (!mPrevRecord) {
+                        Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (!dataSaved) {
+                            Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 } else {
                     //check to see if the other quality ratings are bad
                     if (smellTest.getCheckedRadioButtonId() != R.id.smell_bad && densityTest.getCheckedRadioButtonId()!= R.id.density_bad) {
@@ -435,7 +461,8 @@ public class MilkEntryFrag extends Fragment {
                             milkVolume.setError("Milk volume is required");
                             Toast.makeText(getContext(),"Please enter a valid milk volume", Toast.LENGTH_LONG).show();
                         } else {
-                            if (jugAlreadyClicked == false && poorQuality == false) {
+
+                            if (jugAlreadyClicked == false && poorQuality == false && mPrevRecord == false) {
                                 Toast.makeText(getContext(),"Please select a jug", Toast.LENGTH_LONG).show();
                             } else {
                                 List<String> columns = new ArrayList<>();
@@ -451,7 +478,7 @@ public class MilkEntryFrag extends Fragment {
                                 }
 
 
-                                Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_SHORT).show();
                                 getActivity().onBackPressed();
 
                             }
@@ -464,47 +491,52 @@ public class MilkEntryFrag extends Fragment {
     }
 
     public boolean areDataFieldsEmpty(){
-        if (mPrevRecord) {
-            // Check to make sure values are still the same
-            String smellRating = convertQualityRating(smellTest);
-            int radioButtonID = densityTest.getCheckedRadioButtonId();
-            View radioButton = densityTest.findViewById(radioButtonID);
-            int idx = densityTest.indexOfChild(radioButton);
-            RadioButton r = (RadioButton)  densityTest.getChildAt(idx);
-            String densityRating = r.getText().toString();
+        if (!dataSaved) {
+            if (mPrevRecord) {
+                // Check to make sure values are still the same
+                String smellRating = convertQualityRating(smellTest);
+                int radioButtonID = densityTest.getCheckedRadioButtonId();
+                View radioButton = densityTest.findViewById(radioButtonID);
+                int idx = densityTest.indexOfChild(radioButton);
+                RadioButton r = (RadioButton) densityTest.getChildAt(idx);
+                String densityRating = r.getText().toString();
 
-            String alcoholRating = convertQualityRating(alcoholTest);
-            String jugId = jugIdClicked;
-            String comments = txtComments.getText().toString();
-            String milkweight = milkVolume.getText().toString();
+                String alcoholRating = convertQualityRating(alcoholTest);
+                String jugId = jugIdClicked;
+                String comments = txtComments.getText().toString();
+                String milkweight = milkVolume.getText().toString();
 
-            if (smellRating.equalsIgnoreCase(mSmell)) {
-                if (densityRating.equalsIgnoreCase(mDensity)) {
-                    if (alcoholRating.equalsIgnoreCase(mAlcohol)) {
-                        if (jugId.isEmpty() || jugId.equalsIgnoreCase(mJugId)) {
-                            if (comments.equalsIgnoreCase(mComments)) {
-                                if (milkweight.equalsIgnoreCase(mWeight)) {
-                                    return true;
+                if (smellRating.equalsIgnoreCase(mSmell)) {
+                    if (densityRating.equalsIgnoreCase(mDensity)) {
+                        if (alcoholRating.equalsIgnoreCase(mAlcohol)) {
+                            if (jugId.isEmpty() || jugId.equalsIgnoreCase(mJugId)) {
+                                if (comments.equalsIgnoreCase(mComments)) {
+                                    if (milkweight.equalsIgnoreCase(mWeight)) {
+                                        return true;
+                                    }
                                 }
                             }
-                        }
 
+                        }
                     }
+                }
+
+                if (smellRating.equalsIgnoreCase(mSmell) && densityRating.equalsIgnoreCase(mDensity) && alcoholRating.equalsIgnoreCase(mAlcohol) && jugId.equalsIgnoreCase(mJugId)
+                        && comments.equalsIgnoreCase(mComments) && milkweight.equalsIgnoreCase(mWeight)) {
+                    return true;
+                } else {
+                    return false;
                 }
             }
 
-            if (smellRating.equalsIgnoreCase(mSmell) && densityRating.equalsIgnoreCase(mDensity) && alcoholRating.equalsIgnoreCase(mAlcohol) && jugId.equalsIgnoreCase(mJugId)
-                    && comments.equalsIgnoreCase(mComments) && milkweight.equalsIgnoreCase(mWeight)) {
+            if ((smellTest.getCheckedRadioButtonId() == R.id.smell_unchecked) && (densityTest.getCheckedRadioButtonId() == R.id.density_unchecked) && (alcoholTest.getCheckedRadioButtonId() == R.id.alcohol_unchecked)
+                    && (txtComments.getText().toString().isEmpty()) && (milkVolume.getText().toString().isEmpty())) {
                 return true;
-            } else {
-                return false;
             }
-        }
-        if ((smellTest.getCheckedRadioButtonId() == R.id.smell_unchecked) && (densityTest.getCheckedRadioButtonId() == R.id.density_unchecked) && (alcoholTest.getCheckedRadioButtonId() == R.id.alcohol_unchecked)
-                && (txtComments.getText().toString().isEmpty()) && (milkVolume.getText().toString().isEmpty())) {
+            return false;
+        } else {
             return true;
         }
-        return false;
     }
 
     public void saveData(List<String> columns, List<String> values, Context context) {
@@ -561,6 +593,7 @@ public class MilkEntryFrag extends Fragment {
                 dbUtil.updateStatement(DatabaseConstants.tblJug, DatabaseConstants.currentVolume, String.valueOf(finalVolume), DatabaseConstants.id, "=", currentJugSelection, context);
             }
         }
+        dataSaved = true;
     }
 
     public void clearData() {
@@ -635,6 +668,21 @@ public class MilkEntryFrag extends Fragment {
     }
 
     public void disableFields(){
+        // do not have jug or milk info
+        if (!currentJugSelection.isEmpty()) {
+            RelativeLayout jug = (RelativeLayout) mCarouselContainer.getChildAt(Integer.valueOf(currentJugPosition));
+            TextView jugAmount = (TextView) jug.getChildAt(2);
+            ProgressBar jugProgressBar = (ProgressBar) jug.getChildAt(0);
+            String originalJugAmount = jugAmount.getText().toString().substring(0, jugAmount.getText().toString().length() - 1);
+            Float temp = Float.valueOf(originalJugAmount);
+            temp -= Float.valueOf(milkVolume.getText().toString());
+            int progress = Math.round(temp);
+            jugProgressBar.setProgress(progress);
+            DecimalFormat df = new DecimalFormat("#.#");
+            jugAmount.setText(String.valueOf(df.format(temp)) + " L");
+        }
+        milkVolume.setText("");
+
         milkVolume.setEnabled(false);
         mCarouselContainer.setEnabled(false);
         for (int i = 0; i < mCarouselContainer.getChildCount(); i++) {
@@ -653,7 +701,6 @@ public class MilkEntryFrag extends Fragment {
             }
         });
         poorQuality = true;
-        Toast.makeText(getContext(),"Milk quantity and jug selection disabled due to poor milk quality", Toast.LENGTH_LONG).show();
     }
 
     public void enableFields(){
