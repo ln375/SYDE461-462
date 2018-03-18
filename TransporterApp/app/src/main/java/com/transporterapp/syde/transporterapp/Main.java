@@ -202,8 +202,6 @@ public class Main extends AppCompatActivity
         }
     };
 
-
-
     @Override
     public void onBackPressed() {
         Fragment frag = fragmentManager.findFragmentById(R.id.container);
@@ -216,7 +214,7 @@ public class Main extends AppCompatActivity
             }
         } else if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
-        } else if (farmerListFragmentForFarmerProfile.isVisible()  || chooseRoutesFrag.isVisible()){
+        } else if (histMainFrag.isVisible() || farmerListFragmentForFarmerProfile.isVisible()  || chooseRoutesFrag.isVisible()){
             //Don't allow backpress on these screens
         }else {
             super.onBackPressed();
