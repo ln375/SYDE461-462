@@ -35,6 +35,7 @@ public class ChooseRoutesFrag extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private String mUserId;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -57,11 +58,9 @@ public class ChooseRoutesFrag extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set title bar
-        ((Main) getActivity()).setActionBarTitle("Dairy Diary");
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mUserId = getArguments().getString("userid");
         }
     }
 
@@ -69,6 +68,9 @@ public class ChooseRoutesFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_route_list, container, false);
+
+        // Set title bar
+        ((Main) getActivity()).setActionBarTitle("Dairy Diary");
 
         // Set the adapter
         if (view instanceof LinearLayout) {

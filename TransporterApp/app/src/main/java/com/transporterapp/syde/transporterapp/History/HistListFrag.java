@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -104,11 +105,23 @@ public class HistListFrag extends Fragment {
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(v.getContext(), date, myCalendar
+                DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(), date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+
+                datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        Log.d("cancel", "cancelled");
+                        calendarButton.setText("No date Selected");
+                        updateList("","");
+                    }
+                });
+
+                datePickerDialog.show();
             }
         });
+
 
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override

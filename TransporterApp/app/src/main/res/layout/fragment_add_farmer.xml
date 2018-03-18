@@ -20,6 +20,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textStyle="bold"
+                android:gravity="center_vertical|left"
                 android:text="First Name" />
 
             <EditText
@@ -44,6 +45,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textStyle="bold"
+                android:gravity="center_vertical|left"
                 android:text="Last Name" />
 
             <EditText
@@ -68,6 +70,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textStyle="bold"
+                android:gravity="center_vertical|left"
                 android:text="Phone Number" />
 
             <EditText
@@ -87,15 +90,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2.5"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp"
             android:background="@android:color/holo_green_light"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/white"
-            android:text="Add Farmer"
-            android:paddingBottom="10dp"
-            android:paddingRight="10dp"/>
+            android:text="Add Farmer"/>
 
     </LinearLayout>
 

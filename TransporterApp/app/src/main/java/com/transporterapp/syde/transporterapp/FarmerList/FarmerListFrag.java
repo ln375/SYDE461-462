@@ -99,6 +99,9 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         View view = inflater.inflate(R.layout.fragment_farmer_list, container, false);
 
+        // Set title bar
+        ((Main) getActivity()).setActionBarTitle("Dairy Diary");
+
         TextView routeTxt = (TextView) view.findViewById(R.id.routeText);
         routeTxt.setText("Route: " + routeId);
 
