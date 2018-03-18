@@ -35,6 +35,7 @@ public class ChooseRoutesFrag extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private String mUserId;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -59,6 +60,7 @@ public class ChooseRoutesFrag extends Fragment {
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mUserId = getArguments().getString("userid");
         }
     }
 
