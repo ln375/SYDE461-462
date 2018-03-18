@@ -128,8 +128,6 @@ public class Main extends AppCompatActivity
                 if (hasLoggedIn) {
                     Bundle bundle = new Bundle();
                     bundle.putString("userid", userId);
-                    farmerListFragmentForFarmerProfile.setArguments(bundle);
-                    farmerListFragmentForMilkEntry.setArguments(bundle);
                     chooseRoutesFrag.setArguments(bundle);
                     fragmentManager.beginTransaction()
                             .add(R.id.container,chooseRoutesFrag, BACK_STACK_ROOT_TAG)
