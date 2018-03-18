@@ -4,12 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,8 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.transporterapp.syde.transporterapp.DataStructures.Jug;
-import com.transporterapp.syde.transporterapp.ExportData.ExportDataFrag;
-import com.transporterapp.syde.transporterapp.FarmerList.FarmerListFrag;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
@@ -43,8 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import be.derycke.pieter.com.COM;
 
 
 public class MilkEntryFrag extends Fragment {
@@ -62,6 +55,10 @@ public class MilkEntryFrag extends Fragment {
     private String mSmell;
     private String mDensity;
     private String mComments;
+    private String mTrFarmerTransporterId;
+    private String mJugId;
+    private String mDate;
+    private String mTime;
     public boolean mPrevRecord = false;
     private LinearLayout mCarouselContainer;
     private HorizontalScrollView mScrollView;
@@ -80,6 +77,11 @@ public class MilkEntryFrag extends Fragment {
     private static final String SMELL = "smell";
     private static final String DENSITY = "density";
     private static final String COMMENTS = "comments";
+    private static final String JUG_ID = "jugid";
+    private static final String TBL_FARMER_TRANSPORTER = "trfarmertransporter";
+    private static final String DATE = "date";
+    private static final String TIME = "time";
+    private static final String TRANSACTION_ID = "transactionid";
 
     //Number of Jugs - may need to change this number later or add function to add jugs
     private final static int INITIAL_JUG_COUNT=5;
@@ -87,6 +89,7 @@ public class MilkEntryFrag extends Fragment {
     private boolean jugAlreadyClicked = false;
     private String prevJugSelected = "";
     private String currentJugSelection = "";
+    private boolean clearedSavedJug = false;
     private boolean dataSaved = false;
     private boolean poorQuality = false;
 
@@ -112,6 +115,10 @@ public class MilkEntryFrag extends Fragment {
             mDensity = getArguments().getString(DENSITY);
             mComments = getArguments().getString(COMMENTS);
             mPrevRecord = getArguments().getBoolean(PREV_RECORD);
+            mTrFarmerTransporterId = getArguments().getString(TBL_FARMER_TRANSPORTER);
+            mJugId = getArguments().getString(JUG_ID);
+            mDate = getArguments().getString(DATE);
+            mTime = getArguments().getString(TIME);
 
             // Set title bar
             ((Main) getActivity()).setActionBarTitle(mFarmerName);
@@ -212,6 +219,7 @@ public class MilkEntryFrag extends Fragment {
             jugProgressBar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // First check to make sure there is a milk volume
                     if (milkVolume.getText().toString().isEmpty()) {
                         milkVolume.setError("Milk volume is required");
                         Toast.makeText(getContext(),"Please enter a milk volume", Toast.LENGTH_LONG).show();
@@ -221,13 +229,41 @@ public class MilkEntryFrag extends Fragment {
                         int position = (Integer) v.getTag();
                         float milkVol;
 
+                        String oldPos = "";
+                        if (mPrevRecord) {
+                            for (int i = 0; i < jug_list.size(); i++){
+                                if (jug_list.get(i).getId().equalsIgnoreCase(mJugId)) {
+                                    oldPos = String.valueOf(i);
+                                    break;
+                                }
+                            }
+                        }
+
                         jugIdClicked = jug_list.get(position).getId();
                         currentJugSelection = jugIdClicked;
-                        if(TextUtils.isEmpty(milkVolume.getText().toString())){
-                            milkVol = 0;
-                        } else {
 
-                            milkVol = Float.parseFloat(milkVolume.getText().toString());
+                        milkVol = Float.parseFloat(milkVolume.getText().toString());
+
+                        // change progress for saved jug
+                        if (mPrevRecord) {
+                            if (!clearedSavedJug) {
+                                if (!currentJugSelection.equalsIgnoreCase(mJugId)) {
+                                    // need to change progress bar of previous saved jug
+
+                                    //Remove milk from originally selected jug
+                                    RelativeLayout otherJug = (RelativeLayout) mCarouselContainer.getChildAt(Integer.valueOf(oldPos));
+                                    TextView prevJugAmount = (TextView) otherJug.getChildAt(2);
+                                    ProgressBar prevProgressBar = (ProgressBar) otherJug.getChildAt(0);
+
+                                    Jug originalJug = jug_list.get(Integer.valueOf(oldPos));
+                                    Float temp = Float.parseFloat(originalJug.getCurrentVolume()) - Float.parseFloat(mWeight);
+                                    int progress = (int) Math.round(temp);
+                                    prevProgressBar.setProgress(progress);
+                                    DecimalFormat df = new DecimalFormat("#.##");
+                                    prevJugAmount.setText(String.valueOf(df.format(temp)) + " L");
+                                    clearedSavedJug = true;
+                                }
+                            }
                         }
 
                         if (jugAlreadyClicked) {
@@ -239,23 +275,56 @@ public class MilkEntryFrag extends Fragment {
                             TextView prevJugAmount = (TextView) otherJug.getChildAt(2);
                             ProgressBar prevProgressBar = (ProgressBar) otherJug.getChildAt(0);
 
-                            int progress = (int) Math.round(Float.parseFloat(originalMilkVol));
-                            prevProgressBar.setProgress(progress);
+                            if (!otherJugId.equalsIgnoreCase(mJugId)) {
+                                int progress = (int) Math.round(Float.parseFloat(originalMilkVol));
+                                prevProgressBar.setProgress(progress);
 
-                            prevJugAmount.setText(originalMilkVol + "L");
+                                prevJugAmount.setText(originalMilkVol + "L");
+                            } else {
+                                Float newVol = Float.parseFloat(originalMilkVol) - Float.parseFloat(mWeight);
+                                int progress = (int) Math.round(newVol);
+                                prevProgressBar.setProgress(progress);
+                                DecimalFormat df = new DecimalFormat("#.##");
+                                prevJugAmount.setText(String.valueOf(df.format(newVol)) + "L");
+                            }
                         }
 
                         if((milkVol < jugSize - jugProgressBar.getProgress()) && milkVol < jugSize){
-                            String originalJugAmount = jugAmount.getText().toString().substring(0, jugAmount.getText().toString().length() - 1);
-                            Double temp = Double.valueOf(originalJugAmount);
-                            milkVol += temp;
-                            int progress = Math.round(milkVol);
-                            jugProgressBar.setProgress(progress);
-                            DecimalFormat df = new DecimalFormat("#.#");
-                            jugAmount.setText(String.valueOf(df.format(milkVol)) + "L");
+                            if (clearedSavedJug == true) {
+                                String originalJugAmount = jugAmount.getText().toString().substring(0, jugAmount.getText().toString().length() - 1);
+                                Double temp = Double.valueOf(originalJugAmount);
+                                milkVol += temp;
+                                int progress = Math.round(milkVol);
+                                jugProgressBar.setProgress(progress);
+                                DecimalFormat df = new DecimalFormat("#.#");
+                                jugAmount.setText(String.valueOf(df.format(milkVol)) + " L");
+                            } else {
+                                if (!currentJugSelection.equalsIgnoreCase(mJugId)) {
+                                    String originalJugAmount = jugAmount.getText().toString().substring(0, jugAmount.getText().toString().length() - 1);
+                                    Double temp = Double.valueOf(originalJugAmount);
+                                    milkVol += temp;
+                                    int progress = Math.round(milkVol);
+                                    jugProgressBar.setProgress(progress);
+                                    DecimalFormat df = new DecimalFormat("#.#");
+                                    jugAmount.setText(String.valueOf(df.format(milkVol)) + " L");
+                                } else {
+                                    // if milk vol is different
+                                    Jug originalJug = jug_list.get(Integer.valueOf(oldPos));
+                                    Float trueOriginalAmount = Float.parseFloat(originalJug.getCurrentVolume()) - Float.parseFloat(mWeight);
+
+                                    Double temp = Double.valueOf(trueOriginalAmount);
+                                    milkVol += temp;
+                                    int progress = Math.round(milkVol);
+                                    jugProgressBar.setProgress(progress);
+                                    DecimalFormat df = new DecimalFormat("#.#");
+                                    jugAmount.setText(String.valueOf(df.format(milkVol)) + " L");
+                                }
+                            }
+
                         } else {
                             Toast.makeText(getContext(),"Please select a different jug", Toast.LENGTH_SHORT).show();
                         }
+
                         Toast.makeText(getContext(),"Jug " + jugIdClicked, Toast.LENGTH_SHORT).show();
 
                         if (jugAlreadyClicked == false) {
@@ -333,6 +402,7 @@ public class MilkEntryFrag extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         String farmerId = getArguments().getString("farmerid");
                         String transporterId = getArguments().getString("transporterId");
                         String smellRating = convertQualityRating(smellTest);
@@ -343,18 +413,24 @@ public class MilkEntryFrag extends Fragment {
                         String densityRating = r.getText().toString();
                         String status = DatabaseConstants.status_pending;
 
-                                //convertQualityRating(densityTest);
                         String alcoholRating = convertQualityRating(alcoholTest);
                         String jugId = jugIdClicked;
                         String comments = txtComments.getText().toString();
                         String milkweight = milkVolume.getText().toString();
+                        String todayDate = "";
+                        String todayTime = "";
 
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        Date date = new Date();
-                        String todayDate= dateFormat.format(date);
+                        if (mPrevRecord) {
+                            todayDate = mDate;
+                            todayTime = mTime;
+                        } else {
+                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            Date date = new Date();
+                            todayDate = dateFormat.format(date);
 
-                        dateFormat = new SimpleDateFormat("HH:mm:ss");
-                        String todayTime = dateFormat.format(date);
+                            dateFormat = new SimpleDateFormat("HH:mm:ss");
+                            todayTime = dateFormat.format(date);
+                        }
 
                         // Make Milk volume required field
                         if(TextUtils.isEmpty(milkweight) && poorQuality == false){
@@ -370,7 +446,12 @@ public class MilkEntryFrag extends Fragment {
                                 columns.remove(0);
 
                                 List<String> values = Arrays.asList(transporterId, farmerId, jugId, todayDate, todayTime, milkweight, alcoholRating, smellRating, comments, densityRating, mRouteId, status);
-                                saveData(columns, values, v.getContext());
+                                if (mPrevRecord) {
+                                    updateData(columns, values, v.getContext());
+                                } else {
+                                    saveData(columns, values, v.getContext());
+                                }
+
 
                                 Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();
                                 getActivity().onBackPressed();
@@ -404,6 +485,51 @@ public class MilkEntryFrag extends Fragment {
             dbUtil.updateStatement(DatabaseConstants.tblJug, DatabaseConstants.currentVolume, String.valueOf(finalVolume), DatabaseConstants.id, "=", currentJugSelection, context);
         }
         dataSaved = true;
+    }
+
+    public void updateData(List<String> columns, List<String> values, Context context) {
+        dbUtil.updateStatement(DatabaseConstants.tbltrFarmerTransporter, columns, values, DatabaseConstants.id, "=", mTrFarmerTransporterId, context);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        String todayDate= dateFormat.format(date);
+
+        dateFormat = new SimpleDateFormat("HH:mm:ss");
+        String todayTime = dateFormat.format(date);
+
+        List<String> col = new ArrayList<>();
+        col.addAll(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter));
+
+        List<String> vals = new ArrayList<>();
+        vals.addAll(values);
+        vals.set(3, todayDate);
+        vals.set(4, todayTime);
+        vals.add(mTrFarmerTransporterId);
+
+        col.remove(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.tr_transporter_cooling_id));
+        col.remove(0);
+
+        dbUtil.insertStatement(DatabaseConstants.tblHisttrFarmerTransporter, col, vals, context);
+
+
+        // update jugs table
+        if (values.get(2) != mJugId) {
+            // remove quantity from old jug
+            Cursor cursor = dbUtil.selectStatement(DatabaseConstants.tblJug, DatabaseConstants.id, "=", mJugId, context);
+            Jug jug = commonUtil.convertCursorToJug(cursor);
+            if (jug != null) {
+                double finalVolume = Double.valueOf(jug.getCurrentVolume()) - Double.valueOf(mWeight);
+                dbUtil.updateStatement(DatabaseConstants.tblJug, DatabaseConstants.currentVolume, String.valueOf(finalVolume), DatabaseConstants.id, "=", mJugId, context);
+            }
+
+            // add quantity to new jug
+            cursor = dbUtil.selectStatement(DatabaseConstants.tblJug, DatabaseConstants.id, "=", currentJugSelection, context);
+            jug = commonUtil.convertCursorToJug(cursor);
+            if (jug != null) {
+                double finalVolume = Double.valueOf(jug.getCurrentVolume()) + Double.valueOf(values.get(5));
+                dbUtil.updateStatement(DatabaseConstants.tblJug, DatabaseConstants.currentVolume, String.valueOf(finalVolume), DatabaseConstants.id, "=", currentJugSelection, context);
+            }
+        }
     }
 
     public void clearData() {

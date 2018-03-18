@@ -4,16 +4,21 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
+import com.transporterapp.syde.transporterapp.DataStructures.HistMilkRecord;
 import com.transporterapp.syde.transporterapp.DataStructures.Jug;
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.DataStructures.Routes;
 import com.transporterapp.syde.transporterapp.DataStructures.TransporterItem;
+import com.transporterapp.syde.transporterapp.History.HistListFrag;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -91,6 +96,37 @@ public class commonUtil {
             String status = milkEntryList.getString(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.status));
 
             MilkRecord temp = MilkRecord.createMilkRecord(id, transporterId, farmerId, jugId, date, time, milkWeight, alcohol, smell, comments, density, trTransporterCoolingId, routeId, status);
+            milkRecords.add(temp);
+        }
+
+        return milkRecords;
+    }
+
+    public static List<HistMilkRecord> convertCursorToHistMilkRecordList(Cursor milkEntryList){
+        List<HistMilkRecord> milkRecords = new ArrayList<>();
+
+        if (milkEntryList.getCount() == 0) {
+            return null;
+        }
+
+        while(milkEntryList.moveToNext()) {
+            String id = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf("id"));
+            String transporterId = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.transporter_id));
+            String farmerId = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.farmer_id));
+            String jugId = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.jug_id));
+            String date = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.modified_date));
+            String time = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.modified_time));
+            String milkWeight = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.milk_weight));
+            String alcohol = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.alcohol));
+            String smell = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.smell));
+            String comments = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.comments));
+            String density = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.density));
+            String trTransporterCoolingId = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.tr_transporter_cooling_id));
+            String routeId = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.route_id));
+            String status = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.status));
+            String trFarmerTransporter = milkEntryList.getString(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.tr_farmer_transporter_id));
+
+            HistMilkRecord temp = HistMilkRecord.createMilkRecord(id, transporterId, farmerId, jugId, date, time, milkWeight, alcohol, smell, comments, density, trTransporterCoolingId, routeId, status, trFarmerTransporter);
             milkRecords.add(temp);
         }
 
@@ -336,5 +372,40 @@ public class commonUtil {
         }
 
 
+    }
+
+    public static List<String> compareHistMilkRecords (HistMilkRecord firstRecord, HistMilkRecord secondRecord) throws ParseException {
+        List<String> changes = new ArrayList<>();
+
+        DateFormat time = new SimpleDateFormat("HH:mm");
+
+        if (!firstRecord.getJugId().equalsIgnoreCase(secondRecord.getJugId())) {
+            changes.add(firstRecord.getDate() + " " + time.format(new SimpleDateFormat("HH:mm:ss").parse(firstRecord.getTime())) + " - JugID updated to: " + secondRecord.getJugId());
+        }
+
+        if (!firstRecord.getMilkWeight().equalsIgnoreCase(secondRecord.getMilkWeight())) {
+            changes.add(firstRecord.getDate() + " " + time.format(new SimpleDateFormat("HH:mm:ss").parse(firstRecord.getTime())) + " - Milk quantity updated to: " + secondRecord.getMilkWeight() + " L");
+        }
+
+        if (!firstRecord.getAlcohol().equalsIgnoreCase(secondRecord.getAlcohol())) {
+            changes.add(firstRecord.getDate() + " " + time.format(new SimpleDateFormat("HH:mm:ss").parse(firstRecord.getTime())) + " - Alcohol Test updated to: " + secondRecord.getAlcohol());
+        }
+
+        if (!firstRecord.getSmell().equalsIgnoreCase(secondRecord.getSmell())) {
+            changes.add(firstRecord.getDate() + " " + time.format(new SimpleDateFormat("HH:mm:ss").parse(firstRecord.getTime())) + " - Smell Test updated to: " + secondRecord.getSmell());
+        }
+
+        if (!firstRecord.getDensity().equalsIgnoreCase(secondRecord.getDensity())) {
+            changes.add(firstRecord.getDate() + " " + time.format(new SimpleDateFormat("HH:mm:ss").parse(firstRecord.getTime())) + " - Density Test updated to: " + secondRecord.getDensity());
+        }
+
+        if (!firstRecord.getComments().equalsIgnoreCase(secondRecord.getComments())) {
+            changes.add(firstRecord.getDate() + " " + time.format(new SimpleDateFormat("HH:mm:ss").parse(firstRecord.getTime())) + " - Comments updated to: " + secondRecord.getComments());
+        }
+
+        if (!firstRecord.getStatus().equalsIgnoreCase(secondRecord.getStatus())) {
+            changes.add(firstRecord.getDate() + " " + time.format(new SimpleDateFormat("HH:mm:ss").parse(firstRecord.getTime())) + " - Status updated to: " + secondRecord.getStatus());
+        }
+        return changes;
     }
 }
