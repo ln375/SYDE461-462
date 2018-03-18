@@ -236,6 +236,13 @@ public class commonUtil {
         return null;
     }
 
+    public static String getMostRecentId(Cursor transaction) {
+        while (transaction.moveToNext()) {
+            return transaction.getString(0);
+        }
+        return "";
+    }
+
     public static List<Jug> convertCursorToJugList(Cursor jug){
         List<Jug> jugList = new ArrayList<>();
 

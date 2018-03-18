@@ -147,15 +147,24 @@ public class HistRecordFrag extends Fragment {
             }
         });
         if (histMilkRecords != null) {
-            for (int i = 0; i < histMilkRecords.size() - 1; i++) {
-                try {
+            try {
+            if (histMilkRecords.size() == 1) {
+                HistMilkRecord firstRecord = histMilkRecords.get(0);
+                DateFormat df = new SimpleDateFormat("HH:mm");
+                String edit = firstRecord.getDate() + " " + df.format(new SimpleDateFormat("HH:mm:ss").parse(firstRecord.getTime())) + " - Record created";
+                TextView editHistory = new TextView(context);
+                editHistory.setText(edit);
+                editHistoryLayout.addView(editHistory);
+            } else {
+
+                List<String> changes = new ArrayList<>();
+
+                for (int i = 0; i < histMilkRecords.size() - 1; i++) {
+
                     HistMilkRecord firstRecord = histMilkRecords.get(i);
                     HistMilkRecord secondRecord = histMilkRecords.get(i+1);
 
-                    List<String> changes = new ArrayList<>();
-
                     if (i == 0) {
-
                         DateFormat df = new SimpleDateFormat("HH:mm");
                         changes.add(firstRecord.getDate() + " " + df.format(new SimpleDateFormat("HH:mm:ss").parse(firstRecord.getTime())) + " - Record created");
                     }
@@ -169,10 +178,12 @@ public class HistRecordFrag extends Fragment {
                         editHistoryLayout.addView(editHistory);
                     }
 
-                } catch (ParseException e) {
-
                 }
             }
+
+        } catch (ParseException e){
+
+        }
             scrollView.addView(editHistoryLayout);
             mainLayout.addView(scrollView);
         }

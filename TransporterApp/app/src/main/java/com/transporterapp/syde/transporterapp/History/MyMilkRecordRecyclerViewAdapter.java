@@ -49,7 +49,13 @@ public class MyMilkRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyMilk
         if (farmer != null) {
             String name = farmer.get(0).getFirstName() + " " + farmer.get(0).getLastName();
             DecimalFormat df = new DecimalFormat("#.##");
-            String volume = df.format(Double.valueOf(mValues.get(position).getMilkWeight())) + " L";
+            String temp = mValues.get(position).getMilkWeight();
+            String volume = "";
+            if (!temp.isEmpty()) {
+                volume = df.format(Double.valueOf(temp)) + " L";
+            } else {
+                volume = "N/A";
+            }
             holder.farmerName.setText(name);
             holder.volume.setText(volume);
         }
