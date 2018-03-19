@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -34,10 +35,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceItem;
 import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceListFragment;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
+import com.transporterapp.syde.transporterapp.commonUtil;
 import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
@@ -49,7 +52,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -78,6 +85,7 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
     private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private static List<BluetoothDevice> devices = new ArrayList<>();
     private String transporterId = "";
+    private String routeId = "";
 
 
 
@@ -97,6 +105,7 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             transporterId = getArguments().getString("transporterId");
+            routeId = getArguments().getString("routeId");
         }
     }
 
@@ -184,7 +193,45 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
                             });
 
                             // Update status of records internally
+                            List<String> whereOptions = Arrays.asList(DatabaseConstants.status, DatabaseConstants.route_id);
+                            List<String> whereParams = Arrays.asList("=", "=");
+                            List<String> whereValues = Arrays.asList(DatabaseConstants.status_pending, routeId);
+                            List<MilkRecord> records = commonUtil.convertCursorToMilkRecordList(dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "*", whereOptions, whereParams, whereValues, getContext() ));
+
+                            for (MilkRecord record : records) {
+                                List<String> col = new ArrayList<>();
+                                col.addAll(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter));
+                                List<String> vals = new ArrayList<>();
+
+                                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                Date date = new Date();
+                                String todayDate= dateFormat.format(date);
+
+                                dateFormat = new SimpleDateFormat("HH:mm:ss");
+                                String todayTime = dateFormat.format(date);
+
+                                vals.add(record.getTransporterId());
+                                vals.add(record.getFarmerId());
+                                vals.add(record.getJugId());
+                                vals.add(todayDate);
+                                vals.add(todayTime);
+                                vals.add(record.getMilkWeight());
+                                vals.add(record.getAlcohol());
+                                vals.add(record.getSmell());
+                                vals.add(record.getComments());
+                                vals.add(record.getDensity());
+                                vals.add(routeId);
+                                vals.add(DatabaseConstants.status_synced);
+                                vals.add(record.getId());
+
+                                col.remove(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.tr_transporter_cooling_id));
+                                col.remove(0);
+
+                                dbUtil.insertStatement(DatabaseConstants.tblHisttrFarmerTransporter, col, vals, getContext());
+                            }
+
                             dbUtil.updateStatement(DatabaseConstants.tbltrFarmerTransporter, DatabaseConstants.status, DatabaseConstants.status_synced, DatabaseConstants.status, "=", DatabaseConstants.status_pending, getContext());
+
                             dbUtil.updateStatement(DatabaseConstants.tblJug, DatabaseConstants.currentVolume, "0", DatabaseConstants.transporter_id, "=", transporterId, getContext());
                         }
 

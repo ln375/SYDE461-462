@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
@@ -62,6 +63,7 @@ public class HistListFrag extends Fragment {
     private TextView routeId;
     private RecyclerView recyclerView;
     Calendar myCalendar = Calendar.getInstance();
+    private int selectedPosition = 0;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -130,12 +132,12 @@ public class HistListFrag extends Fragment {
                 String[] sortOptions = getResources().getStringArray(R.array.sort_options);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                         .setTitle(R.string.sort_options)
-                        .setSingleChoiceItems(R.array.sort_options, 0, null)
+                        .setSingleChoiceItems(R.array.sort_options, selectedPosition, null)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String[] sortOptions = getResources().getStringArray(R.array.sort_options);
-                        int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+                        selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
                         sortButton.setText(sortOptions[selectedPosition]);
                         String date = calendarButton.getText().toString();
                         if (date.equalsIgnoreCase("No date selected")) {
@@ -151,8 +153,16 @@ public class HistListFrag extends Fragment {
                             public void onClick(DialogInterface dialog, int id) {
 
                             }
+                        })
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                sortButton.setText("No sort selected");
+                                updateList("","");
+                            }
                         });
-                        ;
+                ;
+
                 builder.create().show();
             }
         });
@@ -252,7 +262,7 @@ public class HistListFrag extends Fragment {
             milkRecords = commonUtil.convertCursorToMilkRecordList(records);
         }
 
-        if (!sort.equalsIgnoreCase("Collection order")) {
+        if (!sort.equalsIgnoreCase("No sort selected")) {
             if (sort.equalsIgnoreCase("Route")){
                  Collections.sort(milkRecords, new Comparator<MilkRecord>() {
                     @Override
@@ -269,14 +279,45 @@ public class HistListFrag extends Fragment {
                 Collections.sort(milkRecords, new Comparator<MilkRecord>() {
                     @Override
                     public int compare(MilkRecord r1, MilkRecord r2) {
-                        if (Integer.valueOf(r1.getFarmerId()) > Integer.valueOf(r2.getFarmerId())) {
-                            return 1;
-                        } else if (Integer.valueOf(r1.getFarmerId()) < Integer.valueOf(r2.getFarmerId())){
-                            return -1;
-                        }
-                        return 0;
+                        return r1.toString().compareTo(r2.toString());
                     }
                 });
+                List<String> farmerIds = new ArrayList<>();
+                for (MilkRecord milkRecord : milkRecords) {
+                    farmerIds.add(milkRecord.getFarmerId());
+                }
+
+                List<FarmerItem> farmers = commonUtil.convertCursorToFarmerItemList(dbUtil.selectStatement(DatabaseConstants.tblFarmer, "", "", "", getContext()));
+                for (int i = farmers.size() - 1; i <= 0; i--) {
+                    if (!farmerIds.contains(farmers.get(i).getId())) {
+                        farmers.remove(i);
+                    }
+                }
+
+                Collections.sort(farmers, new Comparator<FarmerItem>() {
+                    @Override
+                    public int compare(FarmerItem o1, FarmerItem o2) {
+                        int res = o1.getFirstName().compareToIgnoreCase(o2.getFirstName());
+                        if (res != 0) {
+                            return res;
+                        }
+                        return o1.getLastName().compareToIgnoreCase(o2.getLastName());
+                    }
+                });
+
+                List<MilkRecord> temp = new ArrayList<>();
+                for (FarmerItem farmer : farmers) {
+                    for (int i = 0; i < milkRecords.size(); i++) {
+                        if (farmer.getId().equalsIgnoreCase(milkRecords.get(i).getFarmerId())) {
+                            temp.add(milkRecords.get(i));
+                            break;
+                        }
+                    }
+                }
+
+                milkRecords.clear();
+                milkRecords.addAll(temp);
+
             } else if (sort.equalsIgnoreCase("Time of Collection")) {
                 Collections.sort(milkRecords, new Comparator<MilkRecord>() {
                     @Override
@@ -289,6 +330,8 @@ public class HistListFrag extends Fragment {
                         return 0;
                     }
                 });
+            } else if (sort.equalsIgnoreCase("None")) {
+                sortButton.setText("No sort selected");
             }
         }
 

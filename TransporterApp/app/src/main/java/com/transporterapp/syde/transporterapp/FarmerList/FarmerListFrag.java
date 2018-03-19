@@ -37,6 +37,7 @@ import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -125,12 +126,8 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
                 Bundle bundle = new Bundle();
                 bundle.putString("routeId", routeId);
 
-                if (addFarmerFrag.getArguments() != null) {
-                    addFarmerFrag.getArguments().clear();
-                    addFarmerFrag.getArguments().putAll(bundle);
-                } else {
-                    addFarmerFrag.setArguments(bundle);
-                }
+                AddFarmerFrag addFarmerFrag = new AddFarmerFrag();
+                addFarmerFrag.setArguments(bundle);
                 fragmentManager.beginTransaction().replace(R.id.container, addFarmerFrag).addToBackStack(null).commit();
 
             }
@@ -139,6 +136,7 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         final Button saveLogbookButton = (Button) view.findViewById(R.id.save_logbook);
         Bundle bundle = new Bundle();
         bundle.putString("transporterId", transporterId);
+        bundle.putString("routeId", routeId);
 
 
         if (exportDataFrag.getArguments() != null) {
@@ -160,7 +158,8 @@ public class FarmerListFrag extends Fragment implements SearchView.OnQueryTextLi
         }
 
         final TextView totalMilkCollected = (TextView) view.findViewById(R.id.total_milk_collected);
-        totalMilkCollected.setText(collectedMilk + " L Total");
+        DecimalFormat df = new DecimalFormat("#.##");
+        totalMilkCollected.setText(df.format(collectedMilk) + " L Total");
 
         return view;
     }

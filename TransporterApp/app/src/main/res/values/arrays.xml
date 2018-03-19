@@ -2,6 +2,7 @@
 <resources>
     <string-array
         name="sort_options">
+        <item>None</item>
         <item>Route</item>
         <item>Alphabetical</item>
         <item>Time of Collection</item>

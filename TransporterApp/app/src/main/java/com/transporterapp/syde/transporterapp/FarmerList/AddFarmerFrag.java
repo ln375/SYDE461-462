@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -117,6 +118,13 @@ public class AddFarmerFrag extends Fragment {
                 saveData(columns, values, view.getContext());
 
                 Toast.makeText(getContext(),"Data Inserted", Toast.LENGTH_LONG).show();
+
+                InputMethodManager inputManager = (InputMethodManager)
+                        Main.instance.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow((null == Main.instance.getCurrentFocus()) ? null : Main.instance.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+
                 getActivity().onBackPressed();
 
 

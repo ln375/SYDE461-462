@@ -146,6 +146,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     startActivity(intent);
 
                 }
+            } else {
+                new AlertDialog.Builder(v.getContext())
+                        .setTitle("Incorrect data")
+                        .setMessage("Please enter a correct username and password.")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, incorrectData).show();
             }
         }
 
