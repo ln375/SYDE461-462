@@ -35,7 +35,8 @@ import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 
 import org.w3c.dom.Text;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -267,9 +268,9 @@ public class HistListFrag extends Fragment {
                  Collections.sort(milkRecords, new Comparator<MilkRecord>() {
                     @Override
                     public int compare(MilkRecord r1, MilkRecord r2) {
-                        if (Integer.valueOf(r1.getId()) > Integer.valueOf(r2.getId())) {
+                        if (Integer.valueOf(r1.getRouteId()) > Integer.valueOf(r2.getRouteId())) {
                             return 1;
-                        } else if (Integer.valueOf(r1.getId()) < Integer.valueOf(r2.getId())){
+                        } else if (Integer.valueOf(r1.getRouteId()) < Integer.valueOf(r2.getRouteId())){
                             return -1;
                         }
                         return 0;
@@ -322,12 +323,33 @@ public class HistListFrag extends Fragment {
                 Collections.sort(milkRecords, new Comparator<MilkRecord>() {
                     @Override
                     public int compare(MilkRecord r1, MilkRecord r2) {
-                        if (Date.valueOf(r1.getDate()).after(Date.valueOf(r2.getDate()))) {
-                            return 1;
-                        } else if (Date.valueOf(r2.getDate()).after(Date.valueOf(r1.getDate()))) {
-                            return -1;
+                        try {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            Date temp = sdf.parse(r1.getDate());
+                            Date temp2 = sdf.parse(r2.getDate());
+                            if (temp.equals(temp2)) {
+                                String ugh = "";
+                            }
+                            if (temp.before(temp2)) {
+                                return 1;
+                            } else if (temp2.before(temp)) {
+                                return -1;
+                            } else {
+                                // same date, sort by time
+                                sdf = new SimpleDateFormat("HH:mm:ss");
+                                temp = sdf.parse(r1.getTime());
+                                temp2 = sdf.parse(r2.getTime());
+
+                                if (temp.before(temp2)) {
+                                    return 1;
+                                } else if (temp2.before(temp)) {
+                                    return -1;
+                                }
+                            }
+                            return 0;
+                        } catch (ParseException e) {
+                            return 0;
                         }
-                        return 0;
                     }
                 });
             } else if (sort.equalsIgnoreCase("None")) {
