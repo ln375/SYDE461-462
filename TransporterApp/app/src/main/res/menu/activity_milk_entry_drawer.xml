@@ -11,10 +11,6 @@
             android:id="@+id/histActivity"
             android:icon="@drawable/ic_menu_hist"
             android:title="@string/nav_menu_history_screen" />
-        <!-- <item
-            android:id="@+id/farmersActivity"
-            android:icon="@drawable/ic_menu_farmers"
-            android:title="@string/nav_menu_farmers_screen"/> -->
 
     </group>
 

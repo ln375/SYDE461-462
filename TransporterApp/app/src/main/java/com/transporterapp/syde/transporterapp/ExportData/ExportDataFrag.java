@@ -1,26 +1,16 @@
 package com.transporterapp.syde.transporterapp.ExportData;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.le.BluetoothLeScanner;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanRecord;
-import android.bluetooth.le.ScanResult;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
-import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceItem;
-import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceListFragment;
 import com.transporterapp.syde.transporterapp.Main;
 import com.transporterapp.syde.transporterapp.R;
 import com.transporterapp.syde.transporterapp.commonUtil;
@@ -45,7 +33,6 @@ import com.transporterapp.syde.transporterapp.databases.DatabaseConstants;
 import com.transporterapp.syde.transporterapp.databases.dbUtil;
 
 import java.io.BufferedInputStream;
-import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -68,7 +55,7 @@ import java.util.Set;
  * Use the {@link ExportDataFrag#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExportDataFrag extends Fragment implements DeviceListFragment.OnListFragmentInteractionListener {
+public class ExportDataFrag extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Button createCSVFile;
@@ -136,6 +123,16 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
 
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        lblExportInstructions.setVisibility(View.INVISIBLE);
+        lblExportInstructionsTitle.setVisibility(View.INVISIBLE);
+        devicesSpinner.setVisibility(View.INVISIBLE);
+        sendCSVFile.setVisibility(View.INVISIBLE);
+        ipAddress.setVisibility(View.INVISIBLE);
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -197,38 +194,40 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
                             List<String> whereParams = Arrays.asList("=", "=");
                             List<String> whereValues = Arrays.asList(DatabaseConstants.status_pending, routeId);
                             List<MilkRecord> records = commonUtil.convertCursorToMilkRecordList(dbUtil.selectStatement(DatabaseConstants.tbltrFarmerTransporter, "*", whereOptions, whereParams, whereValues, getContext() ));
+                            if (records != null) {
+                                for (MilkRecord record : records) {
+                                    List<String> col = new ArrayList<>();
+                                    col.addAll(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter));
+                                    List<String> vals = new ArrayList<>();
 
-                            for (MilkRecord record : records) {
-                                List<String> col = new ArrayList<>();
-                                col.addAll(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter));
-                                List<String> vals = new ArrayList<>();
+                                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                    Date date = new Date();
+                                    String todayDate= dateFormat.format(date);
 
-                                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                                Date date = new Date();
-                                String todayDate= dateFormat.format(date);
+                                    dateFormat = new SimpleDateFormat("HH:mm:ss");
+                                    String todayTime = dateFormat.format(date);
 
-                                dateFormat = new SimpleDateFormat("HH:mm:ss");
-                                String todayTime = dateFormat.format(date);
+                                    vals.add(record.getTransporterId());
+                                    vals.add(record.getFarmerId());
+                                    vals.add(record.getJugId());
+                                    vals.add(todayDate);
+                                    vals.add(todayTime);
+                                    vals.add(record.getMilkWeight());
+                                    vals.add(record.getAlcohol());
+                                    vals.add(record.getSmell());
+                                    vals.add(record.getComments());
+                                    vals.add(record.getDensity());
+                                    vals.add(routeId);
+                                    vals.add(DatabaseConstants.status_synced);
+                                    vals.add(record.getId());
 
-                                vals.add(record.getTransporterId());
-                                vals.add(record.getFarmerId());
-                                vals.add(record.getJugId());
-                                vals.add(todayDate);
-                                vals.add(todayTime);
-                                vals.add(record.getMilkWeight());
-                                vals.add(record.getAlcohol());
-                                vals.add(record.getSmell());
-                                vals.add(record.getComments());
-                                vals.add(record.getDensity());
-                                vals.add(routeId);
-                                vals.add(DatabaseConstants.status_synced);
-                                vals.add(record.getId());
+                                    col.remove(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.tr_transporter_cooling_id));
+                                    col.remove(0);
 
-                                col.remove(Arrays.asList(DatabaseConstants.colHistTrFarmerTransporter).indexOf(DatabaseConstants.tr_transporter_cooling_id));
-                                col.remove(0);
-
-                                dbUtil.insertStatement(DatabaseConstants.tblHisttrFarmerTransporter, col, vals, getContext());
+                                    dbUtil.insertStatement(DatabaseConstants.tblHisttrFarmerTransporter, col, vals, getContext());
+                                }
                             }
+
 
                             dbUtil.updateStatement(DatabaseConstants.tbltrFarmerTransporter, DatabaseConstants.status, DatabaseConstants.status_synced, DatabaseConstants.status, "=", DatabaseConstants.status_pending, getContext());
 
@@ -389,11 +388,6 @@ public class ExportDataFrag extends Fragment implements DeviceListFragment.OnLis
                 }
             }
         });
-    }
-
-    @Override
-    public void onListFragmentInteraction(DeviceItem item) {
-
     }
 
     /**

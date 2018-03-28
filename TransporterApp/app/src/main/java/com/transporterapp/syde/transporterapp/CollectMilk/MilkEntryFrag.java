@@ -94,9 +94,6 @@ public class MilkEntryFrag extends Fragment {
     private boolean dataSaved = false;
     private boolean poorQuality = false;
 
-
-
-
     private int jugSize = 20; //Placeholder
 
     public MilkEntryFrag() {
@@ -469,7 +466,9 @@ public class MilkEntryFrag extends Fragment {
                                 columns.addAll(Arrays.asList(DatabaseConstants.coltrFarmerTransporter));
                                 columns.remove(Arrays.asList(DatabaseConstants.coltrFarmerTransporter).indexOf(DatabaseConstants.tr_transporter_cooling_id));
                                 columns.remove(0);
-
+                                if (jugId.isEmpty()) {
+                                    jugId = mJugId;
+                                }
                                 List<String> values = Arrays.asList(transporterId, farmerId, jugId, todayDate, todayTime, milkweight, alcoholRating, smellRating, comments, densityRating, mRouteId, status);
                                 if (mPrevRecord) {
                                     updateData(columns, values, v.getContext());
@@ -755,9 +754,9 @@ public class MilkEntryFrag extends Fragment {
             qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "Bad", getContext());
         } else if (radioGroup.getCheckedRadioButtonId() == R.id.density_good || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_good || radioGroup.getCheckedRadioButtonId() == R.id.smell_good) {
             qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "Good", getContext());
-        } /*else if (radioGroup.getCheckedRadioButtonId() == R.id.density_28  || radioGroup.getCheckedRadioButtonId() == R.id.density_29 || radioGroup.getCheckedRadioButtonId() == R.id.density_30 || radioGroup.getCheckedRadioButtonId() == R.id.alcohol_okay) {
+        } else if (radioGroup.getCheckedRadioButtonId() == R.id.alcohol_okay) {
             qualityRating = dbUtil.selectStatement("qualityratings", "id", "rating", "=", "Okay", getContext());
-        }*/
+        }
         if (qualityRating.size() > 0) {
             rating = qualityRating.get(0);
         }

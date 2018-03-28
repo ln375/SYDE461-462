@@ -157,9 +157,8 @@ public class HistRecordFrag extends Fragment {
                 editHistoryLayout.addView(editHistory);
             } else {
 
-                List<String> changes = new ArrayList<>();
-
                 for (int i = 0; i < histMilkRecords.size() - 1; i++) {
+                    List<String> changes = new ArrayList<>();
 
                     HistMilkRecord firstRecord = histMilkRecords.get(i);
                     HistMilkRecord secondRecord = histMilkRecords.get(i+1);

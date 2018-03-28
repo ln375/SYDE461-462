@@ -17,14 +17,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
-import com.transporterapp.syde.transporterapp.DataStructures.Jug;
 import com.transporterapp.syde.transporterapp.DataStructures.Routes;
-import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceItem;
-import com.transporterapp.syde.transporterapp.ExportData.DeviceList.DeviceListFragment;
 import com.transporterapp.syde.transporterapp.FarmerList.AddFarmerFrag;
 import com.transporterapp.syde.transporterapp.FarmerList.FarmerListFrag;
 import com.transporterapp.syde.transporterapp.FarmerList.FarmerListFrag.OnListFragmentInteractionListener;
@@ -32,7 +28,6 @@ import com.transporterapp.syde.transporterapp.CollectMilk.MilkEntryFrag;
 import com.transporterapp.syde.transporterapp.DataStructures.FarmerItem;
 import com.transporterapp.syde.transporterapp.DataStructures.MilkRecord;
 import com.transporterapp.syde.transporterapp.ExportData.ExportDataFrag;
-import com.transporterapp.syde.transporterapp.FarmerProfile.FarmerProfileFrag;
 import com.transporterapp.syde.transporterapp.History.HistListFrag;
 import com.transporterapp.syde.transporterapp.History.HistMainFrag;
 import com.transporterapp.syde.transporterapp.History.HistOverviewDaily;
@@ -55,18 +50,13 @@ import static com.transporterapp.syde.transporterapp.LoginScreen.LoginFragment.P
 
 public class Main extends AppCompatActivity
         implements OnListFragmentInteractionListener, HistListFrag.OnListFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener, ExportDataFrag.OnFragmentInteractionListener,
-        DeviceListFragment.OnListFragmentInteractionListener, ChooseRoutesFrag.OnListFragmentInteractionListener, HistMainFrag.OnFragmentInteractionListener , HistOverviewFrag.OnFragmentInteractionListener,
+        ChooseRoutesFrag.OnListFragmentInteractionListener, HistMainFrag.OnFragmentInteractionListener , HistOverviewFrag.OnFragmentInteractionListener,
         HistOverviewMonthly.OnFragmentInteractionListener, HistOverviewDaily.OnListFragmentInteractionListener, AddFarmerFrag.OnFragmentInteractionListener  {
     public static Main instance = null;
     private HistRecordFrag histRecordFrag = new HistRecordFrag();
-    private HistListFrag histListFrag = new HistListFrag();
     public FragmentManager fragmentManager = getSupportFragmentManager();
     private FarmerListFrag farmerListFragmentForMilkEntry = new FarmerListFrag();
-    private FarmerListFrag farmerListFragmentForFarmerProfile = new FarmerListFrag();
-    private MilkEntryFrag milkEntryFragment = new MilkEntryFrag();
     private LoginFragment loginFrag = new LoginFragment();
-    private ExportDataFrag exportDataFrag = new ExportDataFrag();
-    private FarmerProfileFrag farmerProfileFrag = new FarmerProfileFrag();
     private HistMainFrag histMainFrag = new HistMainFrag();
     private ChooseRoutesFrag chooseRoutesFrag = new ChooseRoutesFrag();
     private Toolbar toolbar;
@@ -175,15 +165,6 @@ public class Main extends AppCompatActivity
 
                 fragmentManager.beginTransaction().replace(R.id.container, chooseRoutesFrag).addToBackStack(null).commit();
                 drawer.closeDrawer(GravityCompat.START);
-            } else if (item.getTitle().equals("Farmers Screen")) {
-                setActionBarTitle(commonUtil.getCurrentDate());
-                menuFragmentId = item.getItemId();
-                fragmentManager.beginTransaction().replace(R.id.container, farmerListFragmentForFarmerProfile).addToBackStack(null).commit();
-                drawer.closeDrawer(GravityCompat.START);
-            } else if (item.getTitle().equals("Export Data")) {
-                setActionBarTitle("Export Data");
-                fragmentManager.beginTransaction().replace(R.id.container, exportDataFrag).addToBackStack(null).commit();
-                drawer.closeDrawer(GravityCompat.START);
             } else if(item.getTitle().equals("Log Out")) {
                 SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0); // 0 - for private mode
                 SharedPreferences.Editor editor = settings.edit();
@@ -214,7 +195,7 @@ public class Main extends AppCompatActivity
             }
         } else if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
-        } else if (histMainFrag.isVisible() || farmerListFragmentForFarmerProfile.isVisible()  || chooseRoutesFrag.isVisible()){
+        } else if (histMainFrag.isVisible() || chooseRoutesFrag.isVisible()){
             //Don't allow backpress on these screens
         }else {
             super.onBackPressed();
@@ -371,11 +352,6 @@ public class Main extends AppCompatActivity
 
     @Override
     public void onExportFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
-    public void onListFragmentInteraction(DeviceItem item) {
 
     }
 
