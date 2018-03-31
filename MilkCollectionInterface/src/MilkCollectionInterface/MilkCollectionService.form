@@ -54,15 +54,6 @@
           <text value="Select a method for importing data"/>
         </properties>
       </component>
-      <component id="52b6" class="javax.swing.JLabel" binding="lblDevice2">
-        <constraints>
-          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <enabled value="false"/>
-          <text value="Select a device:"/>
-        </properties>
-      </component>
       <component id="6500e" class="javax.swing.JLabel" binding="lblDevice1">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -70,15 +61,6 @@
         <properties>
           <enabled value="false"/>
           <text value="Select a device:"/>
-        </properties>
-      </component>
-      <component id="d6a06" class="javax.swing.JComboBox" binding="deviceList2">
-        <constraints>
-          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="1" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <enabled value="false"/>
-          <visible value="true"/>
         </properties>
       </component>
       <component id="58b9" class="javax.swing.JComboBox" binding="deviceList" default-binding="true">

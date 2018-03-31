@@ -78,9 +78,9 @@ public class MilkCollectionService {
                 lblSave.setEnabled(true);
                 deviceList.setEnabled(true);
                 lblDevice1.setEnabled(true);
-                lblDevice2.setEnabled(false);
-                deviceList2.setSelectedIndex(-1);
-                deviceList2.setEnabled(false);
+                //lblDevice2.setEnabled(false);
+                //deviceList2.setSelectedIndex(-1);
+                //deviceList2.setEnabled(false);
                 btnStart.setEnabled(false);
                 lblWifi.setEnabled(false);
                 lblIPAddress.setEnabled(false);
